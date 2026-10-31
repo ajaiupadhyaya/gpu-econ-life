@@ -24,9 +24,13 @@ Unknown values, unreachable sources and anything waiting on a decision.
 
 - **Literature stop condition (2026-10-31).** "First use of vintage-price methods" cannot stand. The
   owner decides whether to reposition; see docs/proposal_review.md, Literature.
-- **Two CC BY packages to read before deciding** (download needs owner approval):
-  `gpu-rental-value-curves-v1.6.1.zip`, 207.6 kB, https://zenodo.org/records/22053861, and
-  `ai-gpu-depreciation-v1.3.0.zip`, 1.8 MB, https://zenodo.org/records/21894454.
+- **Two CC BY packages: read 2026-10-31 with the owner's approval.** See docs/related_work.md
+  section 5. They were kept outside the repo, so re-download them if either enters the pipeline.
+- **Do not run `code/farm_history.py` from Huang's package.** It pulls from an exporter of Vast.ai
+  data, which raises the Vast terms and would add a source without approval.
+- **CCIR's terms are unknown.** `ccir.io/terms` returned 404. Its series stay out until the owner
+  has checked, or asked CCIR. Its archive file is available on request.
+- **Huang's working paper** ("Underwriting GPU Depreciation") has not been found. Ask the author.
 - **SSRN papers to read in a browser**, since SSRN blocks automated access: 7420380, 7541938,
   7346098, 7270603.
 - **GitHub remote not set up.** The private repo creation and push were refused by the permission

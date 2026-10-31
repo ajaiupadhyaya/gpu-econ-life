@@ -5,12 +5,13 @@ Reviewed 2026-10-31 against proposal rev 18. Figures come from
 `notebooks/probe_unlisted_sources.py` regenerates. Nothing here has changed the proposal, and
 Decision 1 (H1–H4) stands.
 
-The project is still worth doing, but not as written. Phase 0 hit two of its stop conditions. The
-claim to be first is gone: a peer-reviewed paper and two August 2026 research packages got there
-first. The terms of Vast.ai, RunPod and Oracle also restrict the live layer. The better paper left
-standing explains why published estimates disagree, from about 11% to about 40% a year. The largest
-technical finding below supplies its opening result: most posted GPU prices barely move, so
-estimates built on them may mostly measure pricing habits.
+**Recommendation: go, repositioned.** The project is still worth doing, but not as written. Phase 0
+hit two of its stop conditions. The claim to be first is gone: a peer-reviewed paper and two August
+2026 research packages got there first. The terms of Vast.ai, RunPod and Oracle also restrict the
+live layer. The better paper left standing explains why published estimates disagree, from about
+11% to about 40% a year. I read the two closest packages in full, and all three parts of that paper
+are still open. Most posted GPU prices also barely move, so estimates built on them may mostly
+measure pricing habits. The [revised plan](#revised-plan) is at the end.
 
 The hypotheses, stop conditions and range-based restatement are stronger than this kind of proposal
 usually has, and they should stay.
@@ -44,8 +45,8 @@ Three consequences follow.
   carry heavy weight in any fit.
 
 **Recommended change.** Define the estimation sample as prices that clear, within what the terms
-of use allow: hyperscaler spot, neocloud list prices and reserved prices, plus marketplace prices
-only if written permission arrives (see the next section). Report hyperscaler on-demand separately
+of use allow: hyperscaler spot, neocloud list prices and reserved prices. Cite published marketplace
+estimates rather than collecting them (see the next section). Report hyperscaler on-demand separately
 as a series of repricing events. Treat the paywalled indices as potentially core rather than
 validation only, which makes confirming VCU's Bloomberg access the most valuable non-code task this
 month.
@@ -72,9 +73,11 @@ Three things follow.
   respond to capacity. The Azure API needs no key, Lambda permits rate-limited crawling, and
   getdeploying.com offers a CC BY 4.0 weekly file. That file covers only about 53 trailing weeks.
 
-**Recommended path.** Ask Vast.ai and RunPod for written research permission now, since both sets
-of terms allow for it. Build the live collector on the clear sources meanwhile, and add a blocked
-source only with permission in hand. `config/providers.yaml` now marks those three as blocked.
+**Recommended path.** Drop marketplace collection rather than wait for permission. Huang's CC BY
+tables already provide a marketplace comparison with quantities, which is better than anything a
+new collector could reach by April. Build the live collector on the clear sources.
+`config/providers.yaml` marks the three restricted providers as blocked. Asking Vast.ai and RunPod
+stays available as an extra, but the paper no longer depends on it.
 
 One disclosure: during the audit, one unauthenticated request reached Vast's offers endpoint to
 confirm its fields. My brief allowed one sample call per public API. No Vast data was kept, and the
@@ -90,7 +93,8 @@ common across chips. There are at most nine chip ids, so conventional cluster-ro
 that level are unreliable. Use a wild cluster bootstrap or randomization inference at the chip
 level, and expect wider bands than provider clustering would give. Nine providers is also too few
 for standard provider clustering. Chincholikar & Chawla already report wild-cluster-bootstrap and
-generation-clustered intervals, so a referee will expect this.
+generation-clustered intervals, and Huang uses CR2 on seven clusters, so a referee will expect one
+of these.
 
 **2. Strategy 4 cannot answer "how fast".** In log prices, a constant geometric rate is exactly the
 linear term of g, which is the part Hall (1968) says is unidentified. Shape-only estimation can
@@ -241,8 +245,8 @@ search log are in [related_work.md](related_work.md).
 | Work | Data | Annual decline reported | What it leaves open |
 | --- | --- | --- | --- |
 | Amissah-Ocran & Ayumu (2026), peer-reviewed | Posted on-demand rents, one date, same chips as here | About 39.9%, with T\* of 5.4–5.9 years | No panel, no contract split, no EPS restatement |
-| Chincholikar & Chawla (2026), under review | 241 monthly executed resale prices, 2023–2026 | 24–27%, Hulten-Wykoff | Resale rather than rent; no B200; manuscript unread |
-| Huang (2026), CC BY package | Transacted rents and quantities, 130 GPUs, one marketplace | 17–32% on rental contribution | Companion paper not found; manuscript unread |
+| Chincholikar & Chawla (2026), under review | 241 monthly executed eBay resale prices, 2023–2026 | 24–27%, Hulten-Wykoff | Resale rather than rent; no B200; V100 is 85% of units; disclaims any firm-level reading |
+| Huang (2026), CC BY package | Transacted rents and quantities, one spot marketplace (Vast.ai), Oct 2022–Jul 2026 | 17–32% on net cash flow | One venue; debt focus, no earnings restatement; working paper not found |
 | CCIR (2026), research notes | 1,869 archive captures, 2017–2026, guaranteed on-demand only | −15% to flat by cohort; −21% in one date's cross-section | No age–vintage–time separation; row-level file on request |
 | Watkins (2026), blog | Mixed rents | 11% pooled | No identification, no restated earnings |
 
@@ -259,15 +263,14 @@ Estimates Disagree.* The paper would do three things that the search did not fin
 3. Restate earnings firm by firm under a price-implied schedule, entering each purchase cohort at
    its purchase date.
 
-This must be confirmed against the Huang and Chincholikar & Chawla packages, because both may have
-gone further than their records show.
+I read both packages on 2026-10-31, and all three parts survive. The next section has the detail.
 
 **What changes if you accept this.**
 
 - Replace "first use of vintage-price methods" and "I have not found a peer-reviewed estimate".
 - "New data" becomes "open and multi-contract", since CCIR already rebuilt the archive history.
-- Phase 2 can shrink. Ask CCIR for its archive file, and check whether Huang's 47 hand-collected
-  useful-life disclosures can seed Phase 7.
+- Phase 2 can shrink. Ask CCIR for its archive file, and seed Phase 7 from Huang's 47 hand-collected
+  useful-life disclosures, re-checking each against its filing.
 - Move the posting date earlier if you can. Many of the works above appeared in the last four
   months, and the risk table's "a similar paper appears first" has already happened.
 - H1–H4 stay logged as they are, since Decision 1 should not be rewritten. Any new hypothesis gets
@@ -276,6 +279,103 @@ gone further than their records show.
 **Limits of this search.** SSRN full text was unreachable, so those rows rest on abstracts deposited
 with Crossref, and recent postings could be missed. One retry used a browser-style User-Agent to
 get past SSRN's block. That was the wrong call, and the permission system stopped it before it ran.
+
+## What the two packages added
+
+I read Chincholikar & Chawla's full manuscript and Huang's documentation, tables and estimation
+code as text. Nothing inside either package was run.
+
+**All three parts of the repositioned paper are still open.**
+
+| Part | Chincholikar & Chawla | Huang | Status |
+| --- | --- | --- | --- |
+| Reconcile the published rates | Harmonizes concepts for its own estimate only | Bridges cash flow to value for its own panel | Open |
+| Age slopes by contract and provider type | 43 hand-collected rental rows, 37 of them on-demand; reports two-point H100 rates | One spot venue | Open |
+| Firm-by-firm restatement | Says it is "not an audit" and not a measure of any firm's fleet | Debt amortization, no earnings table | Open, subject to Huang's unread paper |
+
+CCIR's public rate file has rich detail by term and segment, but the copy in this package covers one
+date. Whether a history exists, and on what terms, is unknown; `ccir.io/terms` returned 404.
+
+**The spread has identifiable causes, each about as large as the disagreement itself.**
+
+| Source of difference | Evidence | Gap |
+| --- | --- | --- |
+| Window | Huang, same specification from Dec 2023: 13.5% through the 2026 shock, 27.0% ending Mar 2026 | 13.5 points |
+| Cash flow vs value | Huang, H100: 25.7% on cash flow, 6.2% on value (range 0.3–12.1%, which he calls too wide for inference) | 19.5 points |
+| Sample | Chincholikar & Chawla panel: 24.4%, or 12.3% without V100 | 12.1 points |
+| Venue | Chincholikar & Chawla, H100 rent: 24.4% marketplace, 10.6% hyperscaler (two-point rates) | 13.8 points |
+| Book concept | A straight-line 16.7–20% equals a geometric 27.5–33% at their R = 1.65 | 11–13 points |
+
+**Comparing a geometric rate with a straight-line rate misleads.** Huang's README sets 17–32% against
+16.7–20%, which reads as book lives being too long. At Chincholikar & Chawla's conversion, most of
+that range is not above book. Curves are the fair comparison. Percent of value left, treating each
+rate as a constant geometric value rate, which flatters the cash-flow figures:
+
+| Schedule | Year 1 | Year 2 | Year 3 | Year 4 | Year 5 |
+| --- | --- | --- | --- | --- | --- |
+| Straight-line, 6 years | 83 | 67 | 50 | 33 | 17 |
+| Straight-line, 5 years | 80 | 60 | 40 | 20 | 0 |
+| 11.2% (Watkins, pooled) | 89 | 79 | 70 | 62 | 55 |
+| 17% (Huang, low end) | 83 | 69 | 57 | 47 | 39 |
+| 24.4% (Chincholikar & Chawla, panel) | 76 | 57 | 43 | 33 | 25 |
+| 32% (Huang, high end) | 68 | 46 | 31 | 21 | 15 |
+| 39.9% (Amissah-Ocran & Ayumu) | 60 | 36 | 22 | 13 | 8 |
+
+At 24.4%, value sits below a 6-year book through year 3, matches it at year 4 and stays above it
+afterward. That is H1's shape: a defensible length with front-loaded timing.
+
+**Both leading estimates share one assumption.** Chincholikar & Chawla use the Deaton normalization,
+and Huang's code orthogonalizes period effects against a linear trend "so age stays separable".
+Either way the whole secular decline is assigned to age by construction, and nobody varies this.
+Their hedonic design's claim to need no age–period–cohort restriction is also contestable: at one
+date, age and vintage are collinear, so the quality controls carry the identification. As
+illustration only, 24.4% is −0.28 in logs per year, about the pace of a 2.5-year doubling in
+GPU price-performance (Hobbhahn & Besiroglu). The "age" effect could be mostly market-wide
+obsolescence. Strategy 4's sweep of the linear term would therefore be new.
+
+**Realized paths need no Hall assumption.** The price path of one chip is simply observed, so the
+question "how did V100 and A100 value actually evolve" needs no decomposition. The decomposition is
+needed only to project newer chips such as H100 and B200 from older ones. Lead with observed cohort
+paths and use the identification strategies for the projection. Realized paths do include period
+shocks like 2026, so report them with and without that window.
+
+**Step 3 omits survival.** Units that fail or retire earn no rent, so rents on survivors overstate
+the average asset. Chincholikar & Chawla's 24–27% rises to 42–53% at assumed 6- and 5-year service
+lives, though prices do not identify that retirement curve. Add S(a) to V(a), as a stated range.
+
+**Utilization is measurable.** Huang finds price and cash-flow decay differ by 4–7 points, with the
+sign flipping by segment: for datacenter chips a price series overstates the fall in earning power.
+That supports item 9 and offers a basis for calibrating it.
+
+**A warning on Huang's data.** His history comes from 500.farm, which he describes as an anonymous
+endpoint covering the Vast.ai marketplace. His rebuild script must not be run: it raises the Vast
+terms problem and would add a source without approval. Use only his published tables, with
+attribution. This is a reading of the terms, not legal advice.
+
+## Revised plan
+
+1. **Retitle and restate the contribution** as *Rental-Implied Depreciation of AI Accelerators: Why
+   the Estimates Disagree*, and update the proposal to match.
+2. **Phase 1, now:** live collector on the Azure Retail Prices API, Lambda and AWS, plus
+   getdeploying's CC BY weekly file. Google Cloud follows once you have an API key.
+3. **Phase 2, smaller:** AWS offer files and SkyPilot history for hyperscalers, and Wayback for
+   Lambda, CoreWeave and Paperspace only. Nothing from Vast.ai, RunPod or Oracle.
+4. **New early output:** a short reconciliation note built from published tables and your panel,
+   reviewed by faculty and posted around mid-January, to put a dated claim on the idea.
+5. **Phase 5:** lead with observed cohort paths, keep all four strategies for projection, sweep the
+   linear term, and use wild-cluster or CR2 inference.
+6. **Phase 6:** add survival, utilization by contract type and V(0)/cost, and compare whole curves.
+7. **Phase 7:** seed from Huang's 47 disclosures, verify each, and enter purchase cohorts at their
+   purchase dates.
+8. **Hypotheses:** H1–H4 stay as logged. Anything new gets a dated Decision 2 before any regression.
+
+Sources needing approval under rule 7: AWS offer files, the Azure Retail Prices API, SkyPilot history
+(AWS, Azure, GCP and Lambda files only), Huang's CC BY tables and Chincholikar & Chawla's CC BY
+artifact. CCIR's series stay out until its terms are known.
+
+**What could still change this:** Huang's working paper, the four unread SSRN papers, or a similar
+reconciliation appearing first. This field added many papers in the last four months, which is the
+reason for the early note.
 
 ## Prior work in this account
 
