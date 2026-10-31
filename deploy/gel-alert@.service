@@ -1,0 +1,8 @@
+[Unit]
+Description=Send an alert for a failed unit: %i
+
+[Service]
+Type=oneshot
+User=gel
+EnvironmentFile=-/opt/gpu-econ-life/.env
+ExecStart=/opt/gpu-econ-life/deploy/alert.sh %i

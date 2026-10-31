@@ -1,0 +1,14 @@
+[Unit]
+Description=GPU price collection and health check
+After=network-online.target
+Wants=network-online.target
+OnFailure=gel-alert@%n.service
+
+[Service]
+Type=oneshot
+User=gel
+WorkingDirectory=/opt/gpu-econ-life
+EnvironmentFile=-/opt/gpu-econ-life/.env
+ExecStart=/usr/local/bin/uv run python -m gel.collect.live --all
+ExecStartPost=/usr/local/bin/uv run python -m gel.collect.health
+TimeoutStartSec=1800

@@ -1,0 +1,10 @@
+[Unit]
+Description=Run the GPU price collector daily
+
+[Timer]
+OnCalendar=*-*-* 06:10:00 UTC
+Persistent=true
+RandomizedDelaySec=120
+
+[Install]
+WantedBy=timers.target

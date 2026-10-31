@@ -1,0 +1,9 @@
+[Unit]
+Description=Back up raw GPU price data daily
+
+[Timer]
+OnCalendar=*-*-* 06:50:00 UTC
+Persistent=true
+
+[Install]
+WantedBy=timers.target

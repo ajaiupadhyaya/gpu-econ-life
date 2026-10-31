@@ -105,6 +105,20 @@ def test_collectors_cover_only_cleared_sources():
     assert '"aws"' in catalog_code and '"gcp"' in catalog_code
 
 
+def test_deployment_units_run_the_real_entry_points():
+    service = (ROOT / "deploy/gel-collect.service").read_text()
+    assert "python -m gel.collect.live --all" in service
+    assert "python -m gel.collect.health" in service
+    assert "OnFailure=gel-alert@" in service
+    assert "Persistent=true" in (ROOT / "deploy/gel-collect.timer").read_text()
+
+
+def test_backup_can_never_delete_or_rewrite_raw_data():
+    script = (ROOT / "deploy/backup.sh").read_text()
+    assert "rclone copy" in script and "--immutable" in script
+    assert "rclone sync" not in script
+
+
 def _ignored(path: str) -> bool:
     return subprocess.run(["git", "check-ignore", "-q", path], cwd=ROOT).returncode == 0
 
