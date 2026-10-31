@@ -65,7 +65,17 @@ skypilot:
 lambda:
   url: https://lambda.ai/pricing
   # Instance-name suffixes in SkyPilot's Lambda catalog, as gpu_<count>x_<suffix>.
-  catalog_instances: {}
+  # Chips and memory confirmed against the plan names and VRAM on Lambda's pricing page.
+  catalog_instances:
+    a100: {chip: a100_40gb, memory_gb: 40}
+    a100_sxm4: {chip: a100_40gb, memory_gb: 40}
+    a100_80gb_sxm4: {chip: a100_80gb, memory_gb: 80}
+    b200_sxm6: {chip: b200}
+    h100_pcie: {chip: h100_pcie, memory_gb: 80}
+    h100_sxm5: {chip: h100_sxm, memory_gb: 80}
+    v100: {chip: v100, memory_gb: 16}
+    v100_n: {chip: v100}
+    v100_ndfc: {chip: v100}
   # Keys are the page's plan names, plus VRAM where the name alone is ambiguous.
   plans:
     NVIDIA B200 SXM6: {chip: b200}

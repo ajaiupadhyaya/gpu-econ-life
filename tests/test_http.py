@@ -97,6 +97,8 @@ def test_network_errors_are_raised_once_attempts_run_out():
     def handler(request):
         raise httpx.ConnectError("down", request=request)
 
-    with httpx.Client(transport=httpx.MockTransport(handler)) as client:
-        with pytest.raises(httpx.ConnectError):
-            get_with_backoff(client, "https://a.example/x", sleep=lambda s: None, max_attempts=3)
+    with (
+        httpx.Client(transport=httpx.MockTransport(handler)) as client,
+        pytest.raises(httpx.ConnectError),
+    ):
+        get_with_backoff(client, "https://a.example/x", sleep=lambda s: None, max_attempts=3)
