@@ -4,7 +4,8 @@ Market-implied economic life of AI accelerators, estimated from GPU rental price
 to hyperscaler book depreciation. See [docs/proposal.md](docs/proposal.md) for the full proposal
 and [CLAUDE.md](CLAUDE.md) for the project rules.
 
-Status: Phase 0 (setup and source audit).
+Status: Phase 0 complete; two stop conditions await the owner's decision. Start with
+[docs/proposal_review.md](docs/proposal_review.md).
 
 ```bash
 uv sync

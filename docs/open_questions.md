@@ -21,3 +21,13 @@ Unknown values, unreachable sources and anything waiting on a decision.
   SkyPilot catalog history. See docs/proposal_review.md item 10.
 - **About 60 items in docs/data_sources.md remain UNVERIFIED** (section 4). The SEC, EIA, FRED and
   BLS APIs were documented but not called, because they need a key or a contact User-Agent.
+
+- **Literature stop condition (2026-10-31).** "First use of vintage-price methods" cannot stand. The
+  owner decides whether to reposition; see docs/proposal_review.md, Literature.
+- **Two CC BY packages to read before deciding** (download needs owner approval):
+  `gpu-rental-value-curves-v1.6.1.zip`, 207.6 kB, https://zenodo.org/records/22053861, and
+  `ai-gpu-depreciation-v1.3.0.zip`, 1.8 MB, https://zenodo.org/records/21894454.
+- **SSRN papers to read in a browser**, since SSRN blocks automated access: 7420380, 7541938,
+  7346098, 7270603.
+- **GitHub remote not set up.** The private repo creation and push were refused by the permission
+  system, so the work exists only on this machine.

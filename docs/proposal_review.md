@@ -5,11 +5,15 @@ Reviewed 2026-10-31 against proposal rev 18. Figures come from
 `notebooks/probe_unlisted_sources.py` regenerates. Nothing here has changed the proposal, and
 Decision 1 (H1–H4) stands.
 
-The project is worth doing. The hypotheses, stop conditions and range-based restatement are all
-stronger than this kind of proposal usually has. The largest problem is one the risk table
-understates: most posted GPU prices barely move, so a "market-implied" estimate built on them would
-mostly measure pricing habits. That can be fixed now, cheaply, by changing which prices the
-estimate rests on.
+The project is still worth doing, but not as written. Phase 0 hit two of its stop conditions. The
+claim to be first is gone: a peer-reviewed paper and two August 2026 research packages got there
+first. The terms of Vast.ai, RunPod and Oracle also restrict the live layer. The better paper left
+standing explains why published estimates disagree, from about 11% to about 40% a year. The largest
+technical finding below supplies its opening result: most posted GPU prices barely move, so
+estimates built on them may mostly measure pricing habits.
+
+The hypotheses, stop conditions and range-based restatement are stronger than this kind of proposal
+usually has, and they should stay.
 
 ## Most posted prices do not move
 
@@ -85,7 +89,8 @@ Two-way provider × month clustering does not either, because month effects abso
 common across chips. There are at most nine chip ids, so conventional cluster-robust errors at
 that level are unreliable. Use a wild cluster bootstrap or randomization inference at the chip
 level, and expect wider bands than provider clustering would give. Nine providers is also too few
-for standard provider clustering.
+for standard provider clustering. Chincholikar & Chawla already report wild-cluster-bootstrap and
+generation-clustered intervals, so a referee will expect this.
 
 **2. Strategy 4 cannot answer "how fast".** In log prices, a constant geometric rate is exactly the
 linear term of g, which is the part Hall (1968) says is unidentified. Shape-only estimation can
@@ -99,7 +104,9 @@ V100→A100, A100→H100 and H100→B200. The first of those falls in the thinne
 methods sharing the same three events is weak evidence, so say so in the paper. For H2 also use
 announcement dates, because markets knew about successors long before GA.
 
-**4. Add a fifth strategy: the term structure.** On a given date, a reserved price against an
+**4. Add a fifth strategy: the term structure.** Chronopoulos (2026), Ornn and Bandi & Su already
+work with term menus, so this is not new, but using it as a check on the age slope looks open. On a
+given date, a reserved price against an
 on-demand or spot price for the same chip is the market's own forecast of the rent path, and that
 comparison does not depend on Hall's age–time collinearity. Azure today lists H100 at $12.29
 on-demand and $7.87, $5.40 and $4.92 per GPU-hour on 1, 3 and 5 year terms. The catch is that a
@@ -123,7 +130,8 @@ If it far exceeds cost, the rents contain scarcity profits, and their decline is
 If it falls short, the comparison needs normalizing. Compare V(a)/V(0) with the straight-line path,
 and report V(0)/cost as a result in its own right.
 
-**8. Lead with value lost by age, not T\*.** T\* is a tail statistic, observed for essentially one
+**8. Lead with value lost by age, not T\*.** Amissah-Ocran & Ayumu already publish nearly the same
+T\* and present-value identity, so repeating it adds little. T\* is also a tail statistic, observed for essentially one
 chip and very sensitive to how opex is defined. As illustration only, using assumed inputs, power
 for an H100 system at about 10 kW per 8 GPUs, PUE 1.3 and 8¢/kWh is about $0.13/GPU-hour. Adding an
 assumed $150/kW-month colocation fee takes it to about $0.40. A hyperscaler with a sunk building
@@ -188,9 +196,9 @@ The cost is coupling a 22-week dataset to a host that does other work.
 ## Claims to soften
 
 "Any outcome is publishable" holds for a working paper, but less so for journals. A paper whose
-main result is "the strategies disagree" needs informative bounds to land. Likewise "market-implied"
-should stay in the title only if the recommended sample change is made; otherwise "posted-price
-implied" is the accurate term.
+main result is "the strategies disagree" needs informative bounds to land. "Market-implied" should
+also go: Dutta & Patatoukas already use "market-implied life" for a 14-year figure backed out of
+equity values, and the contrast makes "rental-implied" the sharper term.
 
 ## Leave as is
 
@@ -226,7 +234,48 @@ non-GPU servers in that pool.
 
 ## Literature
 
-PENDING: filled in from [related_work.md](related_work.md).
+**The stop condition is met: the proposal's "first use" claim cannot stand, but this calls for
+repositioning, not abandoning.** I confirmed the four closest records myself. The full table and
+search log are in [related_work.md](related_work.md).
+
+| Work | Data | Annual decline reported | What it leaves open |
+| --- | --- | --- | --- |
+| Amissah-Ocran & Ayumu (2026), peer-reviewed | Posted on-demand rents, one date, same chips as here | About 39.9%, with T\* of 5.4–5.9 years | No panel, no contract split, no EPS restatement |
+| Chincholikar & Chawla (2026), under review | 241 monthly executed resale prices, 2023–2026 | 24–27%, Hulten-Wykoff | Resale rather than rent; no B200; manuscript unread |
+| Huang (2026), CC BY package | Transacted rents and quantities, 130 GPUs, one marketplace | 17–32% on rental contribution | Companion paper not found; manuscript unread |
+| CCIR (2026), research notes | 1,869 archive captures, 2017–2026, guaranteed on-demand only | −15% to flat by cohort; −21% in one date's cross-section | No age–vintage–time separation; row-level file on request |
+| Watkins (2026), blog | Mixed rents | 11% pooled | No identification, no restated earnings |
+
+These figures measure different things (rent, net contribution, resale value), which is the opening
+for this project.
+
+**Proposed repositioning.** Working title: *Rental-Implied Depreciation of AI Accelerators: Why the
+Estimates Disagree.* The paper would do three things that the search did not find done together:
+
+1. Put the published rates on one basis and show how much of the spread comes from the price
+   series, the identification assumption, and the step from rent to value.
+2. Estimate age slopes by contract and provider type, using the repricing evidence above to
+   separate prices that clear from prices that sit.
+3. Restate earnings firm by firm under a price-implied schedule, entering each purchase cohort at
+   its purchase date.
+
+This must be confirmed against the Huang and Chincholikar & Chawla packages, because both may have
+gone further than their records show.
+
+**What changes if you accept this.**
+
+- Replace "first use of vintage-price methods" and "I have not found a peer-reviewed estimate".
+- "New data" becomes "open and multi-contract", since CCIR already rebuilt the archive history.
+- Phase 2 can shrink. Ask CCIR for its archive file, and check whether Huang's 47 hand-collected
+  useful-life disclosures can seed Phase 7.
+- Move the posting date earlier if you can. Many of the works above appeared in the last four
+  months, and the risk table's "a similar paper appears first" has already happened.
+- H1–H4 stay logged as they are, since Decision 1 should not be rewritten. Any new hypothesis gets
+  its own dated entry.
+
+**Limits of this search.** SSRN full text was unreachable, so those rows rest on abstracts deposited
+with Crossref, and recent postings could be missed. One retry used a browser-style User-Agent to
+get past SSRN's block. That was the wrong call, and the permission system stopped it before it ran.
 
 ## Prior work in this account
 
