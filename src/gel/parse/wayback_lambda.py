@@ -34,7 +34,10 @@ TERM_COLUMNS = {
     "6 months": ("other", 6),
     "1 year": ("reserved_1y", 12),
     "3 year": ("reserved_3y", 36),
+    "1-year reserved price": ("reserved_1y", 12),
+    "3-year reserved price": ("reserved_3y", 36),
 }
+LABEL_MEMORY = re.compile(r"\s*\(?(\d+) GB\)?\s*$")
 TERMS = {
     "3-months": ("other", 3),
     "1 year": ("reserved_1y", 12),
@@ -151,6 +154,14 @@ def _split_label(cell: str) -> tuple[str | None, int, str]:
     return match.group(1), int(match.group(2)), match.group(3)
 
 
+def _label_memory(cell: str) -> tuple[str, int | None]:
+    """Some tables put memory in the label, as "8x NVIDIA A100 (80 GB)"."""
+    match = LABEL_MEMORY.search(clean(cell))
+    if not match:
+        return cell, None
+    return clean(cell)[: match.start()], int(match.group(1))
+
+
 def _price_column(columns: dict[str, int], headers: list[str], snapshot: str) -> int:
     """With dated price columns, take the newest one in force at the snapshot."""
     dated = [(i, EFFECTIVE.search(h)) for i, h in enumerate(headers)]
@@ -174,7 +185,8 @@ def _instance_table(table: Table, meta: dict) -> list[Listing]:
     default = ("other", int(term.group(1)) if term else None) if reserved else ("on_demand", None)
     rows = []
     for row in table.rows:
-        kind, gpus, label = _split_label(row[label_column])
+        cell, label_memory = _label_memory(row[label_column])
+        kind, gpus, label = _split_label(cell)
         kind = row[kind_column] if kind_column is not None else kind
         price = _price(row[price_column], per_gpu)
         if price is None:
@@ -182,7 +194,7 @@ def _instance_table(table: Table, meta: dict) -> list[Listing]:
         contract, months = default
         if kind and kind.lower() == "reserved":
             contract, months = "other", None
-        vram = int(_number(row[vram_column])) if vram_column is not None else None
+        vram = int(_number(row[vram_column])) if vram_column is not None else label_memory
         listing = _listing(
             meta,
             label=label,
@@ -202,10 +214,14 @@ def _instance_table(table: Table, meta: dict) -> list[Listing]:
 def _term_table(table: Table, meta: dict) -> list[Listing]:
     columns = {_normal(h): i for i, h in enumerate(table.headers)}
     rows = []
+    vram_column = next((i for name, i in columns.items() if name.startswith("vram")), None)
     for row in table.rows:
-        _, gpus, label = _split_label(re.sub(r"\s*\(\d+ GB\)", "", row[0]))
-        vram = int(_number(row[1]))
+        cell, label_memory = _label_memory(row[0])
+        _, gpus, label = _split_label(cell)
+        vram = int(_number(row[vram_column])) if vram_column is not None else label_memory
         for name, (contract, months) in TERM_COLUMNS.items():
+            if name not in columns:
+                continue
             price = _price(row[columns[name]].replace("/hour", " / hr"))
             if price is None:
                 continue
@@ -295,16 +311,15 @@ def _route(table: Table, meta: dict) -> list[Listing]:
     flat = " ".join(cell.lower() for row in table.rows[:2] for cell in row)
     if "savings on gpu" in header:
         return []
-    if {"6 months", "1 year", "3 year"} <= header:
+    if {"1 year", "3 year"} <= header or "1-year reserved price" in header:
         return _term_table(table, meta)
     if "per hour price" in header and "term" in header:
         return _cluster_table(table, meta)
     if "commitment" in header or "commitment" in flat:
         return _ladder_table(table, meta)
-    has_vram = header & {"vram per gpu", "vram/gpu"}
-    if (has_vram and any(h.startswith(("price", "20")) for h in header)) or (
-        "on-demand price" in header
-    ):
+    priced = any(h.startswith(("price", "20", "on-demand price")) for h in header)
+    has_gpus = header & {"gpus", "plan", "vram per gpu", "vram/gpu"}
+    if priced and has_gpus and "vcpus" in header:
         return _instance_table(table, meta)
     if _has_prices_for_chips(table):
         raise LayoutError(f"unknown table: {table.headers}")

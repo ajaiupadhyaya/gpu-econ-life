@@ -425,6 +425,65 @@ def test_reserved_pages_with_price_cards_are_read_from_the_text():
     assert rows[0].price_usd_per_gpu_hour == 1.89
 
 
+def test_memory_can_sit_inside_the_label():
+    headers = ["GPUs", "vCPUs", "RAM", "Storage", "On-demand Price"]
+    rows = [
+        ["8x NVIDIA Tesla V100s (16 GB)", "92", "448 GiB", "5.9 TiB", "$6.80 / hr"],
+        ["1x NVIDIA RTX A6000 (48 GB)", "14", "100 GiB", "200 GiB", "$1.45 / hr"],
+    ]
+    parsed = parse(page(table(headers, rows, ON_DEMAND)), META)
+    assert [(r.chip, r.gpu_memory_gb, r.price_usd_per_gpu_hour) for r in parsed] == [
+        ("v100", 16, 0.85)
+    ]
+
+
+def test_named_reserved_price_columns_become_terms():
+    headers = [
+        "GPUs",
+        "NVLink™",
+        "vCPUs",
+        "RAM",
+        "Storage",
+        "1-year Reserved Price",
+        "3-year Reserved Price",
+    ]
+    rows = [
+        [
+            "8x NVIDIA A100 (80 GB)",
+            "Yes",
+            "224",
+            "1600 GiB",
+            "13.96 TiB",
+            "$14.21 / hr",
+            "$10.66 / hr",
+        ]
+    ]
+    parsed = {r.contract_type: r for r in parse(page(table(headers, rows)), META)}
+    assert parsed["reserved_1y"].chip == "a100_80gb"
+    assert parsed["reserved_3y"].price_usd_per_hour_instance == 10.66
+
+
+def test_a_bare_price_column_on_a_reserved_page_claims_no_term():
+    headers = ["GPUs", "vCPUs", "RAM", "Storage", "Price"]
+    rows = [["8x NVIDIA A100 40 GB", "224", "800 GiB", "13.96 TiB", "$8.00 / hr"]]
+    row = parse(page(table(headers, rows)), {**META, "reserved_page": True})[0]
+    assert (row.chip, row.contract_type, row.term_months) == ("a100_40gb", "other", None)
+
+
+def test_cpu_instance_tables_are_not_gpu_tables():
+    headers = [
+        "",
+        "Cores",
+        "vCPUs",
+        "RAM (GB)",
+        "Storage (GB)",
+        "Network Bandwidth (Gbps)",
+        "Price",
+    ]
+    rows = [["CPU VM Instances", "32", "64", "256 GB", "500 GB SSD", "Up to 10 Gbps", "$1.41/hour"]]
+    assert parse(page(table(headers, rows)), META) == []
+
+
 def test_early_pages_without_tables_read_the_stated_instance_price():
     text = (
         "<html><body><h2>8-GPU Instance NEW</h2><p>GPUS 8x NVIDIA Tesla V100 Tensor Core (16 GB) "
