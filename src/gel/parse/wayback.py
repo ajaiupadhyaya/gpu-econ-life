@@ -15,14 +15,18 @@ from pathlib import Path
 import yaml
 
 from gel.collect.wayback_snapshots import SELECTION_PATH, archive_url, snapshot_path
-from gel.parse import wayback_lambda
+from gel.parse import wayback_coreweave, wayback_lambda, wayback_paperspace
 from gel.parse.errors import LayoutError
 from gel.schema import Listing, to_frame
 
 ROOT = Path(__file__).resolve().parents[3]
 OUTPUT_DIR = Path("data/interim/wayback")
 REPORT_FIELDS = ["provider", "url", "month", "timestamp", "status", "rows", "detail"]
-PARSERS = {"lambda": wayback_lambda.parse}
+PARSERS = {
+    "lambda": wayback_lambda.parse,
+    "coreweave": wayback_coreweave.parse,
+    "paperspace": wayback_paperspace.parse,
+}
 
 
 def snapshot_time(timestamp: str) -> str:
