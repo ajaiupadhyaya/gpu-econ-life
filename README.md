@@ -4,8 +4,8 @@ Market-implied economic life of AI accelerators, estimated from GPU rental price
 to hyperscaler book depreciation. See [docs/proposal.md](docs/proposal.md) for the full proposal
 and [CLAUDE.md](CLAUDE.md) for the project rules.
 
-Status: Phase 1 collector built and run once; deployment to a host is pending. The plan was
-revised after Phase 0, and [docs/proposal_review.md](docs/proposal_review.md) explains why.
+Status: the Phase 1 collector runs daily on a server; backups and alerts are still to be set up. The
+plan was revised after Phase 0, and [docs/proposal_review.md](docs/proposal_review.md) explains why.
 
 ```bash
 uv sync

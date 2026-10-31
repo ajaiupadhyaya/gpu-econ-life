@@ -33,10 +33,11 @@ Unknown values, unreachable sources and anything waiting on a decision.
 - **Huang's working paper** ("Underwriting GPU Depreciation") has not been found. Ask the author.
 - **SSRN papers to read in a browser**, since SSRN blocks automated access: 7420380, 7541938,
   7346098, 7270603.
-- **GitHub remote not set up.** The private repo creation and push were refused by the permission
-  system, so the work exists only on this machine.
-- **Host for the daily collector.** Phase 1 finishes only when the owner has confirmed all four
-  checks in deploy/README.md. Until then, no daily prices are being collected.
+- **Phase 1 is not finished.** The collector runs daily on the OhCamel droplet from 06:10 UTC on
+  2026-11-01. Checks 1 and 4 in deploy/README.md passed; checks 2 (backup) and 3 (alert) need the
+  owner's accounts. Until then raw data sits on the droplet with no automatic off-server copy, and a
+  failed run sends no alert.
+- **Contact email is still unset** on the host, so requests carry no email (rule 5).
 - **Google Cloud price basis.** Rows are treated as accelerator-only. Confirm against Google's
   pricing page before they enter any estimate.
 - **Interconnect is mostly empty.** Only AWS reports it. Azure and Lambda values need a sourced

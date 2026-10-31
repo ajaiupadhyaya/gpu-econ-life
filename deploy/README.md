@@ -86,6 +86,51 @@ Phase 1 is finished only when you have seen all four of these work on the host.
    systemctl list-timers 'gel-*'
    ```
 
+## Finishing setup on the droplet
+
+The collector is live on the OhCamel droplet. These steps remain, and they need your accounts.
+
+Alerts: pick a long random topic, subscribe to it in the ntfy app, then:
+
+```bash
+ssh ohcamel-root "sed -i 's|^GEL_ALERT_URL=.*|GEL_ALERT_URL=https://ntfy.sh/YOUR-TOPIC|' /opt/gpu-econ-life/.env"
+```
+
+```bash
+ssh ohcamel-root systemctl start gel-alert@test.service
+```
+
+Backups: create an S3-compatible bucket and enter its credentials yourself, naming the remote
+`gelbackup`:
+
+```bash
+ssh -t ohcamel-root sudo -u gel -H rclone config
+```
+
+```bash
+ssh ohcamel-root "sed -i 's|^GEL_BACKUP_REMOTE=.*|GEL_BACKUP_REMOTE=gelbackup:YOUR-BUCKET|' /opt/gpu-econ-life/.env"
+```
+
+```bash
+ssh ohcamel-root systemctl start gel-backup.service
+```
+
+```bash
+ssh ohcamel-root systemctl enable --now gel-backup.timer
+```
+
+Contact email, for the User-Agent:
+
+```bash
+ssh ohcamel-root "sed -i 's|^GEL_CONTACT_EMAIL=.*|GEL_CONTACT_EMAIL=you@example.org|' /opt/gpu-econ-life/.env"
+```
+
+Until backups run, copy new raw data to your Mac. This only adds files:
+
+```bash
+rsync -a --ignore-existing --exclude=.gitkeep ohcamel-root:/opt/gpu-econ-life/data/raw/ data/raw/
+```
+
 ## Routine care
 
 - **Weekly:** nothing, unless an alert arrives. A run that fails or loses more than half a provider's

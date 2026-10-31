@@ -17,3 +17,10 @@ The owner approved the revised plan. Claude Code built the canonical schema, fou
 a runner, a health check and a deployment kit, with tests, and ran the first real collection: 2,370
 valid rows from Azure, AWS, Google Cloud and Lambda. It verified SKU mappings against vendor
 documentation and updated the Claude Doc to match the plan. Deployment to a host awaits the owner.
+
+## Deployment, 2026-10-31
+
+The owner chose the OhCamel droplet. Claude Code installed the collector under a dedicated `gel`
+user with resource limits and a sandbox, copied existing raw data across (156 files, checksums
+matched), ran a collection on the host (2,370 rows, four providers, healthy) and enabled the daily
+timer. OhCamel's containers were unchanged. Backups and alerts await the owner's accounts.
