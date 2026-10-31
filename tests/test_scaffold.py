@@ -1,3 +1,4 @@
+import subprocess
 from pathlib import Path
 
 import yaml
@@ -77,7 +78,20 @@ def test_providers_cover_every_phase0_provider_and_type():
             assert page["url"].startswith("https://"), page
 
 
-def test_raw_data_is_not_tracked():
-    ignore = (ROOT / ".gitignore").read_text()
-    assert "data/raw/**" in ignore
-    assert ".env" in ignore
+def _ignored(path: str) -> bool:
+    return subprocess.run(["git", "check-ignore", "-q", path], cwd=ROOT).returncode == 0
+
+
+def test_data_is_ignored_but_layout_survives_a_clone():
+    for path in [
+        "data/raw/wayback/cdx/x.json",
+        "data/interim/a.parquet",
+        "data/processed/b.parquet",
+    ]:
+        assert _ignored(path), path
+    for path in ["data/raw/wayback/.gitkeep", "data/raw/live/.gitkeep", "data/interim/.gitkeep"]:
+        assert not _ignored(path), path
+
+
+def test_contact_email_file_is_ignored():
+    assert _ignored(".env")
