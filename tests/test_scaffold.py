@@ -113,6 +113,34 @@ def test_deployment_units_run_the_real_entry_points():
     assert "Persistent=true" in (ROOT / "deploy/gel-collect.timer").read_text()
 
 
+def test_collector_cannot_starve_or_touch_other_services_on_a_shared_host():
+    service = (ROOT / "deploy/gel-collect.service").read_text()
+    for setting in [
+        "MemoryMax=",
+        "CPUWeight=",
+        "Nice=",
+        "NoNewPrivileges=true",
+        "ProtectSystem=strict",
+        "ProtectHome=read-only",
+        "PrivateTmp=true",
+        "ReadWritePaths=/opt/gpu-econ-life",
+    ]:
+        assert setting in service, setting
+
+
+def test_scheduled_runs_never_change_dependencies():
+    service = (ROOT / "deploy/gel-collect.service").read_text()
+    assert service.count("uv run --no-sync ") == 2
+
+
+def test_code_reaches_the_host_without_data_or_credentials():
+    script = (ROOT / "deploy/push.sh").read_text()
+    assert "git archive" in script
+    assert "git status --porcelain" in script
+    assert "--frozen" in script
+    assert "rsync" not in script and "GITHUB" not in script.upper().replace("# ", "")
+
+
 def test_backup_can_never_delete_or_rewrite_raw_data():
     script = (ROOT / "deploy/backup.sh").read_text()
     assert "rclone copy" in script and "--immutable" in script

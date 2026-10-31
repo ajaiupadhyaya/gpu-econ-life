@@ -15,19 +15,23 @@ was down fires when it comes back.
 
 ## Setup
 
-Run these as root on the host.
+Run these once as root on the host.
 
 ```bash
 useradd --system --create-home --shell /usr/sbin/nologin gel
-curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR=/usr/local/bin sh
-apt-get install -y rclone git curl
-git clone <repo-url> /opt/gpu-econ-life
-chown -R gel:gel /opt/gpu-econ-life
+curl -LsSf https://astral.sh/uv/0.10.4/install.sh | env UV_INSTALL_DIR=/usr/local/bin UV_NO_MODIFY_PATH=1 sh
+apt-get install -y --no-install-recommends rclone
+install -d -o gel -g gel /opt/gpu-econ-life
 ```
 
-For a private repo, add a read-only deploy key to GitHub first.
+Then ship the code from your Mac. This sends only tracked files, so the host holds no repository
+credentials, and run it again after any commit you want deployed:
 
-Create `/opt/gpu-econ-life/.env`, owned by `gel` with mode 600:
+```bash
+deploy/push.sh ohcamel-root
+```
+
+On the host, create `/opt/gpu-econ-life/.env`, owned by `gel` with mode 600:
 
 ```bash
 GEL_CONTACT_EMAIL=you@example.org
@@ -41,14 +45,14 @@ Configure the backup remote as the `gel` user, naming it `gelbackup`:
 sudo -u gel -H rclone config
 ```
 
-Install dependencies and the systemd units:
+Enable the timers:
 
 ```bash
-sudo -u gel -H bash -c 'cd /opt/gpu-econ-life && uv sync --no-dev'
-cp /opt/gpu-econ-life/deploy/*.service /opt/gpu-econ-life/deploy/*.timer /etc/systemd/system/
-systemctl daemon-reload
 systemctl enable --now gel-collect.timer gel-backup.timer
 ```
+
+The collection unit runs at low priority with a 1.5 GB memory cap and can write only to its own
+directory, so it cannot starve or touch other work on a shared host.
 
 ## Confirm it works
 

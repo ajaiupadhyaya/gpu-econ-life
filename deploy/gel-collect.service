@@ -9,6 +9,18 @@ Type=oneshot
 User=gel
 WorkingDirectory=/opt/gpu-econ-life
 EnvironmentFile=-/opt/gpu-econ-life/.env
-ExecStart=/usr/local/bin/uv run python -m gel.collect.live --all
-ExecStartPost=/usr/local/bin/uv run python -m gel.collect.health
+Environment=UV_CACHE_DIR=/opt/gpu-econ-life/.uv-cache
+ExecStart=/usr/local/bin/uv run --no-sync python -m gel.collect.live --all
+ExecStartPost=/usr/local/bin/uv run --no-sync python -m gel.collect.health
 TimeoutStartSec=1800
+
+# This host also runs other work, so the job yields to it and can reach only its own directory.
+MemoryMax=1500M
+CPUWeight=20
+IOWeight=20
+Nice=15
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/opt/gpu-econ-life
