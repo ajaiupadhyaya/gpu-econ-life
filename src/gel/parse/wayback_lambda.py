@@ -43,6 +43,9 @@ TERMS = {
     "3 years": ("reserved_3y", 36),
     "3-years": ("reserved_3y", 36),
 }
+CARD_PRICE = re.compile(
+    r"NVIDIA (H100|H200|B200) \$(\d+(?:\.\d+)?)/hr/\1 Minimum Term: (\d+) (Years?|Months?)"
+)
 EARLY_PRICE = re.compile(
     r"(\d+)x NVIDIA[^$]*?(V100|A100)[^$]*?"
     r"Dedicated \1-GPU instance pricing \$(\d+(?:\.\d+)?)\s*/\s*hr"
@@ -308,6 +311,29 @@ def _route(table: Table, meta: dict) -> list[Listing]:
     return []
 
 
+def _card_prices(html: str, meta: dict) -> list[Listing]:
+    """Reserved pages from 2024 show prices in cards, stating the term beside each one."""
+    rows = []
+    for name, price, count, unit in CARD_PRICE.findall(page_text(html)):
+        term = f"{count} {unit.lower()}"
+        if term not in TERMS:
+            raise LayoutError(f"unreadable term: {term!r}")
+        contract, months = TERMS[term]
+        listing = _listing(
+            meta,
+            label=name,
+            gpus=1,
+            vram=None,
+            price=(float(price), True),
+            contract=contract,
+            months=months,
+            sku=f"card|{name}|{term}",
+        )
+        if listing:
+            rows.append(listing)
+    return rows
+
+
 def _early_prices(html: str, meta: dict) -> list[Listing]:
     rows = []
     for gpus, name, price in EARLY_PRICE.findall(page_text(html)):
@@ -344,4 +370,6 @@ def parse(html: str, meta: dict) -> list[Listing]:
         return rows
     tables = read_tables(html)
     rows = [row for table in tables for row in _route(table, meta)]
-    return rows or (_early_prices(html, meta) if not tables else [])
+    if rows:
+        return rows
+    return _early_prices(html, meta) if not tables else _card_prices(html, meta)

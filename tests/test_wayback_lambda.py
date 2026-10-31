@@ -410,6 +410,21 @@ def test_tabbed_pages_can_also_carry_a_commitment_ladder():
     assert sorted(r.price_usd_per_gpu_hour for r in rows) == [1.85, 3.99]
 
 
+def test_reserved_pages_with_price_cards_are_read_from_the_text():
+    html = (
+        "<html><body><p>NVIDIA H100 $1.89/hr/H100 Minimum Term: 3 Years Reserve now</p>"
+        "<p>NVIDIA H200 H200 Pricing: Contact Sales Minimum Term: 3 Years Reserve now</p>"
+        "<p>NVIDIA GH200 1-Year Reservation: $5.99/hr/GH200 Minimum Term: 3 Months</p>"
+        + table(["", "INSTANCE TYPE", "GPU"], [["NVIDIA H100", "8x NVIDIA H100", "H100 SXM"]])
+        + "</body></html>"
+    )
+    rows = parse(html, {**META, "reserved_page": True})
+    assert [(r.chip, r.contract_type, r.term_months) for r in rows] == [
+        ("h100_sxm", "reserved_3y", 36)
+    ]
+    assert rows[0].price_usd_per_gpu_hour == 1.89
+
+
 def test_early_pages_without_tables_read_the_stated_instance_price():
     text = (
         "<html><body><h2>8-GPU Instance NEW</h2><p>GPUS 8x NVIDIA Tesla V100 Tensor Core (16 GB) "
