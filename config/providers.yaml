@@ -1,5 +1,7 @@
 # Candidate pricing pages for the Wayback pull. provider_type follows CLAUDE.md.
 # Lists both old and current URLs where a provider moved its pricing page or domain.
+# live_collection: blocked means the provider's terms forbid it without written permission
+# (docs/data_sources.md section 2). Do not build a collector until the owner has that permission.
 providers:
   aws:
     provider_type: hyperscaler
@@ -24,6 +26,7 @@ providers:
       - url: https://azure.microsoft.com/en-us/pricing/details/virtual-machines/series/
   oracle:
     provider_type: hyperscaler
+    live_collection: blocked
     pages:
       - url: https://www.oracle.com/cloud/compute/pricing/
       - url: https://www.oracle.com/cloud/price-list/
@@ -45,12 +48,14 @@ providers:
       - url: https://docs.coreweave.com/docs/pricing/pricing-instances
   runpod:
     provider_type: neocloud
+    live_collection: blocked
     pages:
       - url: https://www.runpod.io/pricing
       - url: https://www.runpod.io/gpu-instance/pricing
       - url: https://www.runpod.io/console/gpu-cloud
   vast:
     provider_type: marketplace
+    live_collection: blocked
     pages:
       - url: https://vast.ai/pricing
       - url: https://vast.ai/

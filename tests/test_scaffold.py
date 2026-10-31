@@ -78,6 +78,12 @@ def test_providers_cover_every_phase0_provider_and_type():
             assert page["url"].startswith("https://"), page
 
 
+def test_providers_with_restrictive_terms_stay_blocked():
+    providers = yaml.safe_load((ROOT / "config/providers.yaml").read_text())["providers"]
+    blocked = {name for name, p in providers.items() if p.get("live_collection") == "blocked"}
+    assert blocked == {"oracle", "runpod", "vast"}
+
+
 def _ignored(path: str) -> bool:
     return subprocess.run(["git", "check-ignore", "-q", path], cwd=ROOT).returncode == 0
 

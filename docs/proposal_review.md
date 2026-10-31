@@ -39,10 +39,42 @@ Three consequences follow.
   from about 3 to 6 years old. The panel will end inside a 2026 price rise, so the last year will
   carry heavy weight in any fit.
 
-**Recommended change.** Define the estimation sample as prices that clear: spot, marketplace and
-neocloud prices, plus reserved prices. Report hyperscaler on-demand separately as a series of
-repricing events. Treat the paywalled indices as potentially core rather than validation only,
-which makes confirming VCU's Bloomberg access the most valuable non-code task this month.
+**Recommended change.** Define the estimation sample as prices that clear, within what the terms
+of use allow: hyperscaler spot, neocloud list prices and reserved prices, plus marketplace prices
+only if written permission arrives (see the next section). Report hyperscaler on-demand separately
+as a series of repricing events. Treat the paywalled indices as potentially core rather than
+validation only, which makes confirming VCU's Bloomberg access the most valuable non-code task this
+month.
+
+## Terms of use: a Phase 0 stop condition was met
+
+Phase 0 says to stop if a core source forbids automated access, and for the live layer one does.
+[data_sources.md](data_sources.md) has the clauses. This is a reading of the terms, not legal advice.
+
+| Source | Live collection | Wayback copy | Publishing the data |
+| --- | --- | --- | --- |
+| Vast.ai | Forbidden without a written agreement | Unresolved: the terms reach data "made available through the Website" | Forbidden, including any "index, benchmark, pricing-comparison service" |
+| Oracle | Forbidden on oracle.com | Not addressed | Forbidden for site materials |
+| RunPod | Forbidden for the site; unclear for the keyed API | Not addressed | Forbidden as a compiled database from the site |
+
+Three things follow.
+
+- **The proposal's two named live examples are both affected.** Vast.ai and RunPod are the sources
+  the Data table names for live collection. The proposal's own mitigation, dropping sources that
+  prohibit collection, removes its only true marketplace.
+- **"Publish derived aggregates" may not rescue Vast data.** Its index clause covers use of the
+  data, not only redistribution of it, so an aggregate could still be caught. This is unresolved.
+- **Hyperscaler spot becomes the main moving series.** It is still set by the provider, but it does
+  respond to capacity. The Azure API needs no key, Lambda permits rate-limited crawling, and
+  getdeploying.com offers a CC BY 4.0 weekly file. That file covers only about 53 trailing weeks.
+
+**Recommended path.** Ask Vast.ai and RunPod for written research permission now, since both sets
+of terms allow for it. Build the live collector on the clear sources meanwhile, and add a blocked
+source only with permission in hand. `config/providers.yaml` now marks those three as blocked.
+
+One disclosure: during the audit, one unauthenticated request reached Vast's offers endpoint to
+confirm its fields. My brief allowed one sample call per public API. No Vast data was kept, and the
+endpoint is undocumented, so it must not be used.
 
 ## Identification and inference
 
@@ -119,15 +151,15 @@ and adding any of them needs your approval under rule 7.
 
 | Source | Coverage found | What it adds | Caveat |
 | --- | --- | --- | --- |
-| [AWS Price List offer files](https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonEC2/index.json) | 123 versions, Dec 2015 to Oct 2026, about monthly | Official AWS on-demand and reserved history, reaching V100's early life | About 154 MB per region per version, so filter while streaming |
+| [AWS Price List offer files](https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonEC2/index.json) | 123 versions, Dec 2015 to Oct 2026, about monthly | Official AWS on-demand and reserved history, reaching V100's early life | About 154 MB per region per version, so filter while streaming. Terms for this host were not found |
 | [Azure Retail Prices API](https://prices.azure.com/api/retail/prices) | Current prices only | Free daily live feed for on-demand, spot and reserved | Not a history, and its date field is unreliable (see item 12) |
-| [SkyPilot catalog repo](https://github.com/skypilot-org/skypilot-catalog) | Jul 2022 to today, about 13,900 commits | Dated AWS, Azure, GCP, Lambda, RunPod and Vast prices, including AWS spot, which AWS's own history API keeps for only 90 days | The repo shows no license; update frequency varies by provider and there are gaps to map (around Jun–Sep 2025 for AWS) |
+| [SkyPilot catalog repo](https://github.com/skypilot-org/skypilot-catalog) | Jul 2022 to today, about 13,900 commits | Dated AWS, Azure, GCP and Lambda prices, including AWS spot, which [AWS's own history tool](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances-history.html) keeps for only 90 days | The repo shows no license, so use it for research and do not republish it. Its Vast and RunPod files stay out unless those providers agree. Update frequency varies, and there are gaps to map (around Jun–Sep 2025 for AWS) |
 
-With these, hyperscaler Wayback parsers can be dropped, and Phase 2 can concentrate on Lambda,
-CoreWeave, Paperspace, RunPod and Vast. That also removes the likeliest schedule overrun.
+With these, the AWS and Azure Wayback parsers can be dropped, and Phase 2 can concentrate on Lambda,
+CoreWeave and Paperspace. That also removes the likeliest schedule overrun.
 
 The irony matters, though. These sources mostly fill in the series that barely move. The prices
-that do move before 2023 remain the hard part.
+that do move before 2023 remain the hard part, and the terms above make it harder.
 
 **11. The Phase 0 gate counts captures, not prices.** 6 of 9 providers passed, but the test cannot
 see a JavaScript shell with no prices in it. AWS's on-demand page is a likely example. Phase 0 says
@@ -140,8 +172,9 @@ would settle whether Phase 2 is viable before you commit four weeks to it.
   nowhere to put it, and a price with nothing in stock is not a real price.
 - Add a source kind (list, spot, marketplace offer) so the sample in the recommended change can be
   defined from the data.
-- Decide weighting early. Vast returns one row per machine offer, so thousands of rows could swamp
-  a single AWS price. Aggregate to chip × provider × contract × month before regressing.
+- Decide weighting early. Any marketplace feed returns one row per machine offer, so thousands of
+  rows could swamp a single AWS price. Aggregate to chip × provider × contract × month before
+  regressing.
 - Azure's reservation rows hold the whole-term price with the unit "1 Hour". Read literally, a
   3-year H100 reservation would be about $1.1M per hour.
 - Azure's `effectiveStartDate` is not a last-change date. V100 shows 2026-01-01 although SkyPilot
