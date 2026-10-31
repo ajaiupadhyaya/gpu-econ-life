@@ -108,6 +108,25 @@ def test_rows_out_of_scope_are_skipped(tmp_path, overrides):
     assert parse_offer_csv(offer(tmp_path, [good(**overrides)]), **COMMON) == []
 
 
+def test_older_files_without_region_code_or_capacity_status_still_parse(tmp_path):
+    header = [c for c in COLUMNS if c not in ("Region Code", "CapacityStatus")] + ["Location"]
+    row = good(Location="US East (N. Virginia)")
+    parsed = parse_offer_csv(offer(tmp_path, [row], header=header), **COMMON)
+    assert [r.region for r in parsed] == ["us-east-1"]
+
+
+def test_older_files_drop_other_locations_in_the_same_file(tmp_path):
+    header = [c for c in COLUMNS if c not in ("Region Code", "CapacityStatus")] + ["Location"]
+    rows = [good(Location="US East (Boston)"), good(Location="US East (N. Virginia)")]
+    assert len(parse_offer_csv(offer(tmp_path, rows, header=header), **COMMON)) == 1
+
+
+def test_older_file_with_an_unknown_location_set_fails_loudly(tmp_path):
+    header = [c for c in COLUMNS if c not in ("Region Code", "CapacityStatus")]
+    with pytest.raises(LayoutError, match="Location"):
+        parse_offer_csv(offer(tmp_path, [good()], header=header), **COMMON)
+
+
 def test_missing_column_fails_loudly(tmp_path):
     header = [c for c in COLUMNS if c != "PricePerUnit"]
     with pytest.raises(LayoutError, match="PricePerUnit"):

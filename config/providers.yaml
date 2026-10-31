@@ -1,5 +1,7 @@
 # Candidate pricing pages for the Wayback pull. provider_type follows CLAUDE.md.
 # Lists both old and current URLs where a provider moved its pricing page or domain.
+# history: wayback marks the providers Phase 2 pulls from the archive (Decision 2). Pages with
+# skip: true were probed and hold no usable prices.
 # live_collection: blocked means the provider's terms forbid it without written permission
 # (docs/data_sources.md section 2). Do not build a collector until the owner has that permission.
 providers:
@@ -33,6 +35,7 @@ providers:
       - url: https://www.oracle.com/cloud/compute/gpu/
   lambda:
     provider_type: neocloud
+    history: wayback
     pages:
       - url: https://lambdalabs.com/service/gpu-cloud
       - url: https://lambdalabs.com/service/gpu-cloud/pricing
@@ -41,6 +44,7 @@ providers:
       - url: https://lambda.ai/service/gpu-cloud
   coreweave:
     provider_type: neocloud
+    history: wayback
     pages:
       - url: https://www.coreweave.com/pricing
       - url: https://www.coreweave.com/gpu-cloud-pricing
@@ -63,8 +67,11 @@ providers:
       - url: https://vast.ai/console/create/
   paperspace:
     provider_type: neocloud
+    history: wayback
     pages:
       - url: https://www.paperspace.com/pricing
       - url: https://www.paperspace.com/gpu-cloud
+        skip: true
       - url: https://www.paperspace.com/gradient/pricing
+        skip: true
       - url: https://docs.digitalocean.com/products/paperspace/machines/details/pricing/
