@@ -1,0 +1,69 @@
+# Which SKUs the live collectors keep, and what is inside each one. GPU counts and chips come from
+# vendor documentation, never from third-party catalogs: SkyPilot's Azure file lists
+# Standard_ND96isr_H100_v5 with 12 GPUs where Microsoft documents eight. Undocumented variants are
+# left out on purpose (CLAUDE.md rule 1).
+azure:
+  skus:
+    Standard_NC6s_v3: {chip: v100, gpus: 1, source: "https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/ncv3-series"}
+    Standard_NC12s_v3: {chip: v100, gpus: 2, source: "https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/ncv3-series"}
+    Standard_NC24s_v3: {chip: v100, gpus: 4, source: "https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/ncv3-series"}
+    Standard_NC24rs_v3: {chip: v100, gpus: 4, source: "https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/ncv3-series"}
+    Standard_ND40rs_v2: {chip: v100, gpus: 8, memory_gb: 32, source: "https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/ndv2-series"}
+    Standard_ND96asr_v4: {chip: a100_40gb, gpus: 8, memory_gb: 40, source: "https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/ndasra100v4-series"}
+    Standard_ND96amsr_A100_v4: {chip: a100_80gb, gpus: 8, memory_gb: 80, source: "https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/ndma100v4-series"}
+    Standard_NC24ads_A100_v4: {chip: a100_80gb, gpus: 1, memory_gb: 80, source: "https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/nca100v4-series"}
+    Standard_NC48ads_A100_v4: {chip: a100_80gb, gpus: 2, memory_gb: 80, source: "https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/nca100v4-series"}
+    Standard_NC96ads_A100_v4: {chip: a100_80gb, gpus: 4, memory_gb: 80, source: "https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/nca100v4-series"}
+    Standard_ND96isr_H100_v5: {chip: h100_sxm, gpus: 8, memory_gb: 80, source: "https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/ndh100v5-series"}
+    # H100 NVL, a PCIe card with 94 GB per GPU.
+    Standard_NC40ads_H100_v5: {chip: h100_pcie, gpus: 1, memory_gb: 94, source: "https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/ncadsh100v5-series"}
+    Standard_NC80adis_H100_v5: {chip: h100_pcie, gpus: 2, memory_gb: 94, source: "https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/ncadsh100v5-series"}
+    Standard_ND96isr_H200_v5: {chip: h200, gpus: 8, source: "https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/nd-h200-v5-series"}
+    Standard_ND96isr_MI300X_v5: {chip: mi300x, gpus: 8, source: "https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/nd-mi300x-v5-series"}
+
+aws:
+  regions: [us-east-1, us-west-2]
+  source: "https://docs.aws.amazon.com/ec2/latest/instancetypes/ac.html"
+  # Checked against the offer file's own GPU column by the parser.
+  instances:
+    p3.2xlarge: {chip: v100, gpus: 1}
+    p3.8xlarge: {chip: v100, gpus: 4}
+    p3.16xlarge: {chip: v100, gpus: 8}
+    p3dn.24xlarge: {chip: v100, gpus: 8, memory_gb: 32}
+    p4d.24xlarge: {chip: a100_40gb, gpus: 8, memory_gb: 40}
+    p4de.24xlarge: {chip: a100_80gb, gpus: 8, memory_gb: 80}
+    p5.4xlarge: {chip: h100_sxm, gpus: 1, memory_gb: 80}
+    p5.48xlarge: {chip: h100_sxm, gpus: 8, memory_gb: 80}
+    p5e.48xlarge: {chip: h200, gpus: 8}
+    p5en.48xlarge: {chip: h200, gpus: 8}
+    p6-b200.48xlarge: {chip: b200, gpus: 8}
+
+skypilot:
+  catalog_version: v8
+  repo: skypilot-org/skypilot-catalog
+  branch: master
+  # Used for AWS spot and all Google Cloud prices. Never for GPU counts on Azure or AWS.
+  gcp:
+    source: "https://cloud.google.com/compute/docs/gpus"
+    accelerators:
+      V100: {chip: v100}
+      A100: {chip: a100_40gb, memory_gb: 40}
+      A100-80GB: {chip: a100_80gb, memory_gb: 80}
+      H100: {chip: h100_sxm, memory_gb: 80}
+      H100-MEGA: {chip: h100_sxm, memory_gb: 80}
+      H200: {chip: h200}
+      B200: {chip: b200}
+
+lambda:
+  url: https://lambda.ai/pricing
+  # Keys are the page's plan names, plus VRAM where the name alone is ambiguous.
+  plans:
+    NVIDIA B200 SXM6: {chip: b200}
+    NVIDIA HGX B200: {chip: b200}
+    NVIDIA H100 SXM: {chip: h100_sxm}
+    NVIDIA H100 PCIe: {chip: h100_pcie}
+    NVIDIA H100: {chip: h100_sxm}
+    NVIDIA A100 SXM: {by_vram: {40: a100_40gb, 80: a100_80gb}}
+    NVIDIA A100 PCIe: {by_vram: {40: a100_40gb, 80: a100_80gb}}
+    NVIDIA Tesla V100: {chip: v100}
+  ignore: [NVIDIA GH200, NVIDIA A6000]
