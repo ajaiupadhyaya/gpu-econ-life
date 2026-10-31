@@ -39,3 +39,30 @@ Every methodological choice: date, choice, alternatives, reason.
 - **Reason:** official or structured history removes the need for most hyperscaler page parsers.
 - **Excluded:** Vast.ai, RunPod and Oracle, and SkyPilot's files for those providers. CCIR's series
   stay out until its terms are known. Huang's Vast.ai rebuild script must not be run.
+
+## Decision 4: Phase 1 implementation choices (2026-10-31)
+
+Made while building the collector, within the approved plan. The owner can reverse any of them.
+
+- **getdeploying is manual, not scheduled.** The approved plan listed its weekly file, but the
+  license grants no automated access and the terms bar systematically copying content. Each file
+  holds trailing history, so a hand download every six months loses nothing. Alternative: a
+  scheduled fetch, rejected under rule 5.
+- **GPU counts come from vendor documentation, never SkyPilot.** SkyPilot lists
+  Standard_ND96isr_H100_v5 with 12 GPUs where Microsoft documents eight, which would understate its
+  per-GPU price by a third. AWS counts are also checked against the offer file's GPU column.
+- **AWS spot and Google Cloud come through SkyPilot.** AWS's offer files exclude spot and its history
+  tool needs credentials. Google's catalog needs an API key. SkyPilot needs neither. The catalog's
+  Google rows have no instance type and are treated as accelerator-only prices, excluding the host
+  VM. That reading is not yet confirmed against Google's pricing page.
+- **Additive schema columns:** `collector`, `price_kind`, `price_basis`, `zone`, `available`,
+  `source_version` and `effective_from`. The Phase 1 fields are all present. No current source
+  reports availability, so `available` is empty for now.
+- **The unit of observation is unchanged.** Spot rows are stored by zone for fidelity. Phase 4 decides
+  how to aggregate them to region, and that choice comes to the owner under rule 7.
+- **Azure's 5-year reservations** use contract type `other` with `term_months` 60, because the
+  contract types in CLAUDE.md stop at three years.
+- **Out of scope:** Azure's GB200 is a different product from B200. Azure SKU variants missing from
+  Microsoft's size documentation are left out rather than assumed.
+- **Lambda's page has no region,** so `region` is `unspecified`. Its 1-Click Cluster rows use
+  contract type `other`, with the page's duration range kept in `sku`.

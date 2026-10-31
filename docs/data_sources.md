@@ -8,6 +8,13 @@ Quote convention: text in quotation marks marked "(verbatim)" was extracted word
 
 Probe limits to keep in mind: the SEC, EIA, FRED and BLS asked for a key or a contact-bearing User-Agent, which this audit was told not to supply. Those APIs are therefore documented but not sample-called.
 
+## Live sources in use (updated 2026-10-31)
+
+Phase 1 collects daily from the Azure Retail Prices API, AWS offer files, Lambda's pricing page, and
+SkyPilot's AWS and GCP files. Vast.ai, RunPod and Oracle are excluded under their terms.
+getdeploying's CC BY files are downloaded by hand, because its license grants no automated access.
+See Decisions 3 and 4 in decisions.md. The table below is the original audit, unchanged.
+
 ## 1. Summary table
 
 Automated access: Yes / Restricted / Forbidden / UNVERIFIED. "Restricted" means allowed only with a key, a subscription, written permission, or a narrower route than the one proposed. Redistribution uses the same scale and refers to republishing raw data in the replication package.

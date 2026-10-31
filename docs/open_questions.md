@@ -35,3 +35,13 @@ Unknown values, unreachable sources and anything waiting on a decision.
   7346098, 7270603.
 - **GitHub remote not set up.** The private repo creation and push were refused by the permission
   system, so the work exists only on this machine.
+- **Host for the daily collector.** Phase 1 finishes only when the owner has confirmed all four
+  checks in deploy/README.md. Until then, no daily prices are being collected.
+- **Google Cloud price basis.** Rows are treated as accelerator-only. Confirm against Google's
+  pricing page before they enter any estimate.
+- **Interconnect is mostly empty.** Only AWS reports it. Azure and Lambda values need a sourced
+  mapping in Phase 3, or the control must be dropped.
+- **Chip memory is partly empty** where vendor documents disagree or were not checked, for example
+  L40S (AWS docs say 44 GiB and its offer file says 48 GB). Phase 3 settles these from datasheets.
+- **Azure is retiring NCv3,** the main V100 series. Expect those rows to vanish, and treat that as
+  survivorship rather than a collector fault. The health check will flag it.

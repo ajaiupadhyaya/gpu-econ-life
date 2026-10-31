@@ -10,3 +10,10 @@ the literature check and the fact-check of the proposal's claims. Claude reviewe
 ran an exploratory probe of unlisted price histories. Two Phase 0 stop conditions were met (a close
 prior paper; terms of use on the live layer), so work stopped for the owner's decision. All research
 decisions remain the owner's.
+
+## Phase 1, 2026-10-31
+
+The owner approved the revised plan. Claude Code built the canonical schema, four collectors, parsers,
+a runner, a health check and a deployment kit, with tests, and ran the first real collection: 2,370
+valid rows from Azure, AWS, Google Cloud and Lambda. It verified SKU mappings against vendor
+documentation and updated the Claude Doc to match the plan. Deployment to a host awaits the owner.

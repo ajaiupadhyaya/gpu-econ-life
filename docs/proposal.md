@@ -1,26 +1,26 @@
-# Market-Implied Economic Life of AI Accelerators
+# Rental-Implied Depreciation of AI Accelerators: Why the Estimates Disagree
 
 Research proposal · working draft · 2026-10-31 · @AJ
 
 ## Summary
 
-This project estimates how fast AI accelerators (NVIDIA V100, A100, H100, H200, B200) lose economic value, using what people pay to rent them. It then compares that market-implied depreciation to the 5 to 6 year straight-line lives the largest cloud companies use in their financial statements.
+This project explains why published estimates of AI accelerator depreciation disagree, from about 11% to about 40% a year, using what people pay to rent NVIDIA V100, A100, H100, H200 and B200 chips. It then compares the rental-implied path to the 5 to 6 year straight-line lives the largest cloud companies use in their financial statements.
 
-**Method in one line:** build a panel of GPU rental prices from 2020 to 2027 (archived provider pricing pages plus live collection), estimate an age–price profile for each chip generation, convert rents into asset values net of power and operating cost, and restate reported depreciation under the market-implied schedule.
+**Method in one line:** put the published rates on one basis, build a 2020–2027 panel of GPU rental prices by contract and provider type, report each chip's observed price path, estimate age–price profiles to project newer chips, convert rents into asset values net of power and operating cost, and restate earnings firm by firm by purchase cohort.
 
-**Outputs:** a 25–35 page working paper posted to SSRN and arXiv (q-fin), a public replication repository, and an open GPU rental-price dataset.
+**Outputs:** a short reconciliation note around mid-January, a 25–35 page working paper posted to SSRN and arXiv (q-fin), a public replication repository, and an open GPU rental-price dataset.
 
 **Status:** independent pre-advisor draft. All work through a complete first draft is done solo; a VCU finance or accounting faculty member reviews it before anything is posted.
 
 ## Motivation
 
-Reported earnings at the largest AI spenders now hinge on one management estimate: how many years a server lasts. From 2020 to 2024, Microsoft, Alphabet, Amazon and Meta all stretched server lives from 3–4 years to 5–6. In January 2025 Amazon partly reversed, cutting a subset of servers from 6 to 5 years and citing "an increased pace of technology development, particularly in the area of artificial intelligence and machine learning" ([The Register](https://www.theregister.com/2025/02/07/amazon_q4_fy_2024/)).
+Reported earnings at the largest AI spenders now hinge on one management estimate: how many years a server lasts. From 2020 to 2024, Microsoft, Alphabet and Amazon stretched server lives to 6 years. Meta reached 5.5 in 2025. In January 2025 Amazon partly reversed, cutting a subset of servers from 6 to 5 years and citing "an increased pace of technology development, particularly in the area of artificial intelligence and machine learning" ([The Register](https://www.theregister.com/2025/02/07/amazon_q4_fy_2024/)).
 
 **Selected server useful-life changes, newest first** ([American Compute compilation of 10-K/20-F filings](https://www.amcompute.com/gpu-depreciation-schedules), updated Oct 10, 2026):
 
 | Effective | Company | Change | Reported effect |
 | --- | --- | --- | --- |
-| Jan 2026 | Nebius | 4 → 5 years | ~$167.6M less 2026 depreciation |
+| Jan 2026 | Nebius | 4 → 5 years | Not quantified in the 20-F or Q1 2026 6-K |
 | Jan 2025 | Amazon (subset) | 6 → 5 years | $1.4B more 2025 depreciation |
 | Jan 2025 | Meta | 5 → 5.5 years | $2.92B less 2025 depreciation |
 | Jan 2024 | Amazon | 5 → 6 years | $3.2B less 2024 depreciation |
@@ -29,13 +29,15 @@ Reported earnings at the largest AI spenders now hinge on one management estimat
 | Jan 2023 | CoreWeave | 5 → 6 years | $20M lower 2023 expenses |
 | Jul 2022 (FY2023) | Microsoft | 4 → 6 years | $3.7B higher FY2023 operating income |
 
-**The bear case.** Michael Burry argues the real replacement cycle is 2–3 years and estimates about $176B of understated industry depreciation from 2026 to 2028 ([Value the Markets, Sept 2026](https://www.valuethemarkets.com/analysis/gpu-depreciation-debate-behind-this-weeks-ai-dip)).
+**The bear case.** Michael Burry estimates about $176B of understated depreciation from 2026 to 2028, as reported in the press; the original post has not been read ([Value the Markets, Sept 2026](https://www.valuethemarkets.com/analysis/gpu-depreciation-debate-behind-this-weeks-ai-dip)).
 
-**The bull case.** CoreWeave says H100 capacity coming off contract was rebooked at roughly 95% of the original price, and Nvidia points to A100s rented through 2029, nine years after launch (same source).
+**The bull case.** CoreWeave said in August 2026 that it signed an A100 contract running into 2029, and Nvidia's CEO amplified the claim ([CoreWeave Q2 2026 call](https://www.webull.com/news/15426275319522304)). This is one contract, not a fleet.
 
-**Why it is still open.** Both sides argue from anecdotes and single index prints. I have not found a peer-reviewed estimate of AI-accelerator depreciation from market prices, even though economists built exactly this toolkit for mainframes and PCs (Oliner 1993; Doms et al. 2004). Phase 0 includes a literature check to confirm the gap.
+**Why it is still open.** The first estimates have now appeared, and they disagree: about 39.9% a year ([Amissah-Ocran & Ayumu 2026](https://doi.org/10.54660/.ijmrge.2026.7.5.49-62)), 24–27% ([Chincholikar & Chawla 2026](https://zenodo.org/records/21894454)), 17–32% ([Huang 2026](https://zenodo.org/records/22053861)), −15% to flat ([CCIR 2026](https://ccir.io/research/rental-rates-by-generation)) and 11% ([Watkins 2026](https://www.jaredwatkins.com/posts/2026/08/ai-depreciation-curve/)). They measure different things: resale value, net cash flow or posted rent, at one date or along a path. No study yet puts them on one basis.
 
-**Why now.** The data finally exist. At least three daily GPU rental indices are on the Bloomberg Terminal (Silicon Data, Ornn AI, Compute Desk), and they have quoted the same chip more than $2/hour apart, which shows contract type and supplier matter ([Compute Desk analysis](https://www.kucoin.com/news/flash/gpu-pricing-disarray-four-indices-diverge-market-lacks-consensus)).
+**Why now.** The data finally exist. Compute Desk's founder counts four index providers, three of them on the Bloomberg Terminal (Silicon Data, Ornn AI, Compute Desk), whose B200 quotes started more than $2/hour apart, which shows contract type and supplier matter ([Compute Desk analysis](https://www.kucoin.com/news/flash/gpu-pricing-disarray-four-indices-diverge-market-lacks-consensus)).
+
+**Most posted prices barely move.** Across eight on-demand series sampled from 2022 to 2026, the price changed at 6 of 44 intervals, while AWS spot prices for the same chips changed at 20 of 21. Azure's A100 has stayed at $3.40 per GPU-hour since at least July 2022, and Lambda's A100 rose 81% as the chip aged. Estimates built on posted on-demand prices may therefore mostly measure pricing habits.
 
 ## Research questions and hypotheses
 
@@ -57,9 +59,9 @@ The core paper answers RQ1–RQ3. RQ4 is an optional extension, included only if
 
 The paper makes three contributions:
 
-1. **New data.** A 2020–2027 panel of GPU rental prices across chip generations, providers and contract types, rebuilt from archived pricing pages. The commercial indices are paywalled and mostly track only the newest chips.
-2. **New application.** As far as I can find, the first use of vintage-price depreciation methods on AI accelerators (to be confirmed in Phase 0).
-3. **An earnings restatement** for hyperscalers and neoclouds under market-implied schedules, reported as a range across assumptions rather than one headline number.
+1. **A reconciliation.** Published rates go on one basis, showing how much of the spread comes from the price series, the identification assumption and the step from rent to value.
+2. **Age slopes by contract and provider type,** from an open multi-contract panel that separates prices that clear from prices that sit.
+3. **A firm-by-firm earnings restatement** under a rental-implied schedule, entering each purchase cohort at its purchase date, reported as a range across assumptions rather than one headline number.
 
 **Where it sits in the literature:**
 
@@ -69,19 +71,26 @@ The paper makes three contributions:
 - **Accounting estimates.** Keating & Zimmerman (1999) on why firms change depreciation policy and what it signals.
 - **Practitioner work.** The GPU indices (Silicon Data, Ornn AI, Compute Desk, SemiAnalysis) and sell-side and blog analyses of the debate. The paper's pitch to this audience: a transparent, reproducible version of what they argue about.
 
+**Direct predecessors.** This paper is not the first to apply these methods to AI accelerators. [Amissah-Ocran & Ayumu (2026)](https://doi.org/10.54660/.ijmrge.2026.7.5.49-62) fit a rent–age profile at one date. [Chincholikar & Chawla (2026)](https://zenodo.org/records/21894454) run a Hulten-Wykoff profile on resale prices and say their work is not an audit of any firm. [Huang (2026)](https://zenodo.org/records/22053861) measures cash-flow decay on one spot marketplace. [CCIR (2026)](https://ccir.io/research/rental-rates-by-generation) rebuilt on-demand rates from web archives. [Dutta & Patatoukas (2026)](https://doi.org/10.2139/ssrn.7420380) already use "market-implied life" for a figure drawn from equity values, which is one reason this paper says "rental-implied".
+
 ## Data
 
-The core dataset is a panel of posted GPU rental prices rebuilt from archived provider pricing pages, extended forward with live collection. Everything else either controls for quality, supplies costs, or feeds the accounting step.
+The core dataset is a panel of GPU rental prices built from official price files, catalog history and archived pages, extended forward with live collection. Everything else either controls for quality, supplies costs, or feeds the accounting step.
 
 | Source | What it gives | Access | Role |
 | --- | --- | --- | --- |
-| Archived provider pricing pages via the Internet Archive Wayback Machine (CDX API) | Posted $/GPU-hour by SKU: AWS, Google Cloud, Azure, Oracle, Lambda, CoreWeave, RunPod, Vast.ai, Paperspace and others | Free, rate-limited | Core historical panel |
-| Live collection from provider pages and marketplace APIs (e.g. Vast.ai, RunPod) | Daily posted, spot and interruptible prices; availability | Free; follow each site's terms and robots.txt | Recent high-frequency panel |
-| Published indices: [getdeploying.com GPU Rental Price Index](https://getdeploying.com/gpu-price-index); Silicon Data, Ornn AI and Compute Desk on Bloomberg (if VCU has a terminal); SemiAnalysis 1-year H100 contract index | Aggregate price levels | Free, Bloomberg or paywall | Validation only |
+| [AWS Price List offer files](https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonEC2/index.json) | On-demand and reserved list prices, about monthly since December 2015 | Free | Core history, hyperscaler list prices |
+| [SkyPilot catalog history](https://github.com/skypilot-org/skypilot-catalog) (AWS, Azure, GCP and Lambda files only) | Dated list and spot prices since July 2022, including AWS spot | Free; no license stated, so not republished | Core history, spot prices |
+| Archived pricing pages via the Internet Archive Wayback Machine (CDX API) | Posted $/GPU-hour for Lambda, CoreWeave and Paperspace | Free, rate-limited | Neocloud history |
+| Live collection: Azure Retail Prices API, AWS offer files, Lambda's pricing page, and SkyPilot for AWS spot and Google Cloud | Daily list, spot and reserved prices | Free | Recent high-frequency panel |
+| Published tables: [Huang (2026)](https://zenodo.org/records/22053861) and [Chincholikar & Chawla (2026)](https://zenodo.org/records/21894454) | Marketplace cash-flow rates, utilization and executed resale prices | Free, CC BY | Comparison series, cited rather than rebuilt |
+| Published indices: [getdeploying.com datasets](https://getdeploying.com/dataset) (CC BY, downloaded by hand); Silicon Data, Ornn AI and Compute Desk on Bloomberg (if VCU has a terminal); SemiAnalysis 1-year H100 contract index | Aggregate price levels, some by contract term | Free, Bloomberg or paywall | Validation, possibly core |
 | NVIDIA datasheets and MLCommons MLPerf results | Launch and GA dates, memory, bandwidth, BF16 TFLOPS, TDP, benchmark throughput | Free | Quality controls |
 | U.S. EIA electricity data (API) | Monthly commercial and industrial $/kWh by state | Free API key | Operating cost |
 | SEC EDGAR XBRL (companyfacts API) and 10-K text | PP&E, depreciation, capex, useful-life disclosures | Free | Accounting restatement |
 | CRSP via WRDS (if VCU has access), else a free price source | Daily stock returns | WRDS or free | RQ4 only |
+
+**Excluded by terms of use:** Vast.ai, RunPod and Oracle restrict automated collection, so nothing is collected from them. Huang's published tables supply the marketplace comparison instead.
 
 **Unit of observation:** one posted price for a (provider, SKU, chip, GPUs per instance, interconnect, region, contract type, date) combination, in $/GPU-hour. Multi-GPU instance prices are divided by GPU count.
 
@@ -110,11 +119,11 @@ The method has four steps: estimate age–price profiles, deal with the identifi
 - a = months since chip c reached general availability. g(a) is the age profile, the object of interest.
 - α = chip (vintage) fixed effect; δ = month fixed effect.
 - X = provider type (hyperscaler, neocloud, marketplace), contract type and term, interconnect, GPUs per instance, region, host specs.
-- Standard errors clustered by provider, with two-way provider × month clustering as a robustness check.
+- Inference at the chip level, because age has one value per chip-month: a wild cluster bootstrap or CR2, with provider clustering shown for comparison.
 
 ### Step 2: Identification
 
-Age equals calendar time minus vintage, so with chip and month fixed effects the linear part of g cannot be identified (Hall 1968). This is the hardest part of the paper. Run all four strategies and report them side by side; agreement is the evidence, and disagreement gets reported, not hidden.
+Age equals calendar time minus vintage, so with chip and month fixed effects the linear part of g cannot be identified (Hall 1968). This is the hardest part of the paper. Start from each chip's observed price path, which needs no such assumption. Then run all four strategies to project newer chips from older ones and report them side by side; disagreement gets reported, not hidden. Strategies 2 and 3 draw on the same few frontier changes, so their agreement is weak evidence. The leading published estimates assign the whole secular decline to age, so sweeping that linear term in strategy 4 is new.
 
 1. **Quality-adjusted vintage.** Replace the chip fixed effect with observed specs (BF16 TFLOPS, memory bandwidth, memory). The vintage effect becomes a function of specs, which frees up the age effect.
 2. **Frontier-relative obsolescence.** Add each chip's performance relative to the best chip available that month, measuring obsolescence directly (after Geske, Ramey & Shapiro 2007).
@@ -133,19 +142,21 @@ V_c(a) = \sum_{k=0}^{T-a} \frac{8760 \left[ u \, p_c(a+k) - o_c(a+k) \right]}{(1
 - Market-implied depreciation in year a = V(a) − V(a+1), compared with straight-line book depreciation over 5, 5.5 and 6 years.
 - For a hyperscaler using its own GPUs, the market rent is the opportunity cost, so the same valuation applies.
 
+**Changes after review.** Multiply net rent by a survival curve S(a), stated as a range, because failed units earn nothing. Use system power per GPU rather than chip TDP. Set utilization by contract type and age. Floor each year's net rent at zero. Report V(0)/cost, because rents above cost contain scarcity profits rather than depreciation. Headline the share of value lost by years 1 to 6 and a straight-line-equivalent life, and keep T* as a secondary result.
+
 **Sensitivity grid:** r ∈ {8%, 10%, 12%}, u ∈ {50%, 70%, 90%}, PUE ∈ {1.2, 1.4}. Rents beyond the observed ages of new chips are borrowed from older generations' estimated profiles. **Optional cross-check:** used-hardware resale prices give direct asset values.
 
 ### Step 4: Earnings restatement
 
-Firms: Microsoft, Alphabet, Amazon, Meta, Oracle, CoreWeave, Nebius. None reports GPU assets separately, so estimate a GPU asset base from server capex and PP&E disclosures, with the GPU share of server capex as a varied assumption. Apply market-implied depreciation by vintage year and report the change in depreciation, operating income and EPS against reported figures.
+Firms: Microsoft, Alphabet, Amazon, Meta, Oracle, CoreWeave, Nebius. None reports GPU assets separately, so estimate a GPU asset base from server capex and PP&E disclosures, with the GPU share of server capex as a varied assumption. Enter each purchase cohort at its purchase date, apply rental-implied depreciation and report the change in depreciation, operating income and EPS against reported figures.
 
 ### Step 5 (optional): Event study
 
-Abnormal returns around the roughly 17 useful-life changes since 2020. Nearly all were disclosed with earnings, so effects are confounded: treat this as descriptive only.
+Abnormal returns around the useful-life changes documented from filings since 2020. Nearly all were disclosed with earnings, so effects are confounded: treat this as descriptive only.
 
 ## Expected results
 
-Any outcome is publishable, which removes the null-result risk most student projects carry.
+Any outcome supports a working paper, while journal placement will depend on how informative the bounds are.
 
 - **Rents imply 5+ years with a front-loaded shape.** Book lives are defensible in length, but straight-line timing overstates early-life asset values. That is a narrower, sharper claim than either side of the debate makes.
 - **Rents imply 2–4 years.** The paper quantifies the overstatement firm by firm, as ranges.
@@ -160,7 +171,7 @@ Any outcome is publishable, which removes the null-result risk most student proj
 
 ## Timeline
 
-The plan runs 22 weeks from November 2, 2026: a complete draft by March 21 and a posted working paper by April 5, ahead of spring 2027 graduation.
+The plan runs 22 weeks from November 2, 2026: a reconciliation note around mid-January, a complete draft by March 21 and a posted working paper by April 5, ahead of spring 2027 graduation.
 
 [embedded content: project timeline · 9 phases, 22 weeks]
 
@@ -190,8 +201,8 @@ The two risks most likely to hurt the paper are thin archive coverage before 202
 | Posted prices diverge from transaction prices | High | Medium | Split by provider type; validate against transaction and survey indices; frame claims as about the posted-price market |
 | Identification strategies disagree sharply | Medium | Medium | Report the range as a finding (see Expected results) |
 | GPU share of server capex is not disclosed | High | Medium | Present the restatement as a sensitivity table, never a point estimate |
-| A similar paper appears first | Low–medium | High | Set SSRN and arXiv alerts in Phase 0; post a dated working paper as soon as a draft exists |
-| Scraping blocked or terms conflict | Low–medium | Medium | Prefer official APIs, respect robots.txt, keep request rates low, drop sources that prohibit collection |
+| A similar paper appears first | Occurred | High | Repositioned around reconciling the estimates; watch SSRN, arXiv and Zenodo; post the reconciliation note early |
+| Scraping blocked or terms conflict | Occurred | Medium | Prefer official APIs, respect robots.txt, keep request rates low; Vast.ai, RunPod and Oracle dropped |
 | Scope creep | Medium | Medium | RQ4, extra chips and resale prices only after the core draft exists |
 | Solo blind spots in the econometrics | Medium | High | Adversarial review at the end of Phase 5: a fresh Claude session critiques the identification from code and results alone |
 
@@ -216,6 +227,8 @@ The end product is a posted working paper with a public replication package, the
 ## Claude Code kickoff brief
 
 Claude Code builds the pipeline and does the checks; you make every research decision and write the argument. Set up the repo once, then run one phase prompt at a time and review its output before moving on.
+
+**Status, October 31, 2026:** Phase 0 is done and Phase 1's collector is built, awaiting deployment. The prompts below predate the review, so where they conflict with this revised proposal, the proposal wins. The repository's `docs/proposal_review.md` has the reasoning.
 
 ### Setup (about 20 minutes)
 
@@ -500,3 +513,12 @@ The academic references below were compiled for this draft and have not yet been
 - [Value the Markets, "The GPU Depreciation Debate Behind This Week's AI Dip"](https://www.valuethemarkets.com/analysis/gpu-depreciation-debate-behind-this-weeks-ai-dip), Sept 16, 2026.
 - [Compute Desk analysis of diverging GPU indices (KuCoin repost)](https://www.kucoin.com/news/flash/gpu-pricing-disarray-four-indices-diverge-market-lacks-consensus).
 - [getdeploying.com GPU Rental Price Index](https://getdeploying.com/gpu-price-index): on-demand only, provider-median method, weekly data since July 2024.
+
+**Added after the Phase 0 literature check:**
+
+- Amissah-Ocran, B., & Ayumu, M. T. (2026). [Collateral Without a Curve: A Residual-Value Methodology for Compute-Backed Credit](https://doi.org/10.54660/.ijmrge.2026.7.5.49-62). *International Journal of Multidisciplinary Research and Growth Evaluation*, 7(5), 49–62.
+- Chincholikar, S., & Chawla, R. (2026). [Economic depreciation of AI accelerators: Evidence from secondary-market transactions](https://zenodo.org/records/21894454). Reproducibility artifact, submitted to *Journal of Economics and Finance*.
+- CCIR (2026). [GPU Rental Rates by Generation: Nine Years of Posted Prices](https://ccir.io/research/rental-rates-by-generation). Research note.
+- Dutta, S., & Patatoukas, P. N. (2026). [Priced to Last, but Built to Last? The Asset Life Question in the AI Buildout](https://doi.org/10.2139/ssrn.7420380). SSRN working paper; abstract read only.
+- Huang, J. (2026). [GPU Rental Value Curves: replication data for "Underwriting GPU Depreciation"](https://zenodo.org/records/22053861). Zenodo dataset; working paper not yet read.
+- Watkins, J. (2026). [Deriving the AI Depreciation Curve](https://www.jaredwatkins.com/posts/2026/08/ai-depreciation-curve/). Blog post.
