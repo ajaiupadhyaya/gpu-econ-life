@@ -8,7 +8,9 @@ from gel.collect.skypilot_history import (
     CATALOGS,
     choose_commit,
     fetch_selection,
+    lookup_from_history,
     month_windows,
+    parse_log,
     parse_stored,
     select_commits,
 )
@@ -51,6 +53,25 @@ def test_choose_commit_prefers_newer_catalogs_and_earlier_windows():
 
 def test_a_month_with_no_commit_is_a_gap_not_a_carried_forward_price():
     assert choose_commit("2024-02", ["new"], lambda *a: None) is None
+
+
+def test_lookup_takes_the_earliest_commit_in_the_window():
+    history = {
+        "p": [("2024-02-20T00:00:00Z", "late"), ("2024-02-02T00:00:00Z", "early")],
+    }
+    lookup = lookup_from_history(history)
+    assert lookup("p", "2024-02-01T00:00:00Z", "2024-02-08T00:00:00Z")["sha"] == "early"
+    assert lookup("p", "2024-03-01T00:00:00Z", "2024-03-08T00:00:00Z") is None
+    assert lookup("missing", "2024-02-01T00:00:00Z", "2024-02-08T00:00:00Z") is None
+
+
+def test_parse_log_converts_commit_times_to_utc():
+    output = "abc 2024-01-02T20:00:00-05:00\ndef 2024-02-02T00:00:00+00:00\n"
+    assert parse_log(output) == [
+        ("2024-01-03T01:00:00Z", "abc"),
+        ("2024-02-02T00:00:00Z", "def"),
+    ]
+    assert parse_log("") == []
 
 
 def test_select_commits_covers_every_cloud_and_month():

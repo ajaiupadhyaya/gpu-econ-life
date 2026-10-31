@@ -1,11 +1,11 @@
 """Phase 2: dated prices from the git history of the SkyPilot catalog, one commit per month.
 
-    GITHUB_TOKEN=$(gh auth token) uv run python -m gel.collect.skypilot_history --select
-    uv run python -m gel.collect.skypilot_history --download --parse
+    uv run python -m gel.collect.skypilot_history --select --download --parse
 
 A month without a commit stays a gap: no price is carried forward. Only the AWS, Azure, GCP and
 Lambda files are read. The repository's Vast.ai, RunPod and OCI files are out of bounds under those
-providers' terms. The token is optional, used only against api.github.com, and never stored.
+providers' terms. Commit dates come from a local blobless clone, because GitHub's path-filtered
+commit API times out on a repository this size. The clone holds commits and trees, no file contents.
 """
 
 import argparse
@@ -14,7 +14,7 @@ import csv
 import gzip
 import io
 import logging
-import os
+import subprocess
 import sys
 from collections.abc import Callable
 from datetime import UTC, datetime
@@ -25,12 +25,13 @@ import yaml
 
 from gel.collect.http import Throttle, get_with_backoff, user_agent, write_raw
 from gel.parse.skypilot import parse_aws_spot, parse_azure, parse_gcp, parse_lambda
-from gel.schema import Listing, to_frame
+from gel.schema import TIMESTAMP_FORMAT, Listing, to_frame
 
 ROOT = Path(__file__).resolve().parents[3]
 REPO = "skypilot-org/skypilot-catalog"
 RAW_DIR = Path("data/raw/skypilot_history")
 INTERIM_DIR = Path("data/interim/skypilot_history")
+CLONE_DIR = Path("data/interim/skypilot_repo.git")
 SELECTION_FIELDS = ["cloud", "month", "sha", "path", "date"]
 FIRST_MONTH = "2022-07"
 VERSIONS = ("v8", "v7", "v6", "v5", "v4")
@@ -82,30 +83,47 @@ def months_until(last: str) -> list[str]:
     return months
 
 
-def github_lookup(client: httpx.Client, throttle: Throttle) -> Lookup:
-    token = os.environ.get("GITHUB_TOKEN", "")
-    headers = {"Authorization": f"Bearer {token}"} if token else {}
-    cache: dict[tuple, dict | None] = {}
+def lookup_from_history(history: dict[str, list[tuple[str, str]]]) -> Lookup:
+    """Answer month queries from commit lists: the earliest commit inside the window."""
 
     def lookup(path: str, since: str, until: str) -> dict | None:
-        key = (path, since, until)
-        if key not in cache:
-            throttle.wait("api.github.com")
-            response = client.get(
-                f"https://api.github.com/repos/{REPO}/commits",
-                params={"path": path, "since": since, "until": until, "per_page": 1},
-                headers=headers,
-            )
-            response.raise_for_status()
-            rows = response.json()
-            cache[key] = (
-                {"sha": rows[0]["sha"], "date": rows[0]["commit"]["committer"]["date"]}
-                if rows
-                else None
-            )
-        return cache[key]
+        window = sorted((d, sha) for d, sha in history.get(path, []) if since <= d <= until)
+        return {"sha": window[0][1], "date": window[0][0]} if window else None
 
     return lookup
+
+
+def parse_log(output: str) -> list[tuple[str, str]]:
+    """Turn `git log --format="%H %cI"` output into (UTC timestamp, sha) pairs."""
+    commits = []
+    for line in output.splitlines():
+        sha, stamp = line.split()
+        moment = datetime.fromisoformat(stamp).astimezone(UTC)
+        commits.append((moment.strftime(TIMESTAMP_FORMAT), sha))
+    return commits
+
+
+def read_history(repo: Path, paths: list[str]) -> dict[str, list[tuple[str, str]]]:
+    command = ["git", "-C", str(repo), "log", "--format=%H %cI", "HEAD", "--"]
+    return {
+        path: parse_log(
+            subprocess.run([*command, path], check=True, capture_output=True, text=True).stdout
+        )
+        for path in paths
+    }
+
+
+def ensure_clone(root: Path) -> Path:
+    repo = root / CLONE_DIR
+    if repo.exists():
+        subprocess.run(["git", "-C", str(repo), "fetch", "-q", "origin"], check=True)
+    else:
+        repo.parent.mkdir(parents=True, exist_ok=True)
+        url = f"https://github.com/{REPO}.git"
+        subprocess.run(
+            ["git", "clone", "-q", "--bare", "--filter=blob:none", url, str(repo)], check=True
+        )
+    return repo
 
 
 def stored_path(root: Path, row: dict) -> Path:
@@ -180,8 +198,9 @@ def main(argv: list[str] | None = None, *, root: Path = ROOT) -> int:
     ) as client:
         if args.select:
             last = datetime.now(UTC).strftime("%Y-%m")
-            lookup = github_lookup(client, Throttle(min_interval=0.2))
-            rows = select_commits(months_until(last), lookup)
+            paths = [path for group in CATALOGS.values() for path in group]
+            history = read_history(ensure_clone(root), paths)
+            rows = select_commits(months_until(last), lookup_from_history(history))
             buffer = io.StringIO()
             writer = csv.DictWriter(buffer, fieldnames=SELECTION_FIELDS, lineterminator="\n")
             writer.writeheader()
