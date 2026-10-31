@@ -75,3 +75,28 @@ def test_backoff_gives_up_after_max_attempts():
     with _client([500, 500, 500]) as client:
         resp = get_with_backoff(client, "https://a.example/x", sleep=lambda s: None, max_attempts=3)
     assert resp.status_code == 500
+
+
+def test_network_errors_are_retried_then_succeed():
+    attempts = []
+
+    def handler(request):
+        attempts.append(1)
+        if len(attempts) == 1:
+            raise httpx.ReadTimeout("stalled", request=request)
+        return httpx.Response(200, text="ok")
+
+    slept = []
+    with httpx.Client(transport=httpx.MockTransport(handler)) as client:
+        response = get_with_backoff(client, "https://a.example/x", sleep=slept.append)
+    assert response.status_code == 200
+    assert slept == [2.0]
+
+
+def test_network_errors_are_raised_once_attempts_run_out():
+    def handler(request):
+        raise httpx.ConnectError("down", request=request)
+
+    with httpx.Client(transport=httpx.MockTransport(handler)) as client:
+        with pytest.raises(httpx.ConnectError):
+            get_with_backoff(client, "https://a.example/x", sleep=lambda s: None, max_attempts=3)

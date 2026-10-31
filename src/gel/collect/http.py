@@ -11,6 +11,8 @@ import httpx
 
 RETRY_STATUSES = {429} | set(range(500, 600))
 MIN_INTERVAL_SECONDS = 1.0
+# A stalled transfer fails after a minute with no bytes, rather than hanging a job for hours.
+TIMEOUT = httpx.Timeout(connect=30, read=60, write=30, pool=30)
 
 
 def user_agent() -> str:
@@ -51,11 +53,20 @@ def get_with_backoff(
     base_delay: float = 2.0,
     sleep: Callable[[float], None] = time.sleep,
 ) -> httpx.Response:
-    """GET with exponential backoff on 429 and 5xx. Returns the last response if retries run out."""
+    """GET with exponential backoff on 429, 5xx and network errors.
+
+    Returns the last response if retries run out, or raises the last network error.
+    """
     for attempt in range(max_attempts):
-        response = client.get(url, params=params)
-        if response.status_code not in RETRY_STATUSES or attempt == max_attempts - 1:
-            return response
+        last_attempt = attempt == max_attempts - 1
+        try:
+            response = client.get(url, params=params)
+        except httpx.TransportError:
+            if last_attempt:
+                raise
+        else:
+            if response.status_code not in RETRY_STATUSES or last_attempt:
+                return response
         sleep(base_delay * 2**attempt)
     raise AssertionError("unreachable")
 

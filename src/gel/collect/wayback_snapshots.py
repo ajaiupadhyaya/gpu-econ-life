@@ -20,7 +20,7 @@ from pathlib import Path
 import httpx
 import yaml
 
-from gel.collect.http import Throttle, get_with_backoff, user_agent, write_raw
+from gel.collect.http import TIMEOUT, Throttle, get_with_backoff, user_agent, write_raw
 from gel.collect.wayback_cdx import parse_rows
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -154,7 +154,7 @@ def main(argv: list[str] | None = None, *, root: Path = ROOT) -> int:
         with (root / SELECTION_PATH).open() as f:
             rows = list(csv.DictReader(f))
         headers = {"User-Agent": user_agent()}
-        with httpx.Client(headers=headers, timeout=120, follow_redirects=True) as client:
+        with httpx.Client(headers=headers, timeout=TIMEOUT, follow_redirects=True) as client:
             started = time.monotonic()
             result = download(rows, root, client, Throttle(min_interval=MIN_INTERVAL_SECONDS))
             log.info("done in %.0fs: %s", time.monotonic() - started, result)

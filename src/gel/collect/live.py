@@ -15,7 +15,7 @@ import yaml
 
 from gel.collect import aws_offers, azure_retail, lambda_page, skypilot
 from gel.collect.context import Context
-from gel.collect.http import Throttle, user_agent
+from gel.collect.http import TIMEOUT, Throttle, user_agent
 from gel.schema import Listing, to_frame
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -84,7 +84,7 @@ def main(
         config = yaml.safe_load((root / "config/skus.yaml").read_text())
     names = list(collectors) if args.all else args.source
     headers = {"User-Agent": user_agent()}
-    with httpx.Client(headers=headers, timeout=300, follow_redirects=True) as client:
+    with httpx.Client(headers=headers, timeout=TIMEOUT, follow_redirects=True) as client:
         ctx = Context(
             client=client,
             throttle=Throttle(),

@@ -16,7 +16,7 @@ from pathlib import Path
 import httpx
 import yaml
 
-from gel.collect.http import Throttle, get_with_backoff, user_agent, write_raw
+from gel.collect.http import TIMEOUT, Throttle, get_with_backoff, user_agent, write_raw
 from gel.parse.aws import parse_offer_csv
 from gel.schema import to_frame
 
@@ -89,7 +89,7 @@ def main(argv: list[str] | None = None, *, root: Path = ROOT) -> int:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     logging.getLogger("httpx").setLevel(logging.WARNING)
     headers = {"User-Agent": user_agent()}
-    with httpx.Client(headers=headers, timeout=600, follow_redirects=True) as client:
+    with httpx.Client(headers=headers, timeout=TIMEOUT, follow_redirects=True) as client:
         index = get_with_backoff(client, VERSION_INDEX).json()
         versions = versions_since(index, FIRST_MONTH)
         log.info("%d versions from %s", len(versions), FIRST_MONTH)

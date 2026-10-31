@@ -23,7 +23,7 @@ from pathlib import Path
 import httpx
 import yaml
 
-from gel.collect.http import Throttle, get_with_backoff, user_agent, write_raw
+from gel.collect.http import TIMEOUT, Throttle, get_with_backoff, user_agent, write_raw
 from gel.parse.skypilot import parse_aws_spot, parse_azure, parse_gcp, parse_lambda
 from gel.schema import TIMESTAMP_FORMAT, Listing, to_frame
 
@@ -194,7 +194,7 @@ def main(argv: list[str] | None = None, *, root: Path = ROOT) -> int:
     logging.getLogger("httpx").setLevel(logging.WARNING)
     selection = root / RAW_DIR / "selection.csv"
     with httpx.Client(
-        headers={"User-Agent": user_agent()}, timeout=120, follow_redirects=True
+        headers={"User-Agent": user_agent()}, timeout=TIMEOUT, follow_redirects=True
     ) as client:
         if args.select:
             last = datetime.now(UTC).strftime("%Y-%m")
