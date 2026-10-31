@@ -4,6 +4,7 @@ from pathlib import Path
 import yaml
 
 from gel.collect.live import COLLECTORS
+from gel.collect.skypilot_history import CATALOGS
 from gel.schema import CHIPS
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -101,6 +102,7 @@ def test_every_sku_mapping_is_allowed_and_cites_a_source():
 
 def test_collectors_cover_only_cleared_sources():
     assert set(COLLECTORS) == {"azure", "aws", "lambda", "skypilot"}
+    assert "vast" not in " ".join(sum(CATALOGS.values(), []))
     catalog_code = (ROOT / "src/gel/collect/skypilot.py").read_text()
     assert '"aws"' in catalog_code and '"gcp"' in catalog_code
 

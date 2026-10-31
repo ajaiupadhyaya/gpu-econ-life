@@ -64,6 +64,8 @@ skypilot:
 
 lambda:
   url: https://lambda.ai/pricing
+  # Instance-name suffixes in SkyPilot's Lambda catalog, as gpu_<count>x_<suffix>.
+  catalog_instances: {}
   # Keys are the page's plan names, plus VRAM where the name alone is ambiguous.
   plans:
     NVIDIA B200 SXM6: {chip: b200}
