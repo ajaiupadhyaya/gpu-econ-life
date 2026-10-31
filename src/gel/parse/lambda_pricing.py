@@ -21,7 +21,8 @@ def _cells(row) -> dict[str, str]:
 
 
 def _price_cell(cells: dict[str, str]) -> str:
-    return next((v for k, v in cells.items() if k.startswith("PRICE/GPU/HR")), "")
+    labels = ("PRICE/GPU/HR", "PRICE PER HOUR")
+    return next((v for k, v in cells.items() if k.upper().startswith(labels)), "")
 
 
 def _not_offered(cells: dict[str, str]) -> bool:
@@ -56,7 +57,15 @@ def _leading_number(text: str) -> float:
 
 
 def parse_pricing(
-    html: str, *, plans: dict, ignore: list, retrieved_at: str, source_url: str, raw_file: str
+    html: str,
+    *,
+    plans: dict,
+    ignore: list,
+    retrieved_at: str,
+    source_url: str,
+    raw_file: str,
+    collector: str = "lambda",
+    skip_commitments: bool = False,
 ) -> list[Listing]:
     tree = LexborHTMLParser(html)
     labels = {b.attributes.get("id"): b.text(strip=True) for b in tree.css('[role="tab"]')}
@@ -64,7 +73,7 @@ def parse_pricing(
         retrieved_at=retrieved_at,
         provider="lambda",
         provider_type="neocloud",
-        collector="lambda",
+        collector=collector,
         interconnect=None,
         region="unspecified",
         source_url=source_url,
@@ -78,7 +87,7 @@ def parse_pricing(
             if plan in ignore:
                 continue
             cells = _cells(row)
-            if _not_offered(cells):
+            if _not_offered(cells) or (skip_commitments and "Commitment" in cells):
                 continue
             if "VRAM/GPU" in cells:
                 count = TAB_COUNT.match(label)
@@ -100,7 +109,8 @@ def parse_pricing(
                         **common,
                     )
                 )
-            elif "DURATION" in cells:
+            elif "DURATION" in {k.upper() for k in cells}:
+                cells = {k.upper(): v for k, v in cells.items()}
                 raw_count = cells["GPU COUNT"]
                 rows.append(
                     Listing.from_gpu_price(

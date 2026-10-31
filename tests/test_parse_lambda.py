@@ -110,6 +110,21 @@ def test_a_dash_means_not_offered_in_that_tab_and_is_skipped():
     assert [r.chip for r in parse_pricing(html, **COMMON)] == ["h100_sxm"]
 
 
+def test_older_cluster_tables_label_the_price_differently():
+    html = page(
+        (
+            "NVIDIA H100",
+            cluster_row("NVIDIA H100", "2 weeks", "16", "5.54")
+            .replace("PRICE/GPU/HR*", "Price per hour")
+            .replace("DURATION", "Duration")
+            .replace("GPU COUNT", "GPU count"),
+        ),
+        ("8x", instance_row("NVIDIA H100 SXM", 80, "3.99")),
+    )
+    row = next(r for r in parse_pricing(html, **COMMON) if r.contract_type == "other")
+    assert (row.gpu_count, row.price_usd_per_gpu_hour) == (16, 5.54)
+
+
 def test_unparseable_price_fails_loudly():
     html = page(("8x", instance_row("NVIDIA H100 SXM", 80, "contact us")))
     with pytest.raises(LayoutError, match="price"):

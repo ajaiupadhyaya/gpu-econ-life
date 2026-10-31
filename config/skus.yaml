@@ -86,4 +86,4 @@ lambda:
     NVIDIA A100 SXM: {by_vram: {40: a100_40gb, 80: a100_80gb}}
     NVIDIA A100 PCIe: {by_vram: {40: a100_40gb, 80: a100_80gb}}
     NVIDIA Tesla V100: {chip: v100}
-  ignore: [NVIDIA A10, NVIDIA GH200, NVIDIA A6000, NVIDIA Quadro RTX 6000]
+  ignore: [NVIDIA A10, NVIDIA GH200, NVIDIA A6000, NVIDIA Quadro RTX 6000, NVIDIA RTX 6000]
