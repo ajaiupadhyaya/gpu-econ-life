@@ -1,0 +1,23 @@
+# Data lives outside git; raw is backed up separately (see deploy/).
+data/raw/**
+data/interim/**
+data/processed/**
+!data/**/.gitkeep
+
+.env
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.DS_Store
+.superpowers/
+
+# LaTeX build products
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.bbl
+paper/*.blg
+paper/*.pdf

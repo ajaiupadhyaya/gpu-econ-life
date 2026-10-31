@@ -1,0 +1,65 @@
+# Candidate pricing pages for the Wayback pull. provider_type follows CLAUDE.md.
+# Lists both old and current URLs where a provider moved its pricing page or domain.
+providers:
+  aws:
+    provider_type: hyperscaler
+    pages:
+      - url: https://aws.amazon.com/ec2/pricing/on-demand/
+      - url: https://aws.amazon.com/ec2/spot/pricing/
+      - url: https://aws.amazon.com/ec2/instance-types/p3/
+      - url: https://aws.amazon.com/ec2/instance-types/p4/
+      - url: https://aws.amazon.com/ec2/instance-types/p5/
+      - url: https://aws.amazon.com/ec2/capacityblocks/pricing/
+  google_cloud:
+    provider_type: hyperscaler
+    pages:
+      - url: https://cloud.google.com/compute/gpus-pricing
+      - url: https://cloud.google.com/compute/all-pricing
+      - url: https://cloud.google.com/compute/vm-instance-pricing
+      - url: https://cloud.google.com/compute/docs/gpus
+  azure:
+    provider_type: hyperscaler
+    pages:
+      - url: https://azure.microsoft.com/en-us/pricing/details/virtual-machines/linux/
+      - url: https://azure.microsoft.com/en-us/pricing/details/virtual-machines/series/
+  oracle:
+    provider_type: hyperscaler
+    pages:
+      - url: https://www.oracle.com/cloud/compute/pricing/
+      - url: https://www.oracle.com/cloud/price-list/
+      - url: https://www.oracle.com/cloud/compute/gpu/
+  lambda:
+    provider_type: neocloud
+    pages:
+      - url: https://lambdalabs.com/service/gpu-cloud
+      - url: https://lambdalabs.com/service/gpu-cloud/pricing
+      - url: https://lambdalabs.com/service/gpu-cloud/reserved
+      - url: https://lambda.ai/pricing
+      - url: https://lambda.ai/service/gpu-cloud
+  coreweave:
+    provider_type: neocloud
+    pages:
+      - url: https://www.coreweave.com/pricing
+      - url: https://www.coreweave.com/gpu-cloud-pricing
+      - url: https://docs.coreweave.com/resources/resource-based-pricing
+      - url: https://docs.coreweave.com/docs/pricing/pricing-instances
+  runpod:
+    provider_type: neocloud
+    pages:
+      - url: https://www.runpod.io/pricing
+      - url: https://www.runpod.io/gpu-instance/pricing
+      - url: https://www.runpod.io/console/gpu-cloud
+  vast:
+    provider_type: marketplace
+    pages:
+      - url: https://vast.ai/pricing
+      - url: https://vast.ai/
+      - url: https://cloud.vast.ai/create/
+      - url: https://vast.ai/console/create/
+  paperspace:
+    provider_type: neocloud
+    pages:
+      - url: https://www.paperspace.com/pricing
+      - url: https://www.paperspace.com/gpu-cloud
+      - url: https://www.paperspace.com/gradient/pricing
+      - url: https://docs.digitalocean.com/products/paperspace/machines/details/pricing/

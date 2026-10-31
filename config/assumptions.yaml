@@ -1,0 +1,5 @@
+# Stub. Phase 6 fills this in; each default needs a cited source in docs/assumptions.md.
+grid:
+  discount_rate: [0.08, 0.10, 0.12]
+  utilization: [0.50, 0.70, 0.90]
+  pue: [1.2, 1.4]

@@ -1,0 +1,12 @@
+# Stub. Phase 3 fills this in; every value needs a source URL from an official
+# NVIDIA or AMD datasheet or announcement. Leave a value missing rather than estimating it.
+chips:
+  - id: v100
+  - id: a100_40gb
+  - id: a100_80gb
+  - id: h100_sxm
+  - id: h100_pcie
+  - id: h200
+  - id: b200
+  - id: mi300x
+  - id: l40s
