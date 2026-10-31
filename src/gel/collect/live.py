@@ -41,7 +41,10 @@ def load_env(path: Path) -> None:
 
 def run(names: list[str], ctx: Context, collectors: dict = COLLECTORS) -> dict:
     """Run each collector in turn. A failure is recorded and never stops the next collector."""
+    summary_path = ctx.root / "data/interim/live/runs" / f"{ctx.day}.json"
     summary: dict = {"day": ctx.day, "retrieved_at": ctx.retrieved_at, "collectors": {}}
+    if summary_path.exists():
+        summary["collectors"] = json.loads(summary_path.read_text())["collectors"]
     for name in names:
         try:
             rows = collectors[name](ctx)
@@ -57,9 +60,8 @@ def run(names: list[str], ctx: Context, collectors: dict = COLLECTORS) -> dict:
         providers = Counter(row.provider for row in rows)
         log.info("%s ok: %d rows %s", name, len(rows), dict(providers))
         summary["collectors"][name] = {"status": "ok", "providers": dict(providers)}
-    path = ctx.root / "data/interim/live/runs" / f"{ctx.day}.json"
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(summary, indent=2) + "\n")
+    summary_path.parent.mkdir(parents=True, exist_ok=True)
+    summary_path.write_text(json.dumps(summary, indent=2) + "\n")
     return summary
 
 

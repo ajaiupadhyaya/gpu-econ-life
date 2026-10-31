@@ -74,13 +74,8 @@ def _aws_handler(tmp_path, counter):
 
     def handler(request):
         if request.url.path.endswith("region_index.json"):
-            body = {
-                "regions": {
-                    "us-east-1": {
-                        "currentVersionUrl": "/offers/v1.0/aws/AmazonEC2/20261029175634/us-east-1/index.json"
-                    }
-                }
-            }
+            path = "/offers/v1.0/aws/AmazonEC2/20261029175634/us-east-1/index.json"
+            body = {"regions": {"us-east-1": {"currentVersionUrl": path}}}
             return httpx.Response(200, json=body)
         counter.append(str(request.url))
         return httpx.Response(200, content=offer_bytes)

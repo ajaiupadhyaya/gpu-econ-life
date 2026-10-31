@@ -99,6 +99,17 @@ def test_page_without_price_rows_fails_loudly():
         parse_pricing("<html><body>Maintenance</body></html>", **COMMON)
 
 
+def test_a_dash_means_not_offered_in_that_tab_and_is_skipped():
+    html = page(
+        (
+            "8x",
+            instance_row("NVIDIA H100 SXM", 80, "3.99")
+            + instance_row("NVIDIA Tesla V100", 16, "X").replace("$X", "—"),
+        )
+    )
+    assert [r.chip for r in parse_pricing(html, **COMMON)] == ["h100_sxm"]
+
+
 def test_unparseable_price_fails_loudly():
     html = page(("8x", instance_row("NVIDIA H100 SXM", 80, "contact us")))
     with pytest.raises(LayoutError, match="price"):

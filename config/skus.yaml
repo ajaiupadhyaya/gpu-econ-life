@@ -34,9 +34,17 @@ aws:
     p4de.24xlarge: {chip: a100_80gb, gpus: 8, memory_gb: 80}
     p5.4xlarge: {chip: h100_sxm, gpus: 1, memory_gb: 80}
     p5.48xlarge: {chip: h100_sxm, gpus: 8, memory_gb: 80}
-    p5e.48xlarge: {chip: h200, gpus: 8}
-    p5en.48xlarge: {chip: h200, gpus: 8}
-    p6-b200.48xlarge: {chip: b200, gpus: 8}
+    p5e.48xlarge: {chip: h200, gpus: 8, memory_gb: 141}
+    p5en.48xlarge: {chip: h200, gpus: 8, memory_gb: 141}
+    p6-b200.48xlarge: {chip: b200, gpus: 8, memory_gb: 179}
+    g6e.xlarge: {chip: l40s, gpus: 1}
+    g6e.2xlarge: {chip: l40s, gpus: 1}
+    g6e.4xlarge: {chip: l40s, gpus: 1}
+    g6e.8xlarge: {chip: l40s, gpus: 1}
+    g6e.12xlarge: {chip: l40s, gpus: 4}
+    g6e.16xlarge: {chip: l40s, gpus: 1}
+    g6e.24xlarge: {chip: l40s, gpus: 4}
+    g6e.48xlarge: {chip: l40s, gpus: 8}
 
 skypilot:
   catalog_version: v8
@@ -66,4 +74,4 @@ lambda:
     NVIDIA A100 SXM: {by_vram: {40: a100_40gb, 80: a100_80gb}}
     NVIDIA A100 PCIe: {by_vram: {40: a100_40gb, 80: a100_80gb}}
     NVIDIA Tesla V100: {chip: v100}
-  ignore: [NVIDIA GH200, NVIDIA A6000]
+  ignore: [NVIDIA A10, NVIDIA GH200, NVIDIA A6000, NVIDIA Quadro RTX 6000]

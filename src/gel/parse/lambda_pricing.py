@@ -13,14 +13,24 @@ from gel.schema import Listing
 
 PRICE = re.compile(r"^\$(\d+(?:\.\d+)?)$")
 TAB_COUNT = re.compile(r"^(\d+)x$")
+NOT_OFFERED = {"—", "–", "-"}
 
 
 def _cells(row) -> dict[str, str]:
     return {c.attributes["data-label"]: c.text(strip=True) for c in row.css("[data-label]")}
 
 
+def _price_cell(cells: dict[str, str]) -> str:
+    return next((v for k, v in cells.items() if k.startswith("PRICE/GPU/HR")), "")
+
+
+def _not_offered(cells: dict[str, str]) -> bool:
+    """The page shows a dash where a plan is not sold in that tab's size."""
+    return _price_cell(cells) in NOT_OFFERED
+
+
 def _price(cells: dict[str, str]) -> float:
-    raw = next((v for k, v in cells.items() if k.startswith("PRICE/GPU/HR")), "")
+    raw = _price_cell(cells)
     match = PRICE.match(raw)
     if not match:
         raise LayoutError(f"unreadable price: {raw!r}")
@@ -68,6 +78,8 @@ def parse_pricing(
             if plan in ignore:
                 continue
             cells = _cells(row)
+            if _not_offered(cells):
+                continue
             if "VRAM/GPU" in cells:
                 count = TAB_COUNT.match(label)
                 if not count:

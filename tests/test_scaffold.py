@@ -3,6 +3,9 @@ from pathlib import Path
 
 import yaml
 
+from gel.collect.live import COLLECTORS
+from gel.schema import CHIPS
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -82,6 +85,24 @@ def test_providers_with_restrictive_terms_stay_blocked():
     providers = yaml.safe_load((ROOT / "config/providers.yaml").read_text())["providers"]
     blocked = {name for name, p in providers.items() if p.get("live_collection") == "blocked"}
     assert blocked == {"oracle", "runpod", "vast"}
+
+
+def test_every_sku_mapping_is_allowed_and_cites_a_source():
+    config = yaml.safe_load((ROOT / "config/skus.yaml").read_text())
+    for name, spec in config["azure"]["skus"].items():
+        assert spec["source"].startswith("https://"), name
+        assert spec["chip"] in CHIPS and spec["gpus"] >= 1, name
+    assert config["aws"]["source"].startswith("https://")
+    for name, spec in config["aws"]["instances"].items():
+        assert spec["chip"] in CHIPS and spec["gpus"] >= 1, name
+    for name, spec in config["skypilot"]["gcp"]["accelerators"].items():
+        assert spec["chip"] in CHIPS, name
+
+
+def test_collectors_cover_only_cleared_sources():
+    assert set(COLLECTORS) == {"azure", "aws", "lambda", "skypilot"}
+    catalog_code = (ROOT / "src/gel/collect/skypilot.py").read_text()
+    assert '"aws"' in catalog_code and '"gcp"' in catalog_code
 
 
 def _ignored(path: str) -> bool:

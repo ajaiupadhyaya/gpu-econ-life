@@ -73,6 +73,14 @@ def test_summary_counts_rows_per_provider(tmp_path):
     assert saved["collectors"]["sky"]["providers"] == {"aws": 2, "google_cloud": 1}
 
 
+def test_rerunning_one_source_keeps_the_others_in_the_days_summary(tmp_path):
+    collectors = {"a": lambda ctx: [listing()], "b": lambda ctx: [listing("aws", "b")]}
+    run(["a", "b"], make_context(tmp_path), collectors=collectors)
+    run(["b"], make_context(tmp_path), collectors=collectors)
+    saved = json.loads((tmp_path / "data/interim/live/runs/2026-11-01.json").read_text())
+    assert set(saved["collectors"]) == {"a", "b"}
+
+
 def test_raw_files_are_stamped_so_a_same_day_rerun_cannot_collide(tmp_path):
     ctx = make_context(tmp_path)
     first = ctx.save("azure", "a.json", b"1", url="u", status=200)
