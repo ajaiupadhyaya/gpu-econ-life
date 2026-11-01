@@ -32,4 +32,4 @@ Lambda parser, the coverage report and the validation sample. Two subagents wrot
 Paperspace parsers, which Claude Code spot-checked against raw pages. All 285 snapshots have a status
 (253 parsed, 32 verified empty, 0 failed), giving 35,733 historical rows. Lambda's archive prices
 matched SkyPilot in 270 of 278 overlapping chip-months, and the other 8 fall in months when Lambda
-changed prices. The owner's hand check of the 40-row sample is still to come.
+changed prices. The owner hand-checked the 40-row sample and found no errors, which completes Phase 2.

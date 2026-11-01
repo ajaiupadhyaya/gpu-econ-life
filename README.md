@@ -5,7 +5,7 @@ to hyperscaler book depreciation. See [docs/proposal.md](docs/proposal.md) for t
 and [CLAUDE.md](CLAUDE.md) for the project rules.
 
 Status: the Phase 1 collector runs daily on a server, with backups and alerts still to be set up.
-The Phase 2 historical panel is built and awaits a hand check. The plan was revised after Phase 0, and [docs/proposal_review.md](docs/proposal_review.md) explains why.
+The Phase 2 historical panel is complete. The plan was revised after Phase 0, and [docs/proposal_review.md](docs/proposal_review.md) explains why.
 
 ```bash
 uv sync

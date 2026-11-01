@@ -49,9 +49,8 @@ Unknown values, unreachable sources and anything waiting on a decision.
 
 ## From Phase 2
 
-- **Validation sample.** The owner must check docs/validation_checklist.md. Under 2% of 40 means no
-  wrong rows. The automated check only shows each price appears on its page, not that it is matched
-  to the right chip and contract.
+- **Validation sample: passed.** The owner checked all 40 rows in docs/validation_checklist.md and
+  found no errors.
 - **CoreWeave's JavaScript gap.** www.coreweave.com/pricing has no readable prices from 2021-01 to
   2022-07 (17 snapshots), because the tables are filled by script. Docs pages supply V100 and A100
   for 6 of those months. This partly meets the Phase 2 stop condition.
