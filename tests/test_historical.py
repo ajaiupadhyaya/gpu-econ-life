@@ -1,7 +1,12 @@
 import polars as pl
 import pytest
 
-from gel.build.historical import coverage_table, render_report, validation_sample
+from gel.build.historical import (
+    coverage_table,
+    render_checklist,
+    render_report,
+    validation_sample,
+)
 from gel.schema import Listing, to_frame
 
 
@@ -89,6 +94,13 @@ def test_sample_links_a_page_a_person_can_open():
     url = validation_sample(many(), n=4, seed=7)["check_url"][0]
     assert "id_/" not in url
     assert url.startswith("https://web.archive.org/web/")
+
+
+def test_checklist_gives_each_row_a_tick_box_and_a_link():
+    text = render_checklist(validation_sample(many(), n=4, seed=7))
+    assert text.count("- [ ]") == 4
+    assert text.count("https://web.archive.org/web/") == 4
+    assert "per GPU-hour" in text
 
 
 def test_sample_refuses_to_be_smaller_than_asked():

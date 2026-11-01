@@ -66,3 +66,25 @@ Made while building the collector, within the approved plan. The owner can rever
   Microsoft's size documentation are left out rather than assumed.
 - **Lambda's page has no region,** so `region` is `unspecified`. Its 1-Click Cluster rows use
   contract type `other`, with the page's duration range kept in `sku`.
+
+## Decision 5: Phase 2 choices (2026-10-31)
+
+Made while building the historical panel, within the approved plan. The owner can reverse any of them.
+
+- **The price date is the snapshot time** for archive pages, the version time for AWS files and the
+  commit time for SkyPilot, as the Phase 2 prompt says. A price may have changed earlier.
+- **No price is carried forward.** A month with no observation stays a gap.
+- **AWS history is us-east-1 only,** from October 2017 when P3 launched. Alternative: more regions,
+  rejected because each file is large and the panel needs the price path rather than regional spread.
+- **`price_basis` must separate CoreWeave's series.** Its prices are `accelerator_only` through 2024
+  and `instance` from 2025. H100 goes from $4.76 to $6.155 at that break, which is a change of basis,
+  not a price rise. Never compare across the break without adjusting.
+- **Term prices are recorded only where the page states the term.** Lambda's commitment ladders are
+  per-GPU quotes with no machine size, so they use `gpu_count` 1 and keep the commitment in `sku`.
+  Ranges such as "3-6 months" keep `term_months` empty.
+- **Where a table has dated price columns,** the one in force at the snapshot is used.
+- **HGX is read as SXM** (`h100_sxm`), because HGX boards carry SXM modules. This affects 54
+  Paperspace rows and CoreWeave's HGX H100 rows. No page states SXM directly.
+- **CoreWeave's "$4.76 Reserve Now" is kept as on-demand,** with the label kept in `sku`.
+- **Rows that do not settle chip identity are left out,** not assumed. See open_questions.md.
+- **The validation sample** is 40 archive rows, spread across provider and year, with seed 20261031.

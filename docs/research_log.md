@@ -24,3 +24,12 @@ The owner chose the OhCamel droplet. Claude Code installed the collector under a
 user with resource limits and a sandbox, copied existing raw data across (156 files, checksums
 matched), ran a collection on the host (2,370 rows, four providers, healthy) and enabled the daily
 timer. OhCamel's containers were unchanged. Backups and alerts await the owner's accounts.
+
+## Phase 2, 2026-10-31
+
+Claude Code built the snapshot selection and downloader, the AWS and SkyPilot history pullers, the
+Lambda parser, the coverage report and the validation sample. Two subagents wrote the CoreWeave and
+Paperspace parsers, which Claude Code spot-checked against raw pages. All 285 snapshots have a status
+(253 parsed, 32 verified empty, 0 failed), giving 35,733 historical rows. Lambda's archive prices
+matched SkyPilot in 270 of 278 overlapping chip-months, and the other 8 fall in months when Lambda
+changed prices. The owner's hand check of the 40-row sample is still to come.

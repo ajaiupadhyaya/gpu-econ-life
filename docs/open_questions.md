@@ -46,3 +46,25 @@ Unknown values, unreachable sources and anything waiting on a decision.
   L40S (AWS docs say 44 GiB and its offer file says 48 GB). Phase 3 settles these from datasheets.
 - **Azure is retiring NCv3,** the main V100 series. Expect those rows to vanish, and treat that as
   survivorship rather than a collector fault. The health check will flag it.
+
+## From Phase 2
+
+- **Validation sample.** The owner must check docs/validation_checklist.md. Under 2% of 40 means no
+  wrong rows. The automated check only shows each price appears on its page, not that it is matched
+  to the right chip and contract.
+- **CoreWeave's JavaScript gap.** www.coreweave.com/pricing has no readable prices from 2021-01 to
+  2022-07 (17 snapshots), because the tables are filled by script. Docs pages supply V100 and A100
+  for 6 of those months. This partly meets the Phase 2 stop condition.
+- **Rows left out because identity is not stated.** Each could be added if the owner accepts the
+  inference:
+  - Paperspace A100 at $3.09, 29 snapshots from 2021-12: memory unstated. Evidence supports 40 GB.
+  - Paperspace docs H100 at $5.95 and x8 at $47.60, 13 snapshots: no form factor. Evidence supports SXM.
+  - Paperspace docs multi-GPU rows from 2024-11: no GPU count.
+  - CoreWeave A100 40GB NVLINK, 24 snapshots: the page's card shows $2.16 and its desktop view $2.06.
+  - CoreWeave docs A100 at $21.60, 7 snapshots: memory unstated.
+  - CoreWeave docs "H100 (InfiniBand)" at $49.24, 4 snapshots: no form factor.
+  - CoreWeave's "starting at $2.23/hr" banner, 19 snapshots: no term.
+- **Azure history is thin:** 11 months, because SkyPilot's Azure file is rarely updated. Daily
+  collection now fills this forward, but the history cannot be rebuilt.
+- **Pre-2022 market-moving prices remain the weak spot.** Before mid-2022 the panel is list prices
+  only: AWS, plus Lambda, Paperspace and CoreWeave. AWS spot history starts in October 2022.

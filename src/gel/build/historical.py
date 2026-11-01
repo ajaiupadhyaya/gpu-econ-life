@@ -157,12 +157,36 @@ def validation_sample(frame: pl.DataFrame, n: int, seed: int) -> pl.DataFrame:
     return pl.DataFrame(picked).select(SAMPLE_COLUMNS)
 
 
+def render_checklist(sample: pl.DataFrame) -> str:
+    lines = [
+        "# Validation checklist",
+        "",
+        "Open each link and tick the row if the page shows that price for that chip. These",
+        f"{sample.height} rows are a random sample from archived pages, across provider and year.",
+        "Phase 2 needs under 2% errors, so with this sample one wrong row fails the check.",
+        "",
+        "Instance prices are shown beside per-GPU prices, because a page may quote either one.",
+        "",
+    ]
+    for row in sample.iter_rows(named=True):
+        term = f", {row['term_months']} months" if row["term_months"] else ""
+        lines.append(
+            f"- [ ] **{row['provider']}**, {row['retrieved_at'][:10]}, {row['chip']} "
+            f"x{row['gpu_count']}, {row['contract_type']}{term}: "
+            f"${row['price_usd_per_gpu_hour']:.3f} per GPU-hour, "
+            f"${row['price_usd_per_hour_instance']:.2f} per instance-hour. "
+            f"Label: `{row['sku']}`. [Open the page]({row['check_url']})"
+        )
+    return "\n".join(lines) + "\n"
+
+
 def main(root: Path = ROOT) -> int:
     frame = load_history(root)
     (root / "docs/coverage.md").write_text(render_report(frame))
     heatmap(frame, root / "docs/figures/coverage_heatmap.png")
     sample = validation_sample(frame, SAMPLE_SIZE, SAMPLE_SEED)
     sample.write_csv(root / "data/interim/validation_sample.csv")
+    (root / "docs/validation_checklist.md").write_text(render_checklist(sample))
     print(frame.height, "rows;", sample.height, "sampled")
     return 0
 

@@ -228,7 +228,7 @@ The end product is a posted working paper with a public replication package, the
 
 Claude Code builds the pipeline and does the checks; you make every research decision and write the argument. Set up the repo once, then run one phase prompt at a time and review its output before moving on.
 
-**Status, October 31, 2026:** Phase 0 is done and Phase 1's collector is built, awaiting deployment. The prompts below predate the review, so where they conflict with this revised proposal, the proposal wins. The repository's `docs/proposal_review.md` has the reasoning.
+**Status, October 31, 2026:** Phase 0 is done, Phase 1's collector runs daily, and Phase 2's historical panel awaits a hand check. The prompts below predate the review, so where they conflict with this revised proposal, the proposal wins. The repository's `docs/proposal_review.md` has the reasoning.
 
 ### Setup (about 20 minutes)
 

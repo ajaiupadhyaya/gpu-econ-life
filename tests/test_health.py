@@ -1,6 +1,9 @@
 import json
+from datetime import UTC, datetime
 
-from gel.collect.health import check, main
+from gel.collect.health import check, latest_day, main
+
+NOW = datetime(2026, 11, 1, 0, 2, tzinfo=UTC)
 
 
 def write_run(root, day, collectors):
@@ -63,3 +66,23 @@ def test_main_exit_codes(tmp_path):
     write_run(tmp_path, "2026-11-08", {"azure": ok(azure=10)})
     assert main(["--day", "2026-11-08"], root=tmp_path) == 0
     assert main(["--day", "2026-11-09"], root=tmp_path) == 1
+
+
+def test_a_run_that_crosses_midnight_is_still_found():
+    assert latest_day(["2026-10-30.json", "2026-10-31.json"], NOW) == "2026-10-31"
+
+
+def test_a_stale_run_is_not_accepted_as_latest():
+    late = datetime(2026, 11, 3, 6, 0, tzinfo=UTC)
+    assert latest_day(["2026-10-30.json", "2026-10-31.json"], late) is None
+
+
+def test_no_runs_at_all_gives_no_latest_day():
+    assert latest_day([], NOW) is None
+
+
+def test_main_without_a_day_uses_the_latest_run_and_flags_a_missing_one(tmp_path, monkeypatch):
+    assert main([], root=tmp_path) == 1
+    write_run(tmp_path, "2026-10-31", {"azure": ok(azure=10)})
+    monkeypatch.setattr("gel.collect.health.utc_now", lambda: NOW)
+    assert main([], root=tmp_path) == 0

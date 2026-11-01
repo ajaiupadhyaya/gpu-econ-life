@@ -1,4 +1,8 @@
-"""Compare one day's rows per provider with the average of the seven days before it."""
+"""Compare the latest run's rows per provider with the average of the seven days before it.
+
+A run is dated when it starts, so one crossing midnight still counts. If the newest run is too old,
+the collector has stopped, which is a problem in itself.
+"""
 
 import argparse
 import json
@@ -9,6 +13,21 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 WINDOW_DAYS = 7
 MIN_RATIO = 0.5
+# Measured from the start of the run's UTC day, so a daily 06:10 run stays inside it.
+MAX_AGE_HOURS = 54
+
+
+def utc_now() -> datetime:
+    return datetime.now(UTC)
+
+
+def latest_day(names: list[str], now: datetime) -> str | None:
+    """The newest run's day, or None if there is no run recent enough to trust."""
+    days = sorted(name.removesuffix(".json") for name in names)
+    if not days:
+        return None
+    start = datetime.fromisoformat(days[-1]).replace(tzinfo=UTC)
+    return days[-1] if (now - start) <= timedelta(hours=MAX_AGE_HOURS) else None
 
 
 def _load(root: Path, day: str) -> dict | None:
@@ -50,12 +69,15 @@ def check(root: Path, day: str) -> list[str]:
 
 def main(argv: list[str] | None = None, *, root: Path = ROOT) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--day", default=datetime.now(UTC).strftime("%Y-%m-%d"))
+    parser.add_argument("--day", help="default: the latest run")
     args = parser.parse_args(argv)
-    problems = check(root, args.day)
+    runs = root / "data/interim/live/runs"
+    names = [p.name for p in runs.glob("*.json")] if runs.exists() else []
+    day = args.day or latest_day(names, utc_now())
+    problems = check(root, day) if day else ["no recent run recorded"]
     for problem in problems:
         print(f"PROBLEM {problem}")
-    print(f"{args.day}: {'healthy' if not problems else f'{len(problems)} problem(s)'}")
+    print(f"{day}: {'healthy' if not problems else f'{len(problems)} problem(s)'}")
     return 1 if problems else 0
 
 
