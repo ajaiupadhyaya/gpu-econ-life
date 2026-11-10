@@ -149,3 +149,8 @@ Made while building the historical panel, within the approved plan. The owner ca
   that read ($0.89/hr when listed). RTX 3090: $0.50/hr, LOW stock, EUR-IS-2. Being Ampere, it also
   exercises the Marlin `fp8_weight_only` path the A100 will use. Label `RTX3090` added to
   `config/bench.yaml`. Like the 4090, it sits outside the paper's sample.
+- **Amendment (2026-11-10, same day):** when the image was ready, `get-capacity` showed the
+  RTX 3090 and RTX 4090 out of stock in Secure Cloud at CUDA 13.0 and 13.2. The smoke test moved to
+  an **RTX A6000** (Ampere, 48 GB, $0.59/hr, Low stock). It keeps the Ampere `fp8_weight_only`
+  check and, with 48 GB, does not run short of KV cache at concurrency 128. Label `RTX_A6000` added.
+  Owner's standing instruction for this step: "whatever you recommend".
