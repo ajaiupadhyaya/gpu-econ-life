@@ -227,6 +227,7 @@ dependencies = [
     { name = "pyarrow" },
     { name = "pyfixest" },
     { name = "pyyaml" },
+    { name = "scipy" },
     { name = "selectolax" },
     { name = "statsmodels" },
 ]
@@ -248,6 +249,7 @@ requires-dist = [
     { name = "pyarrow", specifier = ">=16" },
     { name = "pyfixest", specifier = ">=0.25" },
     { name = "pyyaml", specifier = ">=6.0" },
+    { name = "scipy", specifier = ">=1.13" },
     { name = "selectolax", specifier = ">=0.3" },
     { name = "statsmodels", specifier = ">=0.14" },
 ]
