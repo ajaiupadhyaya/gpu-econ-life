@@ -40,3 +40,16 @@ The owner brought a handoff from Claude Chat adding a GPU benchmark (P1), a term
 inversion (P2) and a retirement model (P3). Claude Code checked it against the existing repo,
 raised three conflicts (repo location, price-panel sources, benchmark minutes) and recorded the
 answers as Decision 6. Work started on branch `feat/extension-bench-term-structure`.
+
+## First GPU run (smoke test), 2026-11-10
+
+Claude Code built and pushed the pod image (`ajaiupad/gel-bench:v0.32.0`), stored the owner's
+Hugging Face token as a Runpod secret (the owner entered it), and after eight capacity refusals
+across three card types ran the full sweep on an A40. Timeline (UTC): pod created 18:46:30;
+image pulled and container up 18:53:43; benchmark started 18:55:44; weights downloaded and first
+measured window 18:57:58; BF16 finished ~19:26; FP8 weight-only finished 19:48:10. The tarball was
+copied off (checksums matched) and the pod terminated. `make bench-parse` passed.
+Early observations, not yet results: Ampere's weight-only FP8 speeds decoding 1.78× at
+concurrency 1 but is *slower* than BF16 at concurrency 128 (1,192 vs 1,370 tok/s), consistent
+with the format-obsolescence channel. Idle board power after each mode was ~82 W against ~299 W
+under load.

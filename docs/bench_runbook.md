@@ -22,27 +22,26 @@ Decision 6). GPU time is the scarce resource, so nothing here gets debugged on a
 
 ## Per GPU (one pod at a time)
 
-| Order | GPU_LABEL | Modes | $/hr (catalog 2026-11-10) | Est. min | Est. cost |
+| Order | GPU_LABEL | Modes | $/hr (catalog 2026-11-10) | Minutes | Cost |
 | --- | --- | --- | --- | --- | --- |
-| 1 | `RTX3090` (smoke test) | bf16, fp8_weight_only | 0.50 | ~50 | ~$0.42 |
-| 2 | `A100_SXM` | bf16, fp8_weight_only | 1.79 | ~30 | ~$0.90 |
-| 3 | `L40S` | bf16, fp8 | 1.09 | ~45 | ~$0.82 |
-| 4 | `H100_SXM` | bf16, fp8 | 3.99 | ~25 | ~$1.66 |
-| 5 | `B200` (else `H200_SXM`, $5.29) | bf16, fp8 | 7.99 | ~20 | ~$2.66 |
-| | **Total** | | | **~2.8 h** | **~$6.50** |
+| done | `A40` (smoke test) | bf16, fp8_weight_only | 0.59 | **63.5 measured** | ~$0.57 (billing partly posted) |
+| 1 | `A100_SXM` | bf16, fp8_weight_only | 1.79 | ~27 est. | ~$0.80 |
+| 2 | `L40S` | bf16, fp8 | 1.09 | ~40 est. | ~$0.73 |
+| 3 | `H100_SXM` | bf16, fp8 | 3.99 | ~20 est. | ~$1.33 |
+| 4 | `B200` (else `H200_SXM`, $5.29) | bf16, fp8 | 7.99 | ~15 est. | ~$2.00 |
+| | **Total** | | | **~2.8 h** | **~$5.40** |
 
-Prices are Runpod Secure Cloud on-demand, one GPU, from `list-gpu-types` on 2026-11-10. Stock
-changes; record the price actually shown at launch. Pods are billed per second, so a short run on
-an expensive card stays cheap. Deploying a pod needs a balance of at least one hour at that rate
-(about $8 for a B200), but that is a minimum balance, not a charge.
+**Measured on the A40 (2026-11-10):** image pull ~7 min (Runpod's billing for that hour suggests
+the pull itself was not charged); weight download + first server start + warmup ~2 min; BF16
+sweep ~29 min; FP8 sweep ~21 min. The concurrency-1 and concurrency-8 windows take about two
+thirds of each sweep. They are memory-bandwidth-bound, so the estimates above scale those windows
+by each card's memory bandwidth relative to the A40 (696 GB/s), and the high-concurrency windows
+by compute. These are still estimates; each run's real minutes go into the spend log.
 
-The minutes are my estimates, not measurements. Each pod gets roughly 15 minutes of fixed overhead
-(image pull, a 16 GB weight download, two server starts with CUDA graph capture), plus the sweep:
-753k output tokens per precision mode at the Decision 6 prompt counts. Low-bandwidth 24–48 GB cards
-are the slow ones: at concurrency 1 an 8B BF16 model decodes at roughly memory bandwidth / 16 GB,
-about 50 tok/s on a 3090 or L40S, and the 3090's KV cache cannot hold 128 sequences. The B200 is
-mostly overhead. Budget about $10 to allow one rerun. The 3090 run replaces these guesses with
-real timings.
+Prices are Runpod Secure Cloud on-demand, one GPU, from `list-gpu-types` on 2026-11-10. Pods are
+billed per second. Deploying needs a balance of at least one hour at that rate (about $8 for a
+B200), which is a minimum balance, not a charge. Expect stock to vanish between the catalog read
+and the create: the smoke test was refused eight times before the A40 placed.
 
 1. Launch the pod. **Write down the exact $/hr shown at launch.**
 2. Get a direct SSH command (`runpodctl ssh info <pod-id>`), connect, and start tmux:
@@ -54,7 +53,7 @@ real timings.
 6. **Terminate the pod** once the tarball is safely on the Mac. Stopped pods with volumes still bill.
 7. Add a row to `data/raw/manual/gpu_spend_log.csv`.
 
-**After the smoke test (RTX 3090): stop.** Continue only if `make bench-parse` prints `OK` for the run (every
+**After the smoke test: stop.** Continue only if `make bench-parse` prints `OK` for the run (every
 JSON parses, power covers every window, parquet non-empty). Then compare the real minutes with
 the table above before renting anything else.
 

@@ -154,3 +154,10 @@ Made while building the historical panel, within the approved plan. The owner ca
   an **RTX A6000** (Ampere, 48 GB, $0.59/hr, Low stock). It keeps the Ampere `fp8_weight_only`
   check and, with 48 GB, does not run short of KV cache at concurrency 128. Label `RTX_A6000` added.
   Owner's standing instruction for this step: "whatever you recommend".
+- **Amendment 2 (2026-11-10):** the RTX A6000 and RTX 4090 were refused for capacity five more
+  times, though the catalog listed both as Low. The smoke test ran on an **A40** (Ampere, 48 GB,
+  $0.59/hr, CA-MTL-1, pod `3fr96bavm534zl`). It passed the handoff's acceptance check: 24 of 24
+  windows, every JSON parsed, power covered every window (largest gap 1.38 s), Marlin detected
+  for `fp8_weight_only`, no confounds. Runpod's support notes report high demand for exactly the
+  consumer and workstation cards tried (RTX 3090, 4090, 5090, A40, A6000), so later runs should
+  expect stock to vanish between the catalog read and the create.
