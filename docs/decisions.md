@@ -88,3 +88,42 @@ Made while building the historical panel, within the approved plan. The owner ca
 - **CoreWeave's "$4.76 Reserve Now" is kept as on-demand,** with the label kept in `sku`.
 - **Rows that do not settle chip identity are left out,** not assumed. See open_questions.md.
 - **The validation sample** is 40 archive rows, spread across provider and year, with seed 20261031.
+
+## Decision 6: Extension adopted: benchmark, term structure, retirement model (2026-11-10)
+
+- **Date:** 2026-11-10. The owner supplied `docs/handoff_extension.md` (written in Claude Chat) and
+  said to start. Three conflicts with earlier decisions went to the owner, who answered as below.
+- **Choice:** add three projects to this paper: P1, a cross-generation vLLM inference benchmark
+  on rented GPUs; P2, decay rates implied by the rental term structure; P3, a power-constrained
+  retirement model. They live in this repo (`gel.bench`, `gel.models.term_structure`, later
+  `gel.models.retirement`), not in the separate `gpuecon` repo the handoff sketches, so P2 can
+  reuse the Azure 1/3/5-year, AWS reserved and Lambda commitment prices already collected.
+- **Alternatives:** a separate repo (rejected by the owner); defer the extension until after
+  Phase 3.
+- **Spot price panel (rule 7):** recorded by hand, once, in benchmark week, from public pricing
+  pages. Each quote is a row with `source_url` and `observed_date`, plus a saved page copy.
+  **Vast.ai and RunPod listings stay out** (Decision 3 stands). The only RunPod price recorded is
+  the one actually paid at pod launch, which is our own invoice, not collected data. On this
+  basis the owner approved CoreWeave, Nebius, Crusoe, Together and Voltage Park as manual sources.
+  Each provider's terms still get read before its first row, and any that bars even manual
+  recording is dropped and logged in open_questions.md.
+- **Benchmark prompt counts trimmed (owner's choice).** The handoff's 20×C prompts at every level
+  would take roughly 45–50 GPU-minutes per GPU on an RTX 4090, against a 15–25 minute budget.
+  The counts are now 20, 160, 160 and 640 prompts at concurrency 1, 8, 32 and 128 (20×C at
+  low concurrency, 5×C from 32 up, never fewer than 160 requests above C=1). Concurrencies,
+  three repeats and both precision modes are unchanged. The 4090 smoke test will give a real
+  timing, and the counts can be revisited then.
+- **vLLM pinned to v0.32.0** (PyPI and Docker Hub, 2026-10-18), not v0.33.0 (2026-11-02), which
+  was eight days old. Benchmark flags and result-JSON keys were checked against the v0.32.0 source.
+  In that version the random dataset sets `ignore_eos` automatically, so each request generates
+  exactly 256 tokens, and FP8 on GPUs without FP8 hardware uses the Marlin weight-only kernel.
+  Ampere's FP8 mode is therefore labelled `fp8_weight_only`.
+- **Benchmark raw files** go to `data/raw/bench/<GPU_LABEL>/<RUN_ID>/`. In place of rule 2's
+  per-file sidecar, `run_meta.json` and `env.json` describe every file in the run directory,
+  since these are our own measurements, not downloads. Dry runs on stub binaries are tagged
+  `dry_run: true` and the parser refuses them unless told otherwise, so stub numbers can't reach
+  `data/`.
+- **P2 root bracket.** δ is solved on [1e-6, 5] as the handoff specifies. An observed ratio at or
+  above 1 implies non-positive decay, outside that bracket. It is reported as missing with the
+  reason recorded, never clipped. In 2026 that can be a real outcome (rents rising), and the
+  paper should report how often it happens.

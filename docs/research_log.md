@@ -33,3 +33,10 @@ Paperspace parsers, which Claude Code spot-checked against raw pages. All 285 sn
 (253 parsed, 32 verified empty, 0 failed), giving 35,733 historical rows. Lambda's archive prices
 matched SkyPilot in 270 of 278 overlapping chip-months, and the other 8 fall in months when Lambda
 changed prices. The owner hand-checked the 40-row sample and found no errors, which completes Phase 2.
+
+## Extension handoff, 2026-11-10
+
+The owner brought a handoff from Claude Chat adding a GPU benchmark (P1), a term-structure decay
+inversion (P2) and a retirement model (P3). Claude Code checked it against the existing repo,
+raised three conflicts (repo location, price-panel sources, benchmark minutes) and recorded the
+answers as Decision 6. Work started on branch `feat/extension-bench-term-structure`.

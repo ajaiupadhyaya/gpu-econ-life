@@ -67,3 +67,20 @@ Unknown values, unreachable sources and anything waiting on a decision.
   collection now fills this forward, but the history cannot be rebuilt.
 - **Pre-2022 market-moving prices remain the weak spot.** Before mid-2022 the panel is list prices
   only: AWS, plus Lambda, Paperspace and CoreWeave. AWS spot history starts in October 2022.
+
+## Extension (Decision 6), 2026-11-10
+
+- **Handoff seed points not yet verified.** The handoff lists two calibration targets for P2:
+  Ornn's 5-year/1-month ratios (A100 ≈ 80%, B200 ≈ 54%) as reported by Data Gravity, and a Silicon
+  Data H100 index ($2.00 on 2025-12-09 to $2.88 on 2026-10-24) as reported by fourweekmba. Both
+  are secondary reports. Neither goes into `external_reference.csv` until checked against Ornn's or
+  Silicon Data's own publication, and whether those can be used at all is a rule 7 question.
+- **Owner's open questions from the handoff (answer before any GPU is rented):** Llama 3.1 8B
+  (gated) or Qwen 2.5 7B; H200 or B200 as the frontier point; base-case electricity price and PUE
+  (a region such as Northern Virginia, or a national average); any private rate cards for
+  `prices_term.csv`.
+- **Benchmark image not built or pushed.** `bench/Dockerfile` has not been built (it needs a
+  linux/amd64 build of a ~10 GB base image and a registry account). The harness logic is proven
+  only on stub binaries.
+- **Unspecified term in the P3 spec.** Handoff 5.2's opex formula uses `u_power` without defining
+  it (power-weighted utilization, or the same `u`?). It needs a definition before P3 is built.
