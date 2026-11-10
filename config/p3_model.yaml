@@ -20,14 +20,15 @@ market:
 hardware:
   calibration_file: data/processed/p3_calibration.json
   comparison: best_available   # Decision 9; alternative: bf16
-  generation0: A100_SXM        # measured: first generation in the simulation
+  generation0: H100_SXM        # Decision 10: re-anchored on the H100 (sourced all-in capex)
   sigma_G: 0.15                # placeholder: one measured architecture step cannot identify it
   power_step: from_calibration # measured A100 -> H100 board-power ratio
   mu_G: from_calibration       # measured log(eta_H100 / eta_A100)
 
-capex:
-  K0_usd: null                 # NO SOURCE: all-in capex per generation-0 GPU (incl. server share)
-  growth_per_generation: null  # NO SOURCE: K_{g+1} / K_g
+capex:                         # Decision 10, from data/processed/p3_capex.json (gel.models.p3_capex)
+  source_file: data/processed/p3_capex.json
+  K0_usd: from_epoch           # $33,600: Epoch AI, H100 SXM5 DGX $269k / 8 (server share included)
+  growth_per_generation: from_epoch  # 1.63x: H100 GPU+baseboard BOM / A100 40GB card price
 maintenance_usd_per_month: null  # NO SOURCE: M_g per GPU-month
 
 cadence:                       # months between frontier launches
@@ -64,3 +65,6 @@ scenarios:                     # overrides of the base parameters (handoff 5.3)
   always_constrained: {regime: {p_stay_constrained: 1.0, p_stay_unconstrained: 0.0, start_constrained: true}}
   power_abundant: {regime: {p_stay_constrained: 0.0, p_stay_unconstrained: 1.0, start_constrained: false}}
   scarcity_boom: {markup: {mean: 1.0, x0: 1.0}}   # placeholder: "2026-like" high markup
+  empirical_cadence: {cadence: {months: [26, 28, 34], probs: [0.3333, 0.3333, 0.3334]}}  # Epoch release gaps V100->A100->H100->B200
+  capex_low: {capex: {K0_usd: 24400.0}}            # sensitivity: H100 GPU + baseboard only (Epoch note)
+  capex_flat: {capex: {growth_per_generation: 1.0}}  # sensitivity: flat capex per generation

@@ -53,12 +53,16 @@ def deep_merge(base: dict, over: dict) -> dict:
     return out
 
 
-def resolve(cfg: dict, calibration: dict | None = None) -> dict:
-    """Fill calibrated values and refuse to proceed with unsourced (null) inputs."""
+def resolve(cfg: dict, calibration: dict | None = None, capex: dict | None = None) -> dict:
+    """Fill calibrated and sourced values; refuse to proceed with unsourced (null) inputs."""
+    cfg = copy.deepcopy(cfg)
+    for key in ("K0_usd", "growth_per_generation"):
+        if cfg["capex"][key] == "from_epoch":
+            cfg["capex"][key] = capex[key] if capex else None
     missing = []
-    if cfg["capex"]["K0_usd"] is None:
+    if not isinstance(cfg["capex"]["K0_usd"], int | float):
         missing.append("capex.K0_usd")
-    if cfg["capex"]["growth_per_generation"] is None:
+    if not isinstance(cfg["capex"]["growth_per_generation"], int | float):
         missing.append("capex.growth_per_generation")
     if cfg["maintenance_usd_per_month"] is None:
         missing.append("maintenance_usd_per_month")
@@ -225,10 +229,12 @@ def run(cfg_path: Path, scenarios: list[str] | None, n_paths: int | None, out_di
     cfg = yaml.safe_load(cfg_path.read_text())
     cal_path = Path(cfg["hardware"]["calibration_file"])
     calibration = json.loads(cal_path.read_text()) if cal_path.exists() else None
+    capex_path = Path(cfg["capex"].get("source_file", ""))
+    capex = json.loads(capex_path.read_text()) if capex_path.is_file() else None
     names = scenarios or list(cfg["scenarios"])
     out = []
     for name in names:
-        p = resolve(deep_merge(cfg, cfg["scenarios"][name]), calibration)
+        p = resolve(deep_merge(cfg, cfg["scenarios"][name]), calibration, capex)
         if n_paths:
             p["n_paths"] = n_paths
         t0 = time.perf_counter()

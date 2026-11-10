@@ -329,3 +329,13 @@ These are the items tagged UNVERIFIED above, grouped by source, so the owner can
 - SEC: earliest date; companyfacts field list (no sample call).
 - WRDS: whether VCU has CRSP, tables, start date, rate limits, Data Download and Analysis Policy.
 - CPI: BLS endpoint URL, CPI-U series ids and start date; whether the api.bls.gov robots Disallow applies to API clients.
+
+## Epoch AI machine-learning hardware dataset (added 2026-11-10, Decision 10)
+
+- URL: https://epoch.ai/data/machine-learning-hardware; CSV https://epoch.ai/data/ml_hardware.csv
+- Licence: CC BY 4.0. Cite: Epoch AI, 'Data on machine learning hardware'. Published online at
+  epoch.ai. No terms-of-use page (`/terms` 404); documentation offers programmatic CSV access.
+- Fields used: "Release date", "Release price (USD)" ("Price of the processor when released, in
+  nominal US dollars"; "Listed prices do not reflect bulk discounts"), "Source for the price".
+- Raw copy: data/raw/indices/epoch/2026-11-10/235424Z-ml_hardware.csv (+ .json sidecar).
+- Used by: gel.models.p3_capex (P3 capex anchor, growth, release gaps).

@@ -16,7 +16,7 @@ CFG = yaml.safe_load((ROOT / "config" / "p3_model.yaml").read_text())
 
 SYNTHETIC_CAL = {
     "best_available": {
-        "gpus": {"A100_SXM": {"eta": 5.5, "w_load": 380.0, "idle_share": 0.24}},
+        "gpus": {"H100_SXM": {"eta": 8.75, "w_load": 549.0, "idle_share": 0.21}},
         "mu_G": 0.46,
         "power_step": 1.43,
     }
@@ -106,3 +106,10 @@ def test_rent_ratio_starts_at_one():
     r = run()
     assert r["rent_ratio_by_year"][0] == pytest.approx(1.0)
     assert 0 < r["implied_flat_ratio"][60] <= 1.5
+
+
+def test_from_epoch_values_resolve():
+    cfg = mc.deep_merge(CFG, {"maintenance_usd_per_month": 50.0})  # SYNTHETIC maintenance
+    p = mc.resolve(cfg, SYNTHETIC_CAL, {"K0_usd": 33_600.0, "growth_per_generation": 1.627})
+    assert p["capex"]["K0_usd"] == 33_600.0
+    assert p["hardware"]["gen0"]["eta"] == 8.75

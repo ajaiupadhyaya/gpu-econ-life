@@ -204,3 +204,30 @@ Made while building P3, within the handoff's design. The owner can reverse any o
   (annuity-due). Values are pooled across tracked generations as a share of each generation's own
   capex. The sum stops at the 180-month horizon, so V at old ages is slightly understated for
   long-lived chips (at most 120 observable months per generation).
+
+## Decision 10: Epoch AI hardware data as P3's capex source; generation 0 re-anchored (2026-11-10)
+
+- **Date:** 2026-11-10, approved by the owner under rule 7 after Claude Code read Epoch's pages,
+  licence and data.
+- **Source added:** Epoch AI, "Data on machine learning hardware" (CC BY 4.0; no terms-of-use
+  page exists, `/terms` returns 404; the documentation offers programmatic CSV access). Archived
+  at `data/raw/indices/epoch/2026-11-10/235424Z-ml_hardware.csv` with sidecar. Epoch's AI Chip
+  Sales hub and its chip-price analysis were read but not added.
+- **Capex anchor:** generation 0 is now the measured **H100 SXM** (not the A100), with
+  **K0 = $33,600** all-in. Epoch's note derives this from an 8xH100 DGX server sold for $269k
+  (SemiAnalysis, May 2023), so it includes the server share the handoff's capex definition asks
+  for. The network fabric is excluded, which is a limitation. Epoch has no A100 80GB price, and
+  its A100 40GB figure ($15,000) is a card price without a server share.
+- **Capex growth per generation: 1.63x** = H100 GPU + baseboard bill of materials ($24.4k per GPU,
+  same Epoch note) / A100 SXM4 40GB card price ($15,000), the closest like-for-like pair.
+  Sensitivity scenarios: `capex_low` (K0 = $24,400, GPU + baseboard only) and `capex_flat`
+  (growth 1.0x, the rough implication of Epoch's 49%/yr performance-per-dollar trend against our
+  measured ~2.3x throughput step).
+- **Empirical cadence scenario:** release gaps between NVIDIA data-centre architectures from the
+  same file (V100 to A100 34.4 months, A100 to H100 28.2, H100 to B200 25.9) give an
+  `empirical_cadence` scenario. The base scenario keeps the handoff's 24-month mean.
+- **Rule 3:** the numbers come from `gel.models.p3_capex` reading the raw CSV, not hand-typed.
+- **Alternatives:** keep the A100 as generation 0 with the $15,000 card price (rejected by the
+  owner); wait for another source.
+- **Still missing:** maintenance per GPU-month (Epoch has none). Claude Code is searching for a
+  citable source to bring to the owner.
