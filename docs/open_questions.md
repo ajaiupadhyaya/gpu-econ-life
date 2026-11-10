@@ -75,10 +75,12 @@ Unknown values, unreachable sources and anything waiting on a decision.
   Data H100 index ($2.00 on 2025-12-09 to $2.88 on 2026-10-24) as reported by fourweekmba. Both
   are secondary reports. Neither goes into `external_reference.csv` until checked against Ornn's or
   Silicon Data's own publication, and whether those can be used at all is a rule 7 question.
-- **Owner's open questions from the handoff (answer before any GPU is rented):** Llama 3.1 8B
-  (gated) or Qwen 2.5 7B; H200 or B200 as the frontier point; base-case electricity price and PUE
-  (a region such as Northern Virginia, or a national average); any private rate cards for
-  `prices_term.csv`.
+- **Llama 3.1 access (blocks the first pod).** Decision 7 chose Llama 3.1 8B, but the owner's
+  Hugging Face token got HTTP 403 on `meta-llama/Llama-3.1-8B-Instruct` on 2026-11-10. Accept the
+  licence on the model page and make sure the token can read gated repos.
+- **Still open from the handoff:** base-case electricity price and PUE (a region such as
+  Northern Virginia, or a national average); any private rate cards for `prices_term.csv`. Model,
+  frontier GPU and smoke-test card were settled in Decision 7, the B200 subject to cost.
 - **Benchmark image not built or pushed.** `bench/Dockerfile` has not been built (it needs a
   linux/amd64 build of a ~10 GB base image and a registry account). The harness logic is proven
   only on stub binaries.

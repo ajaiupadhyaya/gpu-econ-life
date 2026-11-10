@@ -127,3 +127,22 @@ Made while building the historical panel, within the approved plan. The owner ca
   above 1 implies non-positive decay, outside that bracket. It is reported as missing with the
   reason recorded, never clipped. In 2026 that can be a real outcome (rents rising), and the
   paper should report how often it happens.
+
+## Decision 7: Benchmark model, frontier GPU and smoke-test card (2026-11-10)
+
+- **Date:** 2026-11-10, chosen by the owner after a live read of Runpod's Secure Cloud catalog
+  (`list-gpu-types`, one GPU, pods) and a check of Hugging Face access.
+- **Model: Llama 3.1 8B Instruct** on every GPU. Alternative: Qwen 2.5 7B, which is ungated and
+  readable with the owner's token today. Reason: it's the handoff's primary choice and the more
+  standard benchmark model, which helps the MLPerf robustness rows. Blocker: the owner's current
+  token gets HTTP 403 on the Llama repo, so the licence must be accepted (and the token given
+  gated-repo read access) before any pod is rented.
+- **Frontier GPU: B200**, with H200 as the fallback if no B200 is in stock on the day. This
+  depends on the owner accepting the cost estimate. Catalog read 2026-11-10: B200 $7.99/hr, LOW
+  stock, EU-RO-1 only; H200 SXM $5.29/hr, LOW stock in five data centres. Reason: B200 is a new
+  architecture (Blackwell), so the H100-to-frontier efficiency ratio that calibrates P3's G
+  reflects a real generation step, not just Hopper with more memory.
+- **Smoke test on an RTX 3090**, not the handoff's RTX 4090, which had no Secure Cloud stock in
+  that read ($0.89/hr when listed). RTX 3090: $0.50/hr, LOW stock, EUR-IS-2. Being Ampere, it also
+  exercises the Marlin `fp8_weight_only` path the A100 will use. Label `RTX3090` added to
+  `config/bench.yaml`. Like the 4090, it sits outside the paper's sample.

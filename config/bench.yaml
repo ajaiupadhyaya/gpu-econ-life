@@ -1,8 +1,8 @@
 # P1 benchmark specification. docs/handoff_extension.md section 3.2, as amended by Decision 6.
 # Identical on every GPU. Any deviation on a pod is recorded in run_meta.json as a confound.
 
-# One model for all GPUs. Owner's open question 1: switching to the Qwen fallback applies to
-# every GPU, never to some of them.
+# One model for all GPUs. Owner chose Llama 3.1 8B (Decision 7). Switching to the Qwen fallback
+# would apply to every GPU, never to some of them.
 model: meta-llama/Llama-3.1-8B-Instruct   # gated: needs HF_TOKEN with access granted
 model_fallback: Qwen/Qwen2.5-7B-Instruct  # ungated
 download_exclude: ["original/*"]          # Llama ships duplicate consolidated weights there
@@ -43,8 +43,9 @@ modes:
   fp8_weight_only: ["--quantization", "fp8"]
 
 # GPU_LABEL (first argument to run_all.sh) -> chip id and modes. Chip ids follow CLAUDE.md;
-# rtx4090 is a smoke-test card outside the paper's sample.
+# rtx3090 and rtx4090 are smoke-test cards outside the paper's sample.
 gpus:
+  RTX3090:    {chip_id: rtx3090,   arch: ampere,    modes: [bf16, fp8_weight_only]}  # smoke test (Decision 7)
   RTX4090:    {chip_id: rtx4090,   arch: ada,       modes: [bf16, fp8]}
   A100_SXM:   {chip_id: a100_80gb, arch: ampere,    modes: [bf16, fp8_weight_only]}
   H100_SXM:   {chip_id: h100_sxm,  arch: hopper,    modes: [bf16, fp8]}
