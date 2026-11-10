@@ -85,3 +85,21 @@ across runs. Keep `fp8` for the remaining GPUs for consistency, and note it in t
 
 B200: refused for capacity twice at ~22:23 UTC (any data centre, then EU-RO-1), despite Low stock
 in the catalog. L40S: out of stock.
+
+## H200 SXM run (frontier fallback), 2026-11-10
+
+Pod `og4awvzz5s9dz8` (EUR-IS-4, $5.29/hr) placed on the second attempt at 23:21:42 UTC, after five
+B200 refusals between ~22:23 and ~23:21 (the owner chose the fallback). Benchmark 23:26:06 to
+~23:41; results copied off (checksums matched) and the pod terminated at 23:42:09. `make
+bench-parse`: OK for all four runs (96 rows); one model, one vLLM version, no confounds; power
+covered every window (largest gap 1.05 s); native FP8. `gel.bench.report --frontier H200_SXM`
+wrote `paper/tables/p1_benchmark_summary.csv` and `p1_obsolescence_discount.csv` (paid-price spec).
+
+Early observations, not yet results (paid Runpod prices, one provider, so noisy; the primary spec
+needs the cross-provider spot panel): against the H200, every older GPU is priced *below* its
+relative output in the like-for-like BF16 comparison (D from -0.02 to -0.36). The A40 is the
+cheapest per unit of output (D about -0.30 to -0.36), and the discount grows with chip age. The
+one positive D is the A100 at concurrency 128 under best-available precision (+0.18), because
+Ampere's weight-only FP8 cannot help at high load: format obsolescence leaves it with BF16
+throughput only. The H200 adds 16 to 30% throughput over the H100 at a 33% higher price.
+Idle board power ~94 W.
