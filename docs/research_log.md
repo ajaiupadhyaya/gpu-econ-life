@@ -53,3 +53,18 @@ Early observations, not yet results: Ampere's weight-only FP8 speeds decoding 1.
 concurrency 1 but is *slower* than BF16 at concurrency 128 (1,192 vs 1,370 tok/s), consistent
 with the format-obsolescence channel. Idle board power after each mode was ~82 W against ~299 W
 under load.
+
+## A100 SXM run, 2026-11-10
+
+Pod `hqtiegsvysdv5h` (US-MD-1, $1.79/hr) placed on the second attempt at 20:00:17 UTC. Container up
+within ~5 minutes; benchmark 20:06:43 to ~20:36:40; results copied off (checksums matched) and
+the pod terminated at 20:37:40. `make bench-parse`: OK for both runs (48 rows), power covered
+every window (largest gap 1.42 s), Marlin detected. Early observations, not yet results: the A100
+is 2.3 to 2.7× the A40's throughput and 1.7 to 2.1× its tokens per joule, yet it costs more per
+token at Runpod's list prices at every concurrency. A40 rental looks cheap relative to output.
+Idle board power after each mode ~90 W.
+
+Billing note: `list-pod-billing` (read 20:38 UTC) shows a pod `66klutbsdm6402`, not created by
+Claude Code, with $0.059 in the 19:00 bucket. It no longer exists (`list-pods` empty). Every
+create call in this session either returned 400 or produced the A40 or A100 pods. Flagged to the
+owner.
