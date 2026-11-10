@@ -168,3 +168,15 @@ Made while building the historical panel, within the approved plan. The owner ca
   Hopper, the same architecture as the H100. The H100-to-frontier efficiency ratio that calibrates
   P3's G therefore reflects a memory-bandwidth refresh (HBM3e, 141 GB), not a new generation, and
   the FP4 format channel is not measured. A B200 run remains possible later as an addition.
+
+## Decision 8: P3 power cost counts idle draw (2026-11-10)
+
+- **Date:** 2026-11-10, chosen by the owner.
+- **Choice:** the handoff's undefined `u_power` is replaced by an explicit idle term. Monthly power
+  cost = e(t) × PUE × 730 h × [w_load × u + w_idle × (1 − u)] / 1000, plus maintenance. `w_load`
+  and `w_idle` come from P1: mean board power during measured windows at the operating concurrency,
+  and mean power in the idle window after each precision mode.
+- **Alternatives:** `u_power = u`, which charges no power while the GPU waits for work.
+- **Reason:** a GPU awaiting work still draws power: measured idle was 82–118 W against 276–678 W
+  under load (A40, A100, H100, H200; 2026-11-10). Ignoring it makes old chips look cheaper to keep
+  and pushes retirement ages later.
