@@ -68,3 +68,20 @@ Billing note: `list-pod-billing` (read 20:38 UTC) shows a pod `66klutbsdm6402`, 
 Claude Code, with $0.059 in the 19:00 bucket. It no longer exists (`list-pods` empty). Every
 create call in this session either returned 400 or produced the A40 or A100 pods. Flagged to the
 owner.
+
+## H100 SXM run, 2026-11-10
+
+Pod `e73k3rnpzm336u` (CA-MTL-1, $3.99/hr) placed on the first attempt at 22:00:32 UTC. Container
+up within ~4 minutes; benchmark 22:04:57 to 22:22:25; results copied off (checksums matched) and
+the pod terminated at 22:22:45. `make bench-parse`: OK for all three runs (72 rows), power covered
+every window (largest gap 1.08 s). FP8 ran natively (no Marlin warning in the server log).
+Early observations: native FP8 adds 49% throughput at concurrency 1 and 29% at 128 over BF16,
+and 37 to 57% more tokens per joule. On Ampere, by contrast, weight-only FP8 was slower than
+BF16 at 128. Idle board power ~118 W.
+
+vLLM 0.32.0 logs: "--quantization fp8 is deprecated for online quantization; use
+--quantization fp8_per_tensor instead." Every GPU used the same flag, so this is not a confound
+across runs. Keep `fp8` for the remaining GPUs for consistency, and note it in the paper.
+
+B200: refused for capacity twice at ~22:23 UTC (any data centre, then EU-RO-1), despite Low stock
+in the catalog. L40S: out of stock.

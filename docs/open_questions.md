@@ -86,3 +86,7 @@ Unknown values, unreachable sources and anything waiting on a decision.
   only on stub binaries.
 - **Unspecified term in the P3 spec.** Handoff 5.2's opex formula uses `u_power` without defining
   it (power-weighted utilization, or the same `u`?). It needs a definition before P3 is built.
+- **vLLM FP8 flag deprecation.** vLLM 0.32.0 calls `--quantization fp8` a deprecated alias for
+  `fp8_per_tensor` (online per-tensor FP8). All runs use the same flag, so it is consistent, but
+  the paper's methods section should name the actual scheme: per-tensor dynamic FP8 (W8A8 on
+  Hopper/Ada/Blackwell, W8A16 Marlin on Ampere).
