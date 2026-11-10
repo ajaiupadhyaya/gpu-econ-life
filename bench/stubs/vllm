@@ -1,0 +1,110 @@
+#!/usr/bin/env python3
+"""DRY-RUN STUB for the vllm CLI. Every number it writes is fake and tagged `"stub": true`.
+
+`vllm serve MODEL ...`  serves /health on --port until SIGINT/SIGTERM.
+                        If STUB_FAIL_MODE_FLAG appears among the args (e.g. "fp8"), exits 1
+                        before becoming healthy, to exercise the harness's skip path.
+`vllm bench serve ...`  sleeps briefly and writes a result JSON with the v0.32.0 key set.
+`vllm --version`        prints a stub version.
+"""
+
+import json
+import os
+import signal
+import sys
+import time
+from datetime import datetime
+from http.server import BaseHTTPRequestHandler, HTTPServer
+from pathlib import Path
+
+
+def opt(args, name, default=None):
+    return args[args.index(name) + 1] if name in args else default
+
+
+def serve(args):
+    fail = os.environ.get("STUB_FAIL_MODE_FLAG")
+    if fail and fail in args:
+        print(f"STUB: simulated failure for {fail}", flush=True)
+        sys.exit(1)
+    port = int(opt(args, "--port", 8000))
+
+    class H(BaseHTTPRequestHandler):
+        def do_GET(self):
+            self.send_response(200 if self.path == "/health" else 404)
+            self.end_headers()
+
+        def log_message(self, *a):
+            pass
+
+    srv = HTTPServer(("127.0.0.1", port), H)
+    signal.signal(signal.SIGINT, lambda *_: sys.exit(0))
+    signal.signal(signal.SIGTERM, lambda *_: sys.exit(0))
+    print(f"STUB vllm serve {args[0]} on {port}; flags={args[1:]}", flush=True)
+    if "fp8" in args:
+        print("STUB (fake log line): Weight-only FP8 compression will be used leveraging the "
+              "Marlin kernel.", flush=True)
+    srv.serve_forever()
+
+
+def bench(args):
+    c = int(opt(args, "--max-concurrency"))
+    n = int(opt(args, "--num-prompts"))
+    in_len = int(opt(args, "--random-input-len"))
+    out_len = int(opt(args, "--random-output-len"))
+    sleep = float(os.environ.get("STUB_BENCH_SLEEP_S", "0.6"))
+    time.sleep(sleep)
+    duration = sleep
+    meta = {}
+    if "--metadata" in args:
+        for kv in args[args.index("--metadata") + 1 :]:
+            if kv.startswith("--"):
+                break
+            k, v = kv.split("=", 1)
+            meta[k] = v
+    out_tok = n * out_len
+    res = {
+        "stub": True,
+        "date": datetime.now().strftime("%Y%m%d-%H%M%S"),
+        "backend": opt(args, "--backend", "openai"),
+        "model_id": opt(args, "--model"),
+        "num_prompts": n,
+        "max_concurrency": c,
+        "duration": duration,
+        "completed": n,
+        "failed": 0,
+        "total_input_tokens": n * in_len,
+        "total_output_tokens": out_tok,
+        "request_throughput": n / duration,
+        "output_throughput": out_tok / duration,
+        "total_token_throughput": (out_tok + n * in_len) / duration,
+        "max_output_tokens_per_s": out_tok / duration * 1.1,
+        "max_concurrent_requests": c,
+        "mean_ttft_ms": 10.0 * c, "median_ttft_ms": 9.0 * c, "std_ttft_ms": 1.0,
+        "p50_ttft_ms": 9.0 * c, "p99_ttft_ms": 20.0 * c,
+        "mean_tpot_ms": 5.0, "median_tpot_ms": 5.0, "std_tpot_ms": 0.1,
+        "p50_tpot_ms": 5.0, "p99_tpot_ms": 7.0,
+        "mean_itl_ms": 5.0, "p99_itl_ms": 8.0,
+        "mean_e2el_ms": 1300.0, "p99_e2el_ms": 1500.0,
+        **meta,
+    }
+    path = Path(opt(args, "--result-dir", ".")) / opt(args, "--result-filename")
+    path.write_text(json.dumps(res))
+    print(f"STUB bench: c={c} n={n} -> {path}")
+
+
+def main():
+    args = sys.argv[1:]
+    if args[:1] == ["--version"]:
+        print("0.32.0-stub")
+    elif args[:1] == ["serve"]:
+        serve(args[1:])
+    elif args[:2] == ["bench", "serve"]:
+        bench(args[2:])
+    else:
+        print("STUB vllm: unsupported", args, file=sys.stderr)
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()
