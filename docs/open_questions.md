@@ -75,10 +75,9 @@ Unknown values, unreachable sources and anything waiting on a decision.
   Data H100 index ($2.00 on 2025-12-09 to $2.88 on 2026-10-24) as reported by fourweekmba. Both
   are secondary reports. Neither goes into `external_reference.csv` until checked against Ornn's or
   Silicon Data's own publication, and whether those can be used at all is a rule 7 question.
-- **Llama 3.1 access (blocks the first pod).** Decision 7 chose Llama 3.1 8B, but the owner's
-  Hugging Face token got HTTP 403 on `meta-llama/Llama-3.1-8B-Instruct` on 2026-11-10. Access is
-  `gated: manual` (Meta reviews each request). Request it on the model page, check status at
-  huggingface.co/settings/gated-repos, and make sure the token can read gated repos.
+- **Llama 3.1 access: resolved 2026-11-10.** Meta approved the owner's request. The local token
+  now gets HTTP 200 on `config.json` and `model-00001-of-00004.safetensors`. The same token goes
+  on the Runpod template as `HF_TOKEN`.
 - **Still open from the handoff:** base-case electricity price and PUE (a region such as
   Northern Virginia, or a national average); any private rate cards for `prices_term.csv`. Model,
   frontier GPU (B200, approved) and smoke-test card were settled in Decision 7.

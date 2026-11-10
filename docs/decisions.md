@@ -132,7 +132,9 @@ Made while building the historical panel, within the approved plan. The owner ca
 
 - **Date:** 2026-11-10, chosen by the owner after a live read of Runpod's Secure Cloud catalog
   (`list-gpu-types`, one GPU, pods) and a check of Hugging Face access.
-- **Model: Llama 3.1 8B Instruct** on every GPU. Alternative: Qwen 2.5 7B, which is ungated and
+- **Model: Llama 3.1 8B Instruct** on every GPU. The owner also weighed Meta's newer Muse models:
+  Glimmer (~30B dense, about 60 GB in BF16) does not fit the 24 and 48 GB cards, and Spark Open
+  (816B MoE) needs a multi-GPU node. Alternative: Qwen 2.5 7B, which is ungated and
   readable with the owner's token today. Reason: it's the handoff's primary choice and the more
   standard benchmark model, which helps the MLPerf robustness rows. Blocker: the owner's current
   token gets HTTP 403 on the Llama repo, so the licence must be accepted (and the token given
