@@ -90,3 +90,15 @@ Unknown values, unreachable sources and anything waiting on a decision.
   `fp8_per_tensor` (online per-tensor FP8). All runs use the same flag, so it is consistent, but
   the paper's methods section should name the actual scheme: per-tensor dynamic FP8 (W8A8 on
   Hopper/Ada/Blackwell, W8A16 Marlin on Ampere).
+- **P3 needs three sourced inputs before it can produce results:** all-in capex per GPU for
+  generation 0 (A100, including its share of server and network), capex growth per generation,
+  and maintenance per GPU-month. `config/p3_model.yaml` holds them as null and
+  `gel.models.monte_carlo` refuses to run. Candidate sources need the owner's approval (rule 7),
+  e.g. Epoch AI's chip price data (docs/related_work.md, row 61) or values from SEC filings.
+- **P3 placeholders awaiting sign-off:** sigma_G, cadence probabilities, markup and electricity OU
+  parameters, regime transition probabilities and the 60-month annuity term
+  (docs/assumptions.md). The Weibull failure default (8 y, shape 1.5) makes failure the most
+  common end of life in synthetic runs. It is worth checking against field data before results.
+- **P3 validation checks 1-4 (handoff 5.4) not yet run.** They need the real inputs. Check 3 (a
+  scarcity boom that raises old-chip rents while the efficiency gap widens) also needs a
+  transition scenario in which the markup jumps mid-path; the current boom scenario starts high.

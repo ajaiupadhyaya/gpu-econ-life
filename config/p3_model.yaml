@@ -1,0 +1,66 @@
+# P3 retirement model parameters. docs/handoff_extension.md section 5, Decisions 8 and 9.
+# Every value is logged in docs/assumptions.md with its source. Three kinds of value:
+#   measured     - from P1 via data/processed/p3_calibration.json (gel.models.p3_calibration)
+#   handoff      - specified in the owner's handoff
+#   placeholder  - chosen by Claude Code, awaiting owner sign-off; varied in sensitivity runs
+# `null` means NO SOURCE YET. The model refuses to run until it is filled (CLAUDE.md rule 1).
+
+seed: 20261110
+n_paths: 20000            # handoff
+horizon_months: 180       # handoff
+launch_window_months: 60  # handoff: track generations launched in months 0-60
+hold_months: 3            # handoff: condition must hold 3 consecutive months
+
+market:
+  utilization: 0.70            # handoff default
+  pue: 1.3                     # handoff default
+  discount_rate_annual: 0.08   # handoff default (neocloud cost of capital)
+  annuity_months: 60           # placeholder: n in A = K r / (1 - (1+r)^-n); handoff gives none
+
+hardware:
+  calibration_file: data/processed/p3_calibration.json
+  comparison: best_available   # Decision 9; alternative: bf16
+  generation0: A100_SXM        # measured: first generation in the simulation
+  sigma_G: 0.15                # placeholder: one measured architecture step cannot identify it
+  power_step: from_calibration # measured A100 -> H100 board-power ratio
+  mu_G: from_calibration       # measured log(eta_H100 / eta_A100)
+
+capex:
+  K0_usd: null                 # NO SOURCE: all-in capex per generation-0 GPU (incl. server share)
+  growth_per_generation: null  # NO SOURCE: K_{g+1} / K_g
+maintenance_usd_per_month: null  # NO SOURCE: M_g per GPU-month
+
+cadence:                       # months between frontier launches
+  months: [18, 24, 30, 36]     # handoff support
+  probs:  [0.25, 0.50, 0.25, 0.0]  # placeholder: mean 24 months, matching the base scenario
+
+markup:                        # scarcity markup m(t), OU, annual parameters
+  mean: 0.20                   # placeholder
+  kappa: 1.0                   # placeholder (half-life ~8 months)
+  sigma: 0.30                  # placeholder
+  x0: 0.20                     # placeholder: start at the mean
+  floor: -0.5                  # handoff
+
+electricity:                   # e(t), $/kWh, OU
+  mean: 0.08                   # handoff default (owner's open question 3: region vs national)
+  kappa: 1.0                   # placeholder
+  sigma: 0.02                  # placeholder
+  x0: 0.08
+  floor: 0.02                  # handoff
+
+regime:                        # monthly Markov chain; True = power-constrained
+  p_stay_constrained: 0.97     # placeholder
+  p_stay_unconstrained: 0.97   # placeholder
+  start_constrained: true      # placeholder (2026 power scarcity)
+
+failure:                       # Weibull physical failure
+  scale_years: 8.0             # handoff
+  shape: 1.5                   # handoff
+
+scenarios:                     # overrides of the base parameters (handoff 5.3)
+  base: {}
+  fast_frontier: {cadence: {months: [18], probs: [1.0]}}
+  slow_frontier: {cadence: {months: [36], probs: [1.0]}}
+  always_constrained: {regime: {p_stay_constrained: 1.0, p_stay_unconstrained: 0.0, start_constrained: true}}
+  power_abundant: {regime: {p_stay_constrained: 0.0, p_stay_unconstrained: 1.0, start_constrained: false}}
+  scarcity_boom: {markup: {mean: 1.0, x0: 1.0}}   # placeholder: "2026-like" high markup

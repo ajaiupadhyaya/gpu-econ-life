@@ -1,4 +1,4 @@
-.PHONY: install test test-fast lint coverage-preview collect health bench-dryrun bench-parse data models paper all
+.PHONY: install test test-fast lint coverage-preview collect health bench-dryrun bench-parse bench-report p3-calibrate p3 data models paper all
 
 install:
 	uv sync
@@ -25,6 +25,15 @@ health:
 # P1 benchmark (docs/bench_runbook.md). The dry run uses stub binaries and a temp directory.
 bench-dryrun:
 	bench/dryrun.sh
+
+bench-report:
+	uv run python -m gel.bench.report --frontier H200_SXM
+
+p3-calibrate:
+	uv run python -m gel.models.p3_calibration
+
+p3: p3-calibrate
+	uv run python -m gel.models.monte_carlo
 
 bench-parse:
 	uv run python -m gel.bench.parse --root data/raw/bench --out data/interim/bench/bench_windows.parquet

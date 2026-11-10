@@ -180,3 +180,27 @@ Made while building the historical panel, within the approved plan. The owner ca
 - **Reason:** a GPU awaiting work still draws power: measured idle was 82–118 W against 276–678 W
   under load (A40, A100, H100, H200; 2026-11-10). Ignoring it makes old chips look cheaper to keep
   and pushes retirement ages later.
+
+## Decision 9: P3 calibration choices (2026-11-10)
+
+Made while building P3, within the handoff's design. The owner can reverse any of them.
+
+- **Operating point:** concurrency 32 (handoff default) with each GPU's best available precision
+  (handoff 3.4's "economically realistic" comparison). BF16-only values are written alongside
+  in `data/processed/p3_calibration.json` as the like-for-like alternative.
+- **Generation step (mu_G):** log(eta_H100 / eta_A100) = 0.459 (1.58x tokens/J per generation,
+  best precision; 1.25x BF16-only). A100 to H100 is the only true architecture step in the sample.
+  The H100 to H200 refresh (1.14x) is a same-architecture step and is reported as a lower-bound
+  sensitivity, not used for mu_G. The handoff suggested both ratios; with the B200 missing, using
+  the refresh would understate the frontier's pace. sigma_G cannot be identified from one step and
+  is a placeholder (0.15).
+- **Power path:** board power grows by the measured A100 to H100 ratio (1.43x) per generation, and
+  throughput follows as q = eta x w. Idle draw is a constant share of loaded power, taken from
+  generation 0 (A100: 0.24).
+- **Rules:** the negative-margin rule applies in both regimes; the obsolescence rule applies only in
+  the power-constrained regime and excludes the current frontier chip. The retirement month is the
+  third consecutive month the condition holds. Margins count up to, not including, that month.
+- **Valuation:** V(a) follows the handoff's sum, which leaves the current month undiscounted
+  (annuity-due). Values are pooled across tracked generations as a share of each generation's own
+  capex. The sum stops at the 180-month horizon, so V at old ages is slightly understated for
+  long-lived chips (at most 120 observable months per generation).
