@@ -161,3 +161,10 @@ Made while building the historical panel, within the approved plan. The owner ca
   for `fp8_weight_only`, no confounds. Runpod's support notes report high demand for exactly the
   consumer and workstation cards tried (RTX 3090, 4090, 5090, A40, A6000), so later runs should
   expect stock to vanish between the catalog read and the create.
+- **Amendment 3 (2026-11-10): frontier run on the H200 (owner's choice).** The B200 was refused for
+  capacity five times between ~22:23 and ~23:21 UTC, while Runpod's catalog kept listing it as Low
+  stock. Claude Code recommended waiting; the owner chose to run the approved H200 fallback now
+  (pod `og4awvzz5s9dz8`, EUR-IS-4, $5.29/hr). Consequence for the paper: the frontier point is
+  Hopper, the same architecture as the H100. The H100-to-frontier efficiency ratio that calibrates
+  P3's G therefore reflects a memory-bandwidth refresh (HBM3e, 141 GB), not a new generation, and
+  the FP4 format channel is not measured. A B200 run remains possible later as an addition.
