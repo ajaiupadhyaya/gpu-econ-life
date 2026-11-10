@@ -76,11 +76,12 @@ Unknown values, unreachable sources and anything waiting on a decision.
   are secondary reports. Neither goes into `external_reference.csv` until checked against Ornn's or
   Silicon Data's own publication, and whether those can be used at all is a rule 7 question.
 - **Llama 3.1 access (blocks the first pod).** Decision 7 chose Llama 3.1 8B, but the owner's
-  Hugging Face token got HTTP 403 on `meta-llama/Llama-3.1-8B-Instruct` on 2026-11-10. Accept the
-  licence on the model page and make sure the token can read gated repos.
+  Hugging Face token got HTTP 403 on `meta-llama/Llama-3.1-8B-Instruct` on 2026-11-10. Access is
+  `gated: manual` (Meta reviews each request). Request it on the model page, check status at
+  huggingface.co/settings/gated-repos, and make sure the token can read gated repos.
 - **Still open from the handoff:** base-case electricity price and PUE (a region such as
   Northern Virginia, or a national average); any private rate cards for `prices_term.csv`. Model,
-  frontier GPU and smoke-test card were settled in Decision 7, the B200 subject to cost.
+  frontier GPU (B200, approved) and smoke-test card were settled in Decision 7.
 - **Benchmark image not built or pushed.** `bench/Dockerfile` has not been built (it needs a
   linux/amd64 build of a ~10 GB base image and a registry account). The harness logic is proven
   only on stub binaries.

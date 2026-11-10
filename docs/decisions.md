@@ -137,8 +137,9 @@ Made while building the historical panel, within the approved plan. The owner ca
   standard benchmark model, which helps the MLPerf robustness rows. Blocker: the owner's current
   token gets HTTP 403 on the Llama repo, so the licence must be accepted (and the token given
   gated-repo read access) before any pod is rented.
-- **Frontier GPU: B200**, with H200 as the fallback if no B200 is in stock on the day. This
-  depends on the owner accepting the cost estimate. Catalog read 2026-11-10: B200 $7.99/hr, LOW
+- **Frontier GPU: B200**, with H200 as the fallback if no B200 is in stock on the day. The owner
+  approved it on 2026-11-10 against the estimate in docs/bench_runbook.md (about $2.66 for ~20
+  minutes; about $6.50 for all five GPUs). Catalog read 2026-11-10: B200 $7.99/hr, LOW
   stock, EU-RO-1 only; H200 SXM $5.29/hr, LOW stock in five data centres. Reason: B200 is a new
   architecture (Blackwell), so the H100-to-frontier efficiency ratio that calibrates P3's G
   reflects a real generation step, not just Hopper with more memory.
