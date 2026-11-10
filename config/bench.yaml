@@ -43,10 +43,11 @@ modes:
   fp8_weight_only: ["--quantization", "fp8"]
 
 # GPU_LABEL (first argument to run_all.sh) -> chip id and modes. Chip ids follow CLAUDE.md;
-# rtx3090, rtx_a6000 and rtx4090 are smoke-test cards outside the paper's sample.
+# rtx3090, rtx_a6000, a40 and rtx4090 are smoke-test cards outside the paper's sample.
 gpus:
   RTX3090:    {chip_id: rtx3090,   arch: ampere,    modes: [bf16, fp8_weight_only]}  # smoke test (Decision 7)
   RTX_A6000:  {chip_id: rtx_a6000, arch: ampere,    modes: [bf16, fp8_weight_only]}  # smoke test swap
+  A40:        {chip_id: a40,       arch: ampere,    modes: [bf16, fp8_weight_only]}  # smoke test swap
   RTX4090:    {chip_id: rtx4090,   arch: ada,       modes: [bf16, fp8]}
   A100_SXM:   {chip_id: a100_80gb, arch: ampere,    modes: [bf16, fp8_weight_only]}
   H100_SXM:   {chip_id: h100_sxm,  arch: hopper,    modes: [bf16, fp8]}
