@@ -247,3 +247,65 @@ Made while building P3, within the handoff's design. The owner can reverse any o
 - **Alternatives:** 12.5% base; $0 base with sensitivity; owner-supplied figure.
 - **Form:** proportional to each generation's capex, following CloudRift's reasoning that spares
   and support "scale with system value".
+
+## Decision 12: P3 placeholders replaced by calibrations; model fixes (2026-11-11)
+
+- **Date:** 2026-11-11. The owner asked Claude Code to resolve the placeholders "with intelligent
+  judgement" and approved researching field failure data. All values are written by
+  `gel.models.p3_market_calibration` to `data/processed/p3_market.json` and referenced from
+  `config/p3_model.yaml` as `from_market:...`, so nothing is hand-typed (rule 3).
+- **Electricity:** EIA Form 861M (public domain; EIA is in the original source list), US
+  industrial revenue / sales, 2016-09 to 2026-08. Mean = last 12 months, $0.089/kWh (Virginia
+  $0.100, in a `virginia_power` scenario; this settles open question 3: national base, Virginia as
+  sensitivity). OU kappa 0.43 and sigma $0.0096 from an AR(1) on the deseasonalised log price.
+- **Scarcity markup:** m = rent / H100 all-in cost per sold GPU-hour - 1, using the model's own
+  cost structure ($1.61/h). Level 0.90 = mean of Lambda's H100 on-demand markup while the H100
+  was the frontier (2023-08 to 2025-05; B200 listings start 2025-06). Dynamics from AWS spot H100
+  (2023-08 to 2026-10), the only market-like series: kappa 0.98, sigma 1.09 in markup units. Boom
+  = Lambda's 2026 price ($4.14, from $3.14), markup 1.57: the handoff's "2026-like" level. The
+  markup absorbs normal provider overhead (colocation, network, staff, sales) as well as
+  scarcity, because the model's cost has no separate facility line. This is stated in the paper.
+- **Markup process changed (model fix):** OU on log(1 + m), with a convexity-corrected long-run
+  mean and m(0) drawn from the stationary law. The handoff's OU on m with a -0.5 floor drifted
+  upward at the calibrated volatility (the floor clips the downside). The original process stays
+  as the `markup_level_process` scenario: median 3.83 years against 4.08.
+- **OU fitting is consistent with the simulator:** both use the same Euler step
+  (phi = 1 - kappa dt), so calibrated parameters reproduce the observed AR(1).
+- **Rent path (model fix):** E[rent(a)] / E[rent(0)] over the same paths, a ratio of means. The
+  earlier mean of per-path ratios was biased upward by Jensen's inequality (12-month F/R0 above 1).
+- **sigma_G = 0.086:** standard deviation of log BF16 FLOP/s-per-TDP-watt steps,
+  V100 -> A100 -> H100 -> B200 (1.87x, 1.81x, 1.59x; Epoch). The spec-based mean step (1.75x)
+  is a tornado case; the measured 1.58x stays the base.
+- **Power regime:** p_stay_constrained = 1 - 1/48. A constrained spell lasts about as long as a
+  grid-interconnection wait, which LBNL "Queued Up: 2025 Edition" (Rand et al., Dec 2025) puts at
+  a median "over 4 years for those built in 2018-2024" (read on emp.lbl.gov). p_stay_unconstrained
+  = 1 - 1/24 is a judgement: new capacity is absorbed faster than it is built. The long-run share
+  constrained is 2/3. The chain starts constrained, given queue lengths and 2026's rising H100
+  rents.
+- **Physical failure:** constant hazard (Weibull shape 1), 2%/yr of permanent loss, a judgement
+  based on field data in `data/raw/manual/gpu_failure_evidence.csv`. Incident rates on modern GPUs
+  are 8-11% per GPU-year (Llama 3, 16,384 H100s: 268 GPU-category interruptions in 54 days =
+  11.1%; Delta H100 uncorrectable-memory MTBE 88,768 h = 9.9%). These are upper bounds, because
+  most incidents end in a reset, remap or warranty swap, not the asset's loss. Titan (Ostrouchov
+  et al., SC20) found neither infant mortality nor wear-out over five years, which supports shape
+  1. Its GitHub data has no licence and is not used. Scenarios: `failure_low` 0.5%,
+  `failure_high` 11.1%, `failure_handoff` (8 years, shape 1.5). Llama 3's Table 5 is internally
+  inconsistent (148 faulty-GPU events vs 30.1% of 419 = 126); the higher count is used.
+- **Cadence:** the base keeps the handoff's 24-month mean (a design choice, not a placeholder);
+  `empirical_cadence` uses Epoch's architecture gaps (26/28/34 months). NVIDIA's reported
+  annual cadence could not be verified from NVIDIA's own pages and is not used.
+- **Annuity term:** 60 months, the midpoint of the 4-6 year book lives being compared; the tornado
+  varies it (48/72) with a swing of 0.17 years.
+- **Validation (handoff 5.4)**, `gel.models.p3_validation`:
+  1. Cross-section: model A100/H100 rent ratio 0.44 agrees within 25% with Lambda (0.57),
+     CoreWeave (0.46) and AWS (0.42). Google Cloud disagrees, a basis mismatch (Decision 4).
+  2. Term structure: model F/R0 1.00 at 12 months, 0.91 at 36. Neocloud observed medians are 0.91
+     and 0.60; hyperscalers 0.62 and 0.38. Lambda's A100 commitments (0.88-0.92) match. The rest
+     implies a term premium of about 10-12%/yr (neocloud) and 19-38%/yr (hyperscaler), consistent
+     with sticky, inflated on-demand list prices (Phase 0 review). Reported as a documented
+     failure of the rent-decay channel alone to explain hyperscaler term discounts.
+  3. Scarcity: passes. The markup jump at month 36 lifts the oldest generation's rent from $2.20
+     to $2.92/h while its efficiency gap widens (1.59x -> 1.65x).
+  4. Tornado: the generation step dominates (median 8.7 years if steps are refresh-sized, 3.5 at
+     spec size), then cadence, markup, maintenance and failure. Electricity, PUE, utilisation and
+     the discount rate each move the median by 0.2 years or less.

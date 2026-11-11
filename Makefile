@@ -1,4 +1,4 @@
-.PHONY: install test test-fast lint coverage-preview collect health bench-dryrun bench-parse bench-report p3-calibrate p3-capex p3 data models paper all
+.PHONY: install test test-fast lint coverage-preview collect health bench-dryrun bench-parse bench-report p3-calibrate p3-capex p3-market p3 data models paper all
 
 install:
 	uv sync
@@ -35,7 +35,10 @@ p3-calibrate:
 p3-capex:
 	uv run python -m gel.models.p3_capex
 
-p3: p3-calibrate p3-capex
+p3-market:
+	uv run python -m gel.models.p3_market_calibration
+
+p3: p3-calibrate p3-capex p3-market p3-market
 	uv run python -m gel.models.monte_carlo
 
 bench-parse:

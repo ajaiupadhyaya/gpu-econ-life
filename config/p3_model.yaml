@@ -15,13 +15,13 @@ market:
   utilization: 0.70            # handoff default
   pue: 1.3                     # handoff default
   discount_rate_annual: 0.08   # handoff default (neocloud cost of capital)
-  annuity_months: 60           # placeholder: n in A = K r / (1 - (1+r)^-n); handoff gives none
+  annuity_months: 60           # Decision 12: midpoint of the 4-6 y book lives compared; tornado 48/72
 
 hardware:
   calibration_file: data/processed/p3_calibration.json
   comparison: best_available   # Decision 9; alternative: bf16
   generation0: H100_SXM        # Decision 10: re-anchored on the H100 (sourced all-in capex)
-  sigma_G: 0.15                # placeholder: one measured architecture step cannot identify it
+  sigma_G: from_market:generation_step.sigma_G  # Decision 12: sd of Epoch log FLOP/W steps (0.086)
   power_step: from_calibration # measured A100 -> H100 board-power ratio
   mu_G: from_calibration       # measured log(eta_H100 / eta_A100)
 
@@ -33,30 +33,33 @@ maintenance_fraction_of_capex_per_year: 0.04  # Decision 11: CloudRift (2026-01-
 
 cadence:                       # months between frontier launches
   months: [18, 24, 30, 36]     # handoff support
-  probs:  [0.25, 0.50, 0.25, 0.0]  # placeholder: mean 24 months, matching the base scenario
+  probs:  [0.25, 0.50, 0.25, 0.0]  # Decision 12: keeps the handoff's 24-month base; empirical_cadence scenario uses Epoch gaps
 
-markup:                        # scarcity markup m(t), OU, annual parameters
-  mean: 0.20                   # placeholder
-  kappa: 1.0                   # placeholder (half-life ~8 months)
-  sigma: 0.30                  # placeholder
-  x0: 0.20                     # placeholder: start at the mean
+market_file: data/processed/p3_market.json   # Decision 12 (gel.models.p3_market_calibration)
+
+markup:                        # scarcity markup m(t), OU, annual parameters (Decision 12)
+  mean: from_market:markup.mean    # Lambda H100 on-demand vs H100 all-in cost, H100-frontier era
+  kappa: from_market:markup.kappa  # AR(1) of log AWS spot H100
+  sigma: from_market:markup.sigma
+  x0: stationary               # Decision 12: draw m(0) from the long-run law (no built-in drift)
+  process: log                 # Decision 12: OU on log(1+m), matching the log-price calibration
   floor: -0.5                  # handoff
 
-electricity:                   # e(t), $/kWh, OU
-  mean: 0.08                   # handoff default (owner's open question 3: region vs national)
-  kappa: 1.0                   # placeholder
-  sigma: 0.02                  # placeholder
-  x0: 0.08
+electricity:                   # e(t), $/kWh, OU (Decision 12: EIA-861M US industrial, 10 years)
+  mean: from_market:electricity.mean_usd_kwh   # last 12 months; Virginia in a scenario
+  kappa: from_market:electricity.kappa
+  sigma: from_market:electricity.sigma_usd_kwh
+  x0: from_market:electricity.mean_usd_kwh
   floor: 0.02                  # handoff
 
-regime:                        # monthly Markov chain; True = power-constrained
-  p_stay_constrained: 0.97     # placeholder
-  p_stay_unconstrained: 0.97   # placeholder
-  start_constrained: true      # placeholder (2026 power scarcity)
+regime:                        # monthly Markov chain; True = power-constrained (Decision 12)
+  p_stay_constrained: from_market:regime.p_stay_constrained    # 1 - 1/48: LBNL queue wait >4 y
+  p_stay_unconstrained: from_market:regime.p_stay_unconstrained  # 1 - 1/24: judgement
+  start_constrained: true      # 2026: interconnection queues + rising H100 rents (Decision 12)
 
-failure:                       # Weibull physical failure
-  scale_years: 8.0             # handoff
-  shape: 1.5                   # handoff
+failure:                       # permanent physical loss (Decision 12)
+  annual_hazard: from_market:failure.base_annual_hazard  # 2%/yr constant (judgement on field data)
+  shape: 1.0                   # Titan SC20: no infant mortality or wear-out
 
 scenarios:                     # overrides of the base parameters (handoff 5.3)
   base: {}
@@ -64,8 +67,14 @@ scenarios:                     # overrides of the base parameters (handoff 5.3)
   slow_frontier: {cadence: {months: [36], probs: [1.0]}}
   always_constrained: {regime: {p_stay_constrained: 1.0, p_stay_unconstrained: 0.0, start_constrained: true}}
   power_abundant: {regime: {p_stay_constrained: 0.0, p_stay_unconstrained: 1.0, start_constrained: false}}
-  scarcity_boom: {markup: {mean: 1.0, x0: 1.0}}   # placeholder: "2026-like" high markup
+  scarcity_boom: {markup: {mean: "from_market:markup.boom_mean"}}  # Lambda H100 $4.14 (2026)
+  scarcity_jump: {markup: {jump_month: 36, jump_mean: "from_market:markup.boom_mean", jump_to: stationary}}  # validation check 3
+  virginia_power: {electricity: {mean: "from_market:electricity.virginia_mean_usd_kwh", x0: "from_market:electricity.virginia_mean_usd_kwh"}}
+  failure_low: {failure: {annual_hazard: "from_market:failure.low_annual_hazard"}}
+  failure_high: {failure: {annual_hazard: "from_market:failure.upper_bound_annual_hazard"}}
+  failure_handoff: {failure: {annual_hazard: null, scale_years: 8.0, shape: 1.5}}  # original pessimistic default
   empirical_cadence: {cadence: {months: [26, 28, 34], probs: [0.3333, 0.3333, 0.3334]}}  # Epoch release gaps V100->A100->H100->B200
   capex_low: {capex: {K0_usd: 24400.0}}            # sensitivity: H100 GPU + baseboard only (Epoch note)
   capex_flat: {capex: {growth_per_generation: 1.0}}  # sensitivity: flat capex per generation
   maintenance_high: {maintenance_fraction_of_capex_per_year: 0.125}  # sensitivity: GMI Cloud 10-15% midpoint
+  markup_level_process: {markup: {process: level}}  # handoff's original OU on m (comparison)

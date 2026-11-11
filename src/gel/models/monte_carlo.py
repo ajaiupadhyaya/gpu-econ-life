@@ -53,9 +53,43 @@ def deep_merge(base: dict, over: dict) -> dict:
     return out
 
 
-def resolve(cfg: dict, calibration: dict | None = None, capex: dict | None = None) -> dict:
+def _lookup(market: dict, path: str):
+    node = market
+    for key in path.split("."):
+        node = node[key]
+    return node
+
+
+def fill_market(node, market: dict | None):
+    """Replace every 'from_market:<dotted.path>' string with its value in p3_market.json."""
+    if isinstance(node, dict):
+        return {k: fill_market(v, market) for k, v in node.items()}
+    if isinstance(node, list):
+        return [fill_market(v, market) for v in node]
+    if isinstance(node, str) and node.startswith("from_market:"):
+        if market is None:
+            raise MissingInput(f"{node} unresolved: run gel.models.p3_market_calibration first")
+        return _lookup(market, node.split(":", 1)[1])
+    return node
+
+
+def failure_scale_months(failure: dict) -> float:
+    """Weibull scale in months. With annual_hazard h, the 12-month survival is 1 - h, so
+    scale = 12 / (-ln(1 - h))^(1/shape). Otherwise scale_years is used directly."""
+    h = failure.get("annual_hazard")
+    if h is not None:
+        return 12.0 / (-math.log(1.0 - h)) ** (1.0 / failure["shape"])
+    return failure["scale_years"] * 12.0
+
+
+def resolve(
+    cfg: dict,
+    calibration: dict | None = None,
+    capex: dict | None = None,
+    market: dict | None = None,
+) -> dict:
     """Fill calibrated and sourced values; refuse to proceed with unsourced (null) inputs."""
-    cfg = copy.deepcopy(cfg)
+    cfg = fill_market(copy.deepcopy(cfg), market)
     for key in ("K0_usd", "growth_per_generation"):
         if cfg["capex"][key] == "from_epoch":
             cfg["capex"][key] = capex[key] if capex else None
@@ -89,6 +123,45 @@ def resolve(cfg: dict, calibration: dict | None = None, capex: dict | None = Non
     return p
 
 
+def _log_markup_segment(rng, n, months, mean, kappa, sigma, start, floor):
+    """OU on y = log(1 + m) (Decision 12). sigma is given in markup units at the mean and is
+    converted to log units. The long-run mean of y carries a convexity correction so that the
+    stationary E[m] equals `mean`. start='stationary' draws y0 from the stationary law, so the
+    expected markup does not drift; a number starts every path at that markup."""
+    sig_y = sigma / (1.0 + mean)
+    var_y = sig_y**2 / (2.0 * kappa)
+    mean_y = math.log(1.0 + mean) - var_y / 2.0
+    if start == "stationary":
+        y0 = rng.normal(mean_y, math.sqrt(var_y), size=n)
+    else:
+        y0 = math.log(1.0 + start)
+    y = rm.ou_path(rng, n, months, x0=y0, mean=mean_y, kappa=kappa, sigma=sig_y, floor=-np.inf)
+    return np.maximum(np.expm1(y), floor)
+
+
+def markup_path(rng, n, horizon, cfg: dict) -> np.ndarray:
+    """Scarcity markup m(t). process 'log' (default, Decision 12) or 'level' (handoff's OU on m)."""
+    jump = cfg.get("jump_month")
+    if cfg.get("process", "log") == "level":
+        base = {k: cfg[k] for k in ("mean", "kappa", "sigma", "floor")}
+        x0 = cfg["mean"] if cfg["x0"] == "stationary" else cfg["x0"]
+        if not jump:
+            return rm.ou_path(rng, n, horizon, x0=x0, **base)
+        pre = rm.ou_path(rng, n, int(jump), x0=x0, **base)
+        post = rm.ou_path(
+            rng, n, horizon - int(jump), x0=cfg["jump_to"], **(base | {"mean": cfg["jump_mean"]})
+        )
+        return np.concatenate([pre, post], axis=1)
+    seg = dict(kappa=cfg["kappa"], sigma=cfg["sigma"], floor=cfg["floor"])
+    if not jump:
+        return _log_markup_segment(rng, n, horizon, cfg["mean"], start=cfg["x0"], **seg)
+    pre = _log_markup_segment(rng, n, int(jump), cfg["mean"], start=cfg["x0"], **seg)
+    post = _log_markup_segment(
+        rng, n, horizon - int(jump), cfg["jump_mean"], start=cfg["jump_to"], **seg
+    )
+    return np.concatenate([pre, post], axis=1)
+
+
 def simulate(p: dict, seed: int | None = None) -> dict:
     rng = np.random.default_rng(p["seed"] if seed is None else seed)
     n, horizon = int(p["n_paths"]), int(p["horizon_months"])
@@ -113,8 +186,8 @@ def simulate(p: dict, seed: int | None = None) -> dict:
     ann = ann * np.ones((n, 1))
     maint = p["maintenance_fraction_of_capex_per_year"] * capex / 12.0  # $/GPU-month, (n, g_max)
 
-    # Market state.
-    m = rm.ou_path(rng, n, horizon, **p["markup"])
+    # Market state. An optional jump switches the markup to a new level and mean mid-path.
+    m = markup_path(rng, n, horizon, p["markup"])
     e = rm.ou_path(rng, n, horizon, **p["electricity"])
     s = rm.markov_regime(rng, n, horizon, **p["regime"])
 
@@ -130,7 +203,7 @@ def simulate(p: dict, seed: int | None = None) -> dict:
     price = (ann_f + opex_f) / (q_f * hours * u) * (1.0 + m)  # $/token
     margin_f = price * q_f * hours * u - opex_f
 
-    fail_scale = p["failure"]["scale_years"] * 12.0
+    fail_scale = failure_scale_months(p["failure"])
     rows, margin_age, alive_age, rent_ratio, rent_valid = [], [], [], [], []
     for g in range(g_max):
         lg = launch[:, g]
@@ -175,17 +248,22 @@ def simulate(p: dict, seed: int | None = None) -> dict:
         )
         margin_age.append(m_age[sel])
         alive_age.append(a_age[sel])
-        rent_ratio.append((rent / rent[:, :1])[sel])
+        rent_ratio.append(rent[sel])  # rent levels; summarize takes a ratio of means
         rent_valid.append(valid[sel])
 
     return {
         "retirements": pl.concat(rows),
         "margin_by_age": np.concatenate(margin_age),
         "alive_by_age": np.concatenate(alive_age),
-        "rent_ratio_by_age": np.concatenate(rent_ratio),
+        "rent_by_age": np.concatenate(rent_ratio),
         "rent_valid_by_age": np.concatenate(rent_valid),
         "markup": m,
         "regime": s,
+        "price": price,
+        "q": q,
+        "eta": eta,
+        "launch": launch,
+        "frontier": f,
     }
 
 
@@ -195,9 +273,14 @@ def summarize(sim: dict, p: dict, scenario: str) -> dict:
     shares = {c: float((ret["channel"] == c).mean()) for c in CHANNELS}
     r = p["market"]["discount_rate_annual"]
     v = rm.value_by_age(sim["margin_by_age"], sim["alive_by_age"], r, ages=range(0, 121, 12))
-    rv, ok = sim["rent_ratio_by_age"], sim["rent_valid_by_age"]
+    # Ratio of means over the same paths: E[rent(a)] / E[rent(0)]. A mean of per-path ratios is
+    # biased upward (Jensen), because paths starting at a low markup mean-revert upward.
+    rv, ok = sim["rent_by_age"], sim["rent_valid_by_age"]
     rent_path = np.array(
-        [rv[ok[:, a], a].mean() if ok[:, a].any() else np.nan for a in range(rv.shape[1])]
+        [
+            rv[ok[:, a], a].mean() / rv[ok[:, a], 0].mean() if ok[:, a].any() else np.nan
+            for a in range(rv.shape[1])
+        ]
     )
     flat = {}
     for tenor in (12, 36, 60):
@@ -231,10 +314,12 @@ def run(cfg_path: Path, scenarios: list[str] | None, n_paths: int | None, out_di
     calibration = json.loads(cal_path.read_text()) if cal_path.exists() else None
     capex_path = Path(cfg["capex"].get("source_file", ""))
     capex = json.loads(capex_path.read_text()) if capex_path.is_file() else None
+    market_path = Path(cfg.get("market_file", ""))
+    market = json.loads(market_path.read_text()) if market_path.is_file() else None
     names = scenarios or list(cfg["scenarios"])
     out = []
     for name in names:
-        p = resolve(deep_merge(cfg, cfg["scenarios"][name]), calibration, capex)
+        p = resolve(deep_merge(cfg, cfg["scenarios"][name]), calibration, capex, market)
         if n_paths:
             p["n_paths"] = n_paths
         t0 = time.perf_counter()

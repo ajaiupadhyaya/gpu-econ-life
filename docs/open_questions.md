@@ -78,8 +78,8 @@ Unknown values, unreachable sources and anything waiting on a decision.
 - **Llama 3.1 access: resolved 2026-11-10.** Meta approved the owner's request. The local token
   now gets HTTP 200 on `config.json` and `model-00001-of-00004.safetensors`. The same token goes
   on the Runpod template as `HF_TOKEN`.
-- **Still open from the handoff:** base-case electricity price and PUE (a region such as
-  Northern Virginia, or a national average); any private rate cards for `prices_term.csv`. Model,
+- **Still open from the handoff:** (electricity resolved by Decision 12: national base, Virginia
+  scenario; P1 energy-cost tables still use the $0.08 default and should switch); any private rate cards for `prices_term.csv`. Model,
   frontier GPU (B200, approved) and smoke-test card were settled in Decision 7.
 - **Benchmark image not built or pushed.** `bench/Dockerfile` has not been built (it needs a
   linux/amd64 build of a ~10 GB base image and a registry account). The harness logic is proven
@@ -95,10 +95,18 @@ Unknown values, unreachable sources and anything waiting on a decision.
   and maintenance per GPU-month. `config/p3_model.yaml` holds them as null and
   `gel.models.monte_carlo` refuses to run. Candidate sources need the owner's approval (rule 7),
   e.g. Epoch AI's chip price data (docs/related_work.md, row 61) or values from SEC filings.
-- **P3 placeholders awaiting sign-off:** sigma_G, cadence probabilities, markup and electricity OU
+- **(Resolved 2026-11-11 by Decision 12.)** P3 placeholders awaiting sign-off: sigma_G, cadence probabilities, markup and electricity OU
   parameters, regime transition probabilities and the 60-month annuity term
   (docs/assumptions.md). The Weibull failure default (8 y, shape 1.5) makes failure the most
   common end of life in synthetic runs. It is worth checking against field data before results.
-- **P3 validation checks 1-4 (handoff 5.4) not yet run.** They need the real inputs. Check 3 (a
+- **(Run 2026-11-11, Decision 12: checks 1 and 3 pass, 2 fails for hyperscalers, 4 reported.)** P3 validation checks 1-4: They need the real inputs. Check 3 (a
   scarcity boom that raises old-chip rents while the efficiency gap widens) also needs a
   transition scenario in which the markup jumps mid-path; the current boom scenario starts high.
+- **Term structure vs model (Decision 12, check 2).** Observed reserved/on-demand ratios are
+  far below the model's flat-rate ratios for hyperscalers (0.38 vs 0.91 at 36 months). The model's
+  rent-decay channel cannot explain them without a 19-38%/yr term premium. Most likely the cause
+  is inflated, sticky on-demand list prices. P2's full write-up should model the on-demand premium
+  explicitly, or use spot as R0.
+- **The markup absorbs provider overhead.** The model's cost has no colocation/facility line, so
+  the calibrated markup (0.90) mixes normal margin with scarcity. A facility-cost line with a
+  sourced value would separate them.

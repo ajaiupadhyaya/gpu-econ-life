@@ -4,6 +4,7 @@ The capex and maintenance numbers below are test fixtures, not data or assumptio
 only to exercise the code; the real values have no source yet (docs/open_questions.md).
 """
 
+import math
 from pathlib import Path
 
 import pytest
@@ -23,6 +24,24 @@ SYNTHETIC_CAL = {
 }
 
 
+SYNTHETIC_MARKET = {  # test fixture mirroring data/processed/p3_market.json
+    "generation_step": {"sigma_G": 0.09},
+    "markup": {"mean": 0.9, "kappa": 1.0, "sigma": 1.0, "boom_mean": 1.6},
+    "electricity": {
+        "mean_usd_kwh": 0.089,
+        "kappa": 0.43,
+        "sigma_usd_kwh": 0.01,
+        "virginia_mean_usd_kwh": 0.10,
+    },
+    "regime": {"p_stay_constrained": 0.979, "p_stay_unconstrained": 0.958},
+    "failure": {
+        "base_annual_hazard": 0.02,
+        "low_annual_hazard": 0.005,
+        "upper_bound_annual_hazard": 0.11,
+    },
+}
+
+
 def synthetic(n=1500, **over):
     cfg = mc.deep_merge(
         CFG,
@@ -33,7 +52,7 @@ def synthetic(n=1500, **over):
         },
     )
     cfg = mc.deep_merge(cfg, over)
-    return mc.resolve(cfg, SYNTHETIC_CAL)
+    return mc.resolve(cfg, SYNTHETIC_CAL, market=SYNTHETIC_MARKET)
 
 
 def run(n=1500, seed=7, **over):
@@ -44,7 +63,8 @@ def run(n=1500, seed=7, **over):
 def test_refuses_unsourced_inputs():
     cfg = mc.deep_merge(CFG, {"maintenance_fraction_of_capex_per_year": None})
     with pytest.raises(mc.MissingInput) as exc:
-        mc.resolve(cfg, SYNTHETIC_CAL)  # no capex file passed: from_epoch stays unresolved
+        # no capex file passed: from_epoch stays unresolved
+        mc.resolve(cfg, SYNTHETIC_CAL, market=SYNTHETIC_MARKET)
     msg = str(exc.value)
     assert "capex.K0_usd" in msg and "maintenance_fraction_of_capex_per_year" in msg
 
@@ -93,14 +113,14 @@ def test_no_markup_means_no_obsolescence_channel():
     # Price = frontier full cost: the frontier's margin net of capex is m (A_f + opex_f) = 0,
     # so the constrained rule collapses to the negative-margin rule.
     r = run(
-        markup={"mean": 0.0, "x0": 0.0, "sigma": 0.0},
+        markup={"mean": 0.0, "x0": 0.0, "sigma": 0.0, "process": "level"},
         regime={"p_stay_constrained": 1.0, "p_stay_unconstrained": 0.0, "start_constrained": True},
     )
     assert r["share_obsolescence"] == pytest.approx(0.0, abs=0.01)
 
 
 def test_no_failure_when_scale_is_huge():
-    r = run(failure={"scale_years": 1e6, "shape": 1.5})
+    r = run(failure={"annual_hazard": 1e-12, "shape": 1.0})
     assert r["share_failure"] == 0.0
 
 
@@ -120,6 +140,41 @@ def test_rent_ratio_starts_at_one():
 
 def test_from_epoch_values_resolve():
     cfg = CFG
-    p = mc.resolve(cfg, SYNTHETIC_CAL, {"K0_usd": 33_600.0, "growth_per_generation": 1.627})
+    p = mc.resolve(
+        cfg, SYNTHETIC_CAL, {"K0_usd": 33_600.0, "growth_per_generation": 1.627}, SYNTHETIC_MARKET
+    )
     assert p["capex"]["K0_usd"] == 33_600.0
     assert p["hardware"]["gen0"]["eta"] == 8.75
+
+
+def test_missing_market_file_is_refused():
+    with pytest.raises(mc.MissingInput, match="p3_market_calibration"):
+        mc.resolve(CFG, SYNTHETIC_CAL, {"K0_usd": 1.0, "growth_per_generation": 1.0})
+
+
+def test_annual_hazard_to_weibull_scale():
+    # Shape 1, h = 2%: scale = 12 / -ln(0.98) = 593.98 months, so 12-month survival is exactly 0.98
+    scale = mc.failure_scale_months({"annual_hazard": 0.02, "shape": 1.0})
+    assert scale == pytest.approx(12 / -math.log(0.98))
+    assert math.exp(-((12 / scale) ** 1.0)) == pytest.approx(0.98)
+    assert mc.failure_scale_months({"annual_hazard": None, "scale_years": 8, "shape": 1.5}) == 96
+
+
+def test_markup_jump_lifts_level():
+    p = synthetic(
+        400, markup={"sigma": 0.0, "x0": 0.9, "jump_month": 24, "jump_mean": 2.0, "jump_to": 2.0}
+    )
+    m = mc.simulate(p, seed=1)["markup"]
+    assert m[:, 23].mean() == pytest.approx(0.9, abs=1e-9)
+    assert m[:, 24].mean() == pytest.approx(2.0, abs=1e-9)
+
+
+def test_log_markup_is_stationary_with_no_drift():
+    import numpy as np
+
+    rng = np.random.default_rng(5)
+    cfg = {"mean": 0.9, "kappa": 1.0, "sigma": 1.1, "x0": "stationary", "floor": -0.5}
+    m = mc.markup_path(rng, 40_000, 120, cfg)
+    assert m[:, 0].mean() == pytest.approx(0.9, abs=0.03)
+    assert m[:, 119].mean() == pytest.approx(0.9, abs=0.03)
+    assert m.min() > -0.5 - 1e-12
