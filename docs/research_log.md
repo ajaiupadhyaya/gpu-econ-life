@@ -179,3 +179,12 @@ prices (H100 8 providers on-demand). On neocloud median prices the like-for-like
 the H200 is near parity for the H100 (-0.08 to +0.03) and A100 (-0.12 to +0.07). The L40S
 carries a premium (+0.09 to +0.20). The A40 (-0.35 to -0.41) rests on one price. Paid-price
 discounts were uniformly negative because RunPod is cheap: one provider's price misleads.
+
+## Lambda parser fix deployed, 2026-11-11
+
+With the owner's go-ahead, `deploy/push.sh` shipped commit 9273467 to the droplet (previously
+3f51fbe). `gel.collect.lambda_backfill` ran on the host as user `gel`, re-parsing the saved raw
+pages for 2026-11-03 to 11-10 (20 rows a day; no new requests to Lambda). The daily timer stays
+active (next run 06:11 UTC). OhCamel, Tidewater and Strata containers were unaffected. The host's
+`runs/<day>.json` summaries for those days still record the original failure, which is accurate
+history.
