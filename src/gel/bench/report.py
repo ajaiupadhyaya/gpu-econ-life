@@ -130,7 +130,59 @@ def main(argv: list[str] | None = None) -> int:
     )
     table.write_csv(args.out_dir / "p1_obsolescence_discount.csv")
     print(f"wrote {args.out_dir / 'p1_obsolescence_discount.csv'} ({len(table)} rows)")
+    median_table = median_price_discounts(summary, args.frontier, MEDIANS)
+    if median_table is not None:
+        median_table.write_csv(args.out_dir / "p1_obsolescence_discount_median.csv")
+        print(
+            f"wrote {args.out_dir / 'p1_obsolescence_discount_median.csv'} "
+            f"({len(median_table)} rows)"
+        )
     return 0
+
+
+MEDIANS = Path("paper/tables/m4_spot_medians.csv")
+
+
+def median_price_discounts(summary: pl.DataFrame, frontier: str, path: Path):
+    """Handoff spec (b), the primary one: D on the median cross-provider on-demand price
+    (Decision 13: neocloud median primary, all-provider median alongside). n_neocloud is kept so
+    single-source prices (A40) are visible."""
+    if not path.exists():
+        return None
+    med = (
+        pl.read_csv(path)
+        .filter(pl.col("billing") == "on_demand")
+        .select("chip_id", "median_neocloud", "median_all", "n_neocloud", "n_providers")
+    )
+    s = summary.join(med, on="chip_id", how="left")
+    out = []
+    for price_col in ("median_neocloud", "median_all"):
+        like = obsolescence_discount_table(
+            s.filter(pl.col("precision_mode") == "bf16"), frontier, price_col
+        )
+        best = _discount(best_precision(s), frontier, price_col)
+        for name, t in (("like_for_like", like), ("best_available", best)):
+            if t.is_empty():
+                continue
+            out.append(
+                t.select(
+                    "gpu_label",
+                    "chip_id",
+                    "concurrency",
+                    "precision_mode",
+                    "n_neocloud",
+                    "n_providers",
+                    pl.col(price_col).alias("price"),
+                    pl.col("p_f").alias("price_f"),
+                    "output_tok_per_s_mean",
+                    "q_f",
+                    "discount",
+                    "frontier",
+                ).with_columns(
+                    pl.lit(name).alias("comparison"), pl.lit(price_col).alias("price_spec")
+                )
+            )
+    return pl.concat(out) if out else None
 
 
 if __name__ == "__main__":

@@ -110,3 +110,10 @@ Unknown values, unreachable sources and anything waiting on a decision.
 - **The markup absorbs provider overhead.** The model's cost has no colocation/facility line, so
   the calibrated markup (0.90) mixes normal margin with scarcity. A facility-cost line with a
   sourced value would separate them.
+- **Deploy the Lambda parser fix to the droplet.** The collector has failed on Lambda daily since
+  2026-11-03 (unknown plan "NVIDIA HGX H100"). Fixed and backfilled locally (commit c84bd1f);
+  the droplet needs `deploy/push.sh` (owner's call), and alerts would have caught this on day one.
+- **A40 has a single price** (the RunPod price paid) in the M4 panel; no other in-scope provider
+  lists it. Its discount is not robust. Paperspace's archived A40 or the Huang tables could widen it.
+- **Crusoe and Voltage Park excluded** by their terms (Decision 13). Written permission would
+  restore them.

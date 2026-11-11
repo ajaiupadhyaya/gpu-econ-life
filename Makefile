@@ -1,4 +1,4 @@
-.PHONY: install test test-fast lint coverage-preview collect health bench-dryrun bench-parse bench-report p3-calibrate p3-capex p3-market p3 data models paper all
+.PHONY: spot-panel install test test-fast lint coverage-preview collect health bench-dryrun bench-parse bench-report p3-calibrate p3-capex p3-market p3 data models paper all
 
 install:
 	uv sync
@@ -26,7 +26,10 @@ health:
 bench-dryrun:
 	bench/dryrun.sh
 
-bench-report:
+spot-panel:
+	uv run python -m gel.build.spot_panel --day 2026-11-10
+
+bench-report: spot-panel
 	uv run python -m gel.bench.report --frontier H200_SXM
 
 p3-calibrate:

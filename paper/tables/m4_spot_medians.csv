@@ -1,0 +1,12 @@
+chip_id,billing,n_providers,median_all,n_neocloud,median_neocloud,min,max,providers
+a100_80gb,on_demand,5,3.43088125,2,2.245,1.79,4.775,"aws,azure,coreweave,google_cloud,runpod_paid"
+a100_80gb,spot,4,1.7815249999999998,1,1.20625,0.97028,2.7376875,"aws,azure,coreweave,google_cloud"
+a40,on_demand,1,0.59,1,0.59,0.59,0.59,runpod_paid
+b200,on_demand,6,8.55,4,8.344999999999999,7.84,14.2416,"aws,coreweave,google_cloud,lambda,nebius,together"
+b200,spot,4,4.850524999999999,2,4.176875,4.09,6.8719375,"aws,coreweave,google_cloud,together"
+h100_sxm,on_demand,8,5.4475,5,4.5,3.99,15.977,"aws,azure,coreweave,google_cloud,lambda,nebius,runpod_paid,together"
+h100_sxm,spot,5,2.952549625,2,2.226875,1.99,5.5587,"aws,azure,coreweave,google_cloud,together"
+h200,on_demand,7,6.305,4,5.695,5.29,13.25,"aws,azure,coreweave,google_cloud,nebius,runpod_paid,together"
+h200,spot,5,4.5389125,2,2.803125,2.61625,13.25,"aws,azure,coreweave,google_cloud,together"
+l40s,on_demand,4,1.9,3,1.55,1.09,3.3853187499999997,"aws,coreweave,nebius,runpod_paid"
+l40s,spot,2,1.5523000000000002,1,0.985,0.985,2.1196,"aws,coreweave"

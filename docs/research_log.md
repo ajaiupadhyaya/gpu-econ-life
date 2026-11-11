@@ -168,3 +168,14 @@ Billing also lists pods Claude Code did not create: `nvb5w84zur9dfh` ($1.73) and
 
 P1 like-for-like discount vs H200 (paid prices): A40 -0.30 to -0.36; A100 -0.08 to -0.24;
 L40S -0.09 to -0.17; H100 -0.02 to -0.12. Every older chip rents below its relative output.
+
+## M4 price panel, 2026-11-11
+
+Terms checked for five manual providers. Nebius, Together and CoreWeave were recorded; Voltage Park
+and Crusoe were excluded by their terms. Prices were read from each provider's page in the
+in-app browser; the fetcher's summaries were not trusted for price pairing. Found and fixed an
+8-day silent failure in the droplet's Lambda parse (a new plan name). The panel has 51 provider
+prices (H100 8 providers on-demand). On neocloud median prices the like-for-like discount against
+the H200 is near parity for the H100 (-0.08 to +0.03) and A100 (-0.12 to +0.07). The L40S
+carries a premium (+0.09 to +0.20). The A40 (-0.35 to -0.41) rests on one price. Paid-price
+discounts were uniformly negative because RunPod is cheap: one provider's price misleads.

@@ -72,3 +72,27 @@ def test_best_precision_picks_fastest_mode_per_concurrency():
     assert got == {1: "fp8", 128: "bf16"}
     assert set(b["comparison"]) == {"best_available"}
     assert not math.isnan(b["output_tok_per_s_mean"][0])
+
+
+def test_median_price_discounts(tmp_path):
+    med = tmp_path / "m.csv"
+    pl.DataFrame(
+        {
+            "chip_id": ["old", "new"],
+            "billing": ["on_demand", "on_demand"],
+            "median_neocloud": [1.0, 4.0],
+            "median_all": [2.0, 4.0],
+            "n_neocloud": [3, 5],
+            "n_providers": [4, 7],
+        }
+    ).write_csv(med)
+    s = summary().with_columns(pl.col("chip_id"))
+    d = report.median_price_discounts(s, "NEW", med)
+    row = d.filter(
+        (pl.col("gpu_label") == "OLD")
+        & (pl.col("concurrency") == 128)
+        & (pl.col("price_spec") == "median_all")
+        & (pl.col("comparison") == "like_for_like")
+    ).row(0, named=True)
+    # (2/4) / (1000/4000) - 1 = 0.5/0.25 - 1 = 1.0
+    assert row["discount"] == pytest.approx(1.0)

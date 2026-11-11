@@ -309,3 +309,40 @@ Made while building P3, within the handoff's design. The owner can reverse any o
   4. Tornado: the generation step dominates (median 8.7 years if steps are refresh-sized, 3.5 at
      spec size), then cadence, markup, maintenance and failure. Electricity, PUE, utilisation and
      the discount rate each move the median by 0.2 years or less.
+
+## Decision 13: M4 price panel; sources, exclusions and the primary discount spec (2026-11-11)
+
+- **Date:** 2026-11-11. The owner said to start M4 under Decision 6's rules (one manual pass,
+  public pages, read each provider's terms first).
+- **Manual sources recorded** in `data/raw/manual/prices_spot_panel.csv` and `prices_term.csv`,
+  each price read by Claude Code in a browser from the provider's own page on 2026-11-11:
+  - **Nebius**: no restriction in its terms (docs.nebius.com/legal/terms-of-use, 2025-03-31).
+    Page copy saved.
+  - **Together**: no scraping clause; §4.3(c) bars competitive analysis using its Services, which
+    are not used here. Page copy saved.
+  - **CoreWeave**: unclear. Its acceptable-use policy (aimed at customers) bars "harvesting or
+    scraping of any content". Prices were read and cited; no page copy kept. Instance prices are
+    per 8-GPU instance and are divided by 8.
+- **Excluded:** Voltage Park, whose ToS §5.2(h) bars robots and also "any manual process" to
+  extract content without written permission. Crusoe, whose Website Terms of Use v1.0
+  (2024-08-12) give a "personal, non-commercial" licence and bar copying or publishing content
+  without written permission. Vast.ai and RunPod listings stay out (Decision 3); only the RunPod
+  price we paid is used.
+- **Collector sources** for the same week (2026-11-10): AWS, Azure, Google Cloud (SkyPilot,
+  accelerator-only basis, flagged), Lambda. Each provider contributes one price per chip and
+  billing type, the median across its regions and SKUs.
+- **Lambda parser fix:** Lambda added "NVIDIA HGX H100" and "NVIDIA HGX A100" cluster plans on
+  2026-11-03 and the daily parse has failed since (no alerts are configured). HGX H100 now maps
+  to `h100_sxm` (Decision 5's HGX = SXM rule); HGX A100 states no VRAM and is ignored. Days
+  2026-11-03 to 11-10 were re-parsed locally from the raw pages (`gel.collect.lambda_backfill`).
+  The droplet still runs the old config until redeployed (owner's call).
+- **Coverage (on-demand providers):** H100 8 (the handoff's target), H200 7, B200 6, A100 80GB 5,
+  L40S 4, A40 1 (only the RunPod price paid). Term prices: only Together's short reservations
+  (3-30 and 31-90 days, kept as ranges); CoreWeave ("up to 60%") and Nebius commitments are
+  "contact sales" and recorded as unpriced.
+- **Primary discount spec:** D on the **neocloud median** on-demand price (handoff spec (b);
+  hyperscalers flagged and shown alongside as the all-provider median), written to
+  `paper/tables/p1_obsolescence_discount_median.csv` with provider counts. The paid-price spec
+  (a) stays as a robustness column. Reason: hyperscaler list prices are structurally higher and
+  sticky (Phase 0 review), and one provider's price is noisy. The two specs disagree: paid
+  prices make every old chip look discounted, medians put most near parity.
