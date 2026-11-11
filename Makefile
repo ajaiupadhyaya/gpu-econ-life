@@ -105,9 +105,8 @@ restate: edgar asset-values
 asset-values: hedonic
 	uv run python -m gel.models.asset_value
 
-# Checks requested by the Phase 5 review (docs/review_01.md points 1, 4, 7); about 15 minutes.
-p5-review: panel
-	uv run python -W ignore -m gel.models.review_checks all
+# Alias kept for docs/review_01_checks.md.
+p5-review: review-checks
 
 # Checks requested by the adversarial review (docs/review_01.md, Decision 24). Slow: the
 # permutation test and the coverage Monte Carlo take over an hour; `extra` alone takes ~2 minutes.
