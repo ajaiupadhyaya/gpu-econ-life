@@ -1,4 +1,4 @@
-.PHONY: release-manifest verify-raw dataset paper-numbers asset-values review-checks hedonic p5-figures panel p4-figures cpi-fetch cpi chips eia-states reference m8 figures p1-figures p2 p3-validate spot-panel install test test-fast lint coverage-preview collect health bench-dryrun bench-parse bench-report p3-calibrate p3-capex p3-market p3 data models paper all
+.PHONY: edgar-fetch edgar restate release-manifest verify-raw dataset paper-numbers asset-values review-checks hedonic p5-figures panel p4-figures cpi-fetch cpi chips eia-states reference m8 figures p1-figures p2 p3-validate spot-panel install test test-fast lint coverage-preview collect health bench-dryrun bench-parse bench-report p3-calibrate p3-capex p3-market p3 data models paper all
 
 install:
 	uv sync
@@ -79,7 +79,20 @@ hedonic: panel
 p5-figures: hedonic
 	uv run python -W ignore -m gel.viz.hedonic_figures
 
-models: hedonic p5-figures asset-values
+models: hedonic p5-figures asset-values restate
+
+# Phase 7 accounting restatement (Decision 26). edgar-fetch needs the network and the contact
+# email; edgar and restate run from archived raw files.
+edgar-fetch:
+	uv run python -m gel.collect.edgar api
+	uv run python -m gel.collect.edgar filings NBIS:0001104659-26-064092 CRWV:0001193125-25-067651
+
+edgar:
+	uv run python -m gel.parse.edgar
+	uv run python -m gel.parse.edgar verify docs/useful_lives.md
+
+restate: edgar asset-values
+	uv run python -m gel.accounting.restate
 
 # Phase 6 asset values and economic life (Decision 25); seconds.
 asset-values: hedonic
@@ -95,7 +108,7 @@ review-checks: hedonic
 	uv run python -W ignore -m gel.models.review_checks all
 
 # Paper (Stage C): numbers and small tables from result files, then the PDF.
-paper-numbers:
+paper-numbers: models
 	uv run python -m gel.viz.paper_numbers
 
 paper: paper-numbers

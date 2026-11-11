@@ -658,3 +658,59 @@ Made while building P3, within the handoff's design. The owner can reverse any o
   year: realized, strategy 2, strategy 4 at d = −0.20 and −0.40 (`p6_schedules.csv`). Profiles
   whose value rises in any year (strategies 1a, 1b) are not turned into schedules, because a book
   schedule cannot appreciate.
+
+## Decision 26: Phase 7 accounting restatement (2026-11-11)
+
+1. *Data source.* SEC EDGAR only (already listed as source 3.14): companyfacts and submissions JSON
+   from data.sec.gov, the ticker file https://www.sec.gov/files/company_tickers.json, and filing
+   documents from www.sec.gov/Archives. CIKs resolved from the ticker file. One document outside
+   10-K/10-Q/20-F/6-K was fetched: CoreWeave's IPO prospectus (424B4, accession
+   0001193125-25-067651), because the January 2023 CoreWeave life change predates its first 10-K.
+   Alternatives: commercial fundamentals (not free), the American Compute compilation (secondary).
+   *Owner check: the 424B4 is an EDGAR filing, not a new source, but flag if you see it otherwise.*
+2. *Annual facts and duplicates.* Only 10-K, 10-K/A, 20-F, 20-F/A facts; durations 330-400 days;
+   instants only on fiscal year-ends. companyfacts repeats a period across later filings: keep the
+   ORIGINAL filing's value (earliest `filed`, then lowest accession) and store the latest value,
+   its accession and a `restated` flag beside it. Fiscal year = calendar year of the period end
+   (matches MSFT June, ORCL May and December year-ends). The companyfacts `fy` field is the
+   filing's fiscal year, not the fact's, so it is never used as the period key. Alternative: keep
+   the latest (restated) value; rejected per the Phase 7 brief.
+3. *Concept priority.* Per firm-year, the first concept with a value: depreciation =
+   Depreciation, else DepreciationDepletionAndAmortization, else DepreciationAndAmortization;
+   capex = PaymentsToAcquirePropertyPlantAndEquipment, else PaymentsToAcquireProductiveAssets
+   (Amazon from FY2017); PP&E gross/net/accumulated depreciation fall back to the
+   ...AndFinanceLeaseRightOfUseAsset... concepts (Meta from 2019, Amazon 2020-2023, Alphabet
+   2025). The concept used is recorded per row (`selected` flag in facts.parquet).
+4. *Nebius currency.* NBIS reports us-gaap concepts (no ifrs-full). Filings before the FY2024
+   20-F are Yandex group figures in RUB with USD convenience translations; those filings are
+   excluded (`xbrl.min_filing_fy: NBIS: 2024`). NBIS series start in FY2022 (comparatives in the
+   FY2024 20-F).
+5. *Per-share basis.* EPS and diluted shares use the latest annual filing that reports the period
+   (split-adjusted; AMZN and GOOGL split 20-for-1 in 2022); dollar amounts use the original
+   filing. Alternative `per_share_basis: original` in config.
+6. *Derived inputs, flagged per row.* Oracle pre-tax income FY2019 onward = NetIncomeLoss +
+   IncomeTaxExpenseBenefit (no pre-tax concept in companyfacts); Alphabet diluted shares FY2020-2021
+   = NetIncomeLoss / EarningsPerShareDiluted (no undimensioned shares fact).
+7. *Restatement model.* GPU capex_c = capex_c x server share x GPU share. Cohort enters in its
+   purchase fiscal year with a full year's charge (both schedules). Book: straight-line over the
+   disclosed server life; life changes apply to new cohorts and prospectively to older cohorts
+   (NBV over remaining new life; NBV charged at once if nothing remains). Alternatives: CSV
+   schedules (dep_share by year of life). Delta = alternative - book; delta OI = -delta dep;
+   delta EPS = -delta dep x (1 - tax) / diluted shares. Tax: firm-year effective rate (only when
+   pre-tax income > 0 and rate in [0, 1]; else missing) and 21% statutory as alternative.
+   Alternatives considered: mid-year convention (not built), restating against reported total
+   depreciation (not possible; no GPU split is reported).
+8. *Comparison schedules.* Phase 6's `paper/tables/p6_schedules.csv` is read automatically when it
+   exists; it existed at run time (4 schedules: market_realized_older_h100_sxm,
+   market_s2_frontier_h100_sxm, market_s4_d-0.20_h100_sxm, market_s4_d-0.40_h100_sxm, each 9
+   years, shares summing to 1). The straight-line reference set (3, 4, 5, 5.5, 6 years) is always
+   written to `paper/tables/p7_book_schedules.csv` and used too. Re-run `restate` whenever Phase 6
+   changes p6_schedules.csv.
+9. *Book-life approximations.* Meta's Q2 2022 (4 -> 4.5) and Q4 2022 (-> 5) changes are applied
+   at the start of FY2022 and FY2023 (annual model). Amazon's January 2025 "subset" change
+   (6 -> 5) is assumed to cover GPU servers; alternative `AMZN_gpu_not_in_subset` keeps 6 years.
+   Pre-2020 lives (needed only for the first cohorts' book schedule, cohorts start 2020): MSFT 3,
+   GOOGL 3, AMZN 3, META 4, ORCL 4, CRWV 5, NBIS 4, all from the filing quotes in
+   docs/useful_lives.md.
+
+- **Merged** into this log from the Phase 7 agent's notes by the session finishing the project (step B6). The 424B4 is an EDGAR filing (source 3.14), so it is not treated as a new data source.

@@ -180,3 +180,11 @@ Unknown values, unreachable sources and anything waiting on a decision.
   bibliography cites the working paper; AJ to pick one.
 - **Outdated web-source titles in the proposal.** The verified titles are in `paper/references.bib`
   (American Compute's page, The Register piece, the KuCoin repost, getdeploying's trends page).
+- **Phase 7 (Decision 26).** **Server/network share of capex** has no filing source. Owner decision: keep the 0.4/0.6/0.8 grid, or build a filing proxy from the PP&E notes (change in gross server/network class over change in total gross PP&E; possible for META, ORCL, MSFT FY2026, CRWV, NBIS, not for GOOGL or AMZN whose classes mix servers with buildings or other equipment).
+- **Phase 7 (Decision 26).** **GPU cohort start year** (2020 vs 2023) is a judgement; results for both are in the CSV (`gpu_cohort_start_fy`).
+- **Phase 7 (Decision 26).** **Finance-lease capex** is excluded: Amazon (2020-2021) and Microsoft acquired large server and data-centre amounts under finance leases, so the GPU base is understated for them. Decide whether to add finance-lease additions (not in companyfacts as a clean annual concept).
+- **Phase 7 (Decision 26).** **Amazon 2025 subset**: which servers moved to five years is not disclosed.
+- **Phase 7 (Decision 26).** **Loss years**: effective-rate EPS is missing for CRWV (all years), NBIS 2022-2024, AMZN 2022 and ORCL FY2021 (negative tax). The statutory-21% column covers them.
+- **Phase 7 (Decision 26).** **Proposal table mismatch** (owner to fix the proposal text): the Nebius row says the effect is "Not quantified in the 20-F or Q1 2026 6-K", but the FY2025 20-F expects about $167.6 million lower FY2026 depreciation and the Q1 2026 6-K reports $43.1 (million) for Q1. All other seven rows match the filings. The table omits earlier changes (AMZN 2020, 2022; MSFT 2020; GOOGL 2021; META 2021-2022; ORCL FY2023); see docs/useful_lives.md.
+- **Phase 7 (Decision 26).** **Pre-2021 Meta server life** and **pre-FY2023 Oracle server life** are not stated as single figures in the filings (Oracle's 4 years is implied by "from four years").
+- **Phase 7 (Decision 26).** The figure and table use the Phase 6 schedule names as delivered at 23:07 local on 2026-11-10; if Phase 6 renames or adds schedules, re-run `make restate`.

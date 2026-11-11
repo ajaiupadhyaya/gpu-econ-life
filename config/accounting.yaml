@@ -1,0 +1,116 @@
+# Phase 7 accounting restatement parameters (src/gel/accounting/restate.py).
+# Every value carries a `source` note. Quotes, accession numbers and URLs for the useful-life
+# history are in docs/useful_lives.md; the raw filings are in data/raw/edgar/filings/.
+
+xbrl:
+  # Ignore companyfacts facts from filings whose `fy` is below this value.
+  # NBIS (formerly Yandex N.V.): 20-Fs before FY2024 report the whole Yandex group in RUB, with
+  # USD "convenience translation" facts that are not Nebius figures (e.g. FY2022 capex: USD 718.6M
+  # in the FY2022 20-F vs USD 14.6M for Nebius in the FY2024 20-F). Source: companyfacts JSON in
+  # data/raw/edgar/2026-11-11/, accessions 0001558370-23-006319 and 0001558370-25-005991.
+  min_filing_fy:
+    NBIS: 2024
+
+firms: [MSFT, GOOGL, AMZN, META, ORCL, CRWV, NBIS]
+
+# First and last fiscal years reported. The last year is the latest with XBRL facts per firm.
+report_from_fy: 2020
+
+# Cohorts purchased before this fiscal year carry no GPU base (assumption, not from a filing).
+# 2020 is the start of the useful-life window the proposal studies; GPU purchases before then
+# were a small part of server capex, so a GPU share of 0.3-0.8 applied to 2015-2019 cohorts
+# would overstate the base. Sensitivity: 2023 (cohort_start_alternatives).
+gpu_cohort_start_fy: 2020
+cohort_start_alternatives: [2023]
+
+# Share of capex that is servers and network equipment. None of the seven firms discloses this
+# share in its 10-K/20-F (searched the latest annual report of each firm for capex composition
+# sentences on 2026-11-11; Alphabet, Amazon, Meta and Nebius describe capex qualitatively only,
+# e.g. Nebius: capex relates "primarily to our investments in GPUs and data center hardware").
+# So it is a stated ASSUMPTION with a grid, not a sourced number. Owner decision pending.
+server_share:
+  baseline: 0.6
+  grid: [0.4, 0.6, 0.8]
+  source: "assumption; no filing discloses the server/network share of capex (see docs/useful_lives.md, open items)"
+
+# GPU share of server capex: proposal Step 4 / Phase 7 ("start with a 30% to 80% grid").
+gpu_share:
+  grid: [0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
+  source: "docs/proposal.md, Phase 7 item 3"
+
+# Capex concept: XBRL cash capex (us-gaap PaymentsToAcquirePropertyPlantAndEquipment, or
+# PaymentsToAcquireProductiveAssets for AMZN from FY2017). Excludes assets acquired under
+# finance leases, which were material for AMZN and MSFT (limitation, see notes).
+capex_variable: capex
+
+# Tax: the firm-year effective rate = IncomeTaxExpenseBenefit / pre-tax income (both XBRL),
+# used when pre-tax income > 0 and the rate lies in [0, 1]; otherwise the effective-rate EPS is
+# left missing. The 21% US federal statutory rate (Tax Cuts and Jobs Act, from 2018) is the
+# labelled alternative.
+tax:
+  statutory_rate: 0.21
+  statutory_source: "US federal corporate rate, 26 U.S.C. 11(b) as amended by Pub. L. 115-97"
+
+# Per-share basis: 'latest' uses the EPS and diluted shares from the latest annual filing that
+# reports the period (split-adjusted: AMZN and GOOGL had 20-for-1 splits in 2022), 'original'
+# uses the first filing's values. Dollar amounts always use the original filing's value.
+per_share_basis: latest
+
+# Depreciation convention: a cohort is depreciated from its purchase fiscal year (year 1 = the
+# purchase year, a full year's charge), for both book and alternative schedules.
+
+# Book useful life (years) of servers in effect, by fiscal year of effect. A change applies to
+# cohorts bought from that year on and, prospectively, to the net book value of older cohorts
+# over their remaining (new) life, as every firm disclosed ("applying the revised useful lives
+# prospectively", META FY2022 10-K; "prospectively beginning January 1, 2026", NBIS Q1 2026 6-K).
+# Keys are fiscal years; the value holds from that year until the next key.
+book_life:
+  MSFT:  # FY ends June 30. FY2021 starts July 2020; FY2023 starts July 2022.
+    2015: 3   # "server equipment from three years to four years" (FY2020 10-K)
+    2021: 4   # July 2020 change, effective FY2021
+    2023: 6   # "from four years to six years", July 2022 (FY2022 10-K), effective FY2023
+  GOOGL:
+    2015: 3
+    2021: 4   # "servers from three years to four years" (FY2020 10-K), January 2021
+    2023: 6   # "servers from four years to six years" (FY2022 10-K), January 2023
+  AMZN:
+    2015: 3
+    2020: 4   # "from three years to four years for servers in January 2020" (FY2019 10-K)
+    2022: 5   # "from four years to five years for servers" (FY2021 10-K)
+    2024: 6   # "from five years to six years in January 2024" (FY2023 10-K)
+    2025: 5   # "a subset of our servers and networking equipment ... from six years to five years" (FY2024 10-K); ASSUMPTION: GPU servers are in the subset (alternative below)
+  META:
+    2015: 4   # "Servers and network assets Four years" (FY2021 10-K); "selected cohorts ... from three years to four years in prior years as well as in 2021"
+    2022: 4.5 # "from four years to 4.5 years, effective the second quarter of 2022" (FY2022 10-K); APPROXIMATION: applied from the start of FY2022
+    2023: 5   # "further extended the useful lives to five years effective the fourth quarter of 2022"; APPROXIMATION: applied from FY2023
+    2025: 5.5 # "most servers and network assets to 5.5 years, effective January 1, 2025" (FY2025 10-K)
+  ORCL:  # FY ends May 31. FY2023 starts June 2022; FY2025 starts June 2024.
+    2015: 4
+    2023: 5   # "from four years to five years effective at the beginning of fiscal 2023" (FY2023 10-K)
+    2025: 6   # "from five years to six years, effective at the beginning of fiscal 2025" (FY2025 10-K)
+  CRWV:
+    2015: 5
+    2023: 6   # "computing equipment utilized in data centers from five to six years" (424B4; FY2025 10-K)
+  NBIS:
+    2015: 4   # "Server and network equipment 4.0 years" (FY2024 and FY2025 20-F)
+    2026: 5   # "extended from four to five years", January 2026 (FY2025 20-F; Q1 2026 6-K)
+
+# Alternatives to the book-life history above (sensitivity).
+book_life_alternatives:
+  AMZN_gpu_not_in_subset:  # GPU servers stay at six years in FY2025
+    firm: AMZN
+    life: {2015: 3, 2020: 4, 2022: 5, 2024: 6}
+
+# Comparison schedules. Market-implied schedules come from Phase 6 at the path below and are
+# used automatically when the file exists. The straight-line reference set is always written to
+# paper/tables/p7_book_schedules.csv and used. Columns: schedule, year, dep_share.
+schedules:
+  market_implied_path: paper/tables/p6_schedules.csv
+  reference_path: paper/tables/p7_book_schedules.csv
+  straight_line_years: [3, 4, 5, 5.5, 6]
+
+# Headline exhibit settings (LaTeX table and figure).
+exhibit:
+  tax_basis: effective
+  gpu_share_low: 0.3
+  gpu_share_high: 0.8

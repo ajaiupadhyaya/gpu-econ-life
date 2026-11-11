@@ -353,3 +353,30 @@ These are the items tagged UNVERIFIED above, grouped by source, so the owner can
   Bureau of Labor Statistics.
 - Raw copy: data/raw/indices/bls_cpi/2026-11-11/ (+ .json sidecars). Collector:
   gel.collect.bls_cpi. Builder: gel.build.cpi.
+
+### 3.14 SEC EDGAR: verification and fetch log (Phase 7, 2026-11-11)
+
+- Verified live 2026-11-11 (UTC) with the project User-Agent: the EDGAR API page (last updated
+  April 8, 2025) and "Accessing EDGAR Data" (fair access: "Current max request rate: 10
+  requests/second."). The collector keeps 1 s between requests per host.
+- Ticker file: https://www.sec.gov/files/company_tickers.json (listed on "Accessing EDGAR Data"
+  under "CIK, ticker, and exchange associations"). Resolved CIKs: MSFT 789019, GOOGL 1652044,
+  AMZN 1018724, META 1326801, ORCL 1341439, CRWV 1769628, NBIS 1513845.
+- Field names now verified from real responses: companyfacts `facts.{taxonomy}.{concept}.units.
+  {unit}[]` with `start` (durations only), `end`, `val`, `accn`, `fy`, `fp`, `form`, `filed`,
+  `frame` (optional). Submissions: `filings.recent` columnar arrays (`accessionNumber`, `form`,
+  `filingDate`, `reportDate`, `primaryDocument`, ...) and `filings.files[]` (`name`) for older
+  pages at https://data.sec.gov/submissions/{name}; extra pages have the same columns at top level.
+  Filing folder index: https://www.sec.gov/Archives/edgar/data/{cik}/{acc}/index.json
+  (`directory.item[].name`).
+- Behaviour that differs from what one might assume from the docs: (a) `fy` in companyfacts is the
+  filing's fiscal year, not the period's; (b) companyfacts drops dimensional facts, so PP&E by
+  class and Alphabet's per-class shares/EPS are absent (Alphabet diluted shares only from FY2022);
+  (c) Nebius (20-F filer) uses us-gaap, not ifrs-full, and carries RUB plus USD convenience
+  translation facts for Yandex-era filings; (d) Oracle has no pre-tax income concept after FY2018
+  in companyfacts.
+- Fetched 2026-11-11: 1 ticker file, 16 submissions files (7 main + 9 extra pages), 7 companyfacts
+  files (24 API files); 86 filing documents (82 primary documents of every 10-K/20-F since
+  2020-01-01 and each fiscal year's first 10-Q, plus 3 documents of the NBIS Q1 2026 6-K and the
+  CRWV 424B4) and 2 folder index.json files. 112 sidecars. Filing documents total about 276 MB.
+- Every raw file under data/raw/edgar/ has a `.json` sidecar; all sidecars record HTTP 200.

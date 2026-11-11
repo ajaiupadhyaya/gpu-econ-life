@@ -103,3 +103,17 @@ owner's leave; each has a sensitivity case. Decisions are in `docs/decisions.md`
 | Capex | H100 $33,600; H200 $30,000 (Epoch release price); A100 80GB $15,000 (A100 40GB card, lower bound); B200 $54,656 (H100 x 1.63 per-generation growth, derived) | Epoch; `p3_capex.json` (Decision 10) | Maintenance, V(0)/capex |
 | Hosting (colocation, network, staff) | not included | No sourced $/kW-month figure could be read (open_questions) | Opex understated: V(0)/capex is an upper bound |
 | Horizon | 9 years (sensitivity 6 and 5) | Oldest age observed in the panel (V100) | All values |
+
+## P7 accounting restatement (Decision 26; `config/accounting.yaml`)
+
+| Assumption | Value | Source | Used in |
+| --- | --- | --- | --- |
+| Server/network share of capex | 0.6 baseline; grid 0.4, 0.6, 0.8 | Judgement; no firm discloses it (latest 10-K/20-F searched 2026-11-11) | P7 restatement |
+| GPU share of server capex | grid 0.3-0.8 in steps of 0.1 | docs/proposal.md Phase 7 item 3 | P7 restatement |
+| First GPU cohort | FY2020 (alternative FY2023) | Judgement: start of the proposal's 2020+ window | P7 restatement |
+| Tax rate | firm-year effective (XBRL IncomeTaxExpenseBenefit / pre-tax income); 21% statutory alternative | XBRL; 26 U.S.C. 11(b) | P7 delta EPS |
+| Depreciation convention | full year in purchase year, both schedules | Judgement | P7 restatement |
+| Book server lives by firm-year | config/accounting.yaml `book_life` | Filing quotes, docs/useful_lives.md | P7 book schedule |
+| Amazon 2025 subset covers GPU servers | yes (alternative: no) | Judgement; the filing does not say which servers | P7 AMZN 2025 |
+| Meta 2022 mid-year changes | 4.5 years from FY2022, 5 from FY2023 | Approximation of Q2/Q4 2022 effective dates (META FY2022 10-K) | P7 META |
+| Capex measure | cash capex (XBRL), excludes finance-lease additions | XBRL concept choice | P7 restatement |
