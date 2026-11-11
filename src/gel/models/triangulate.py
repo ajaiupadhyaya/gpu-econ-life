@@ -190,6 +190,28 @@ def build() -> tuple[pl.DataFrame, pl.DataFrame, pl.DataFrame, dict]:
     return tri, blend, attribution, deltas
 
 
+def markdown_table(tri: pl.DataFrame) -> str:
+    """The M8 summary table as Markdown, generated from the CSV (rule 3: no hand-typed numbers)."""
+    lines = [
+        "| Generation (age) | P1 D (median; range) | P1 life to opex | P2 life to opex | "
+        "P3 retirement age, base (P10-P90) |",
+        "|---|---|---|---|---|",
+    ]
+    for r in tri.iter_rows(named=True):
+        d = (
+            "0 (frontier)"
+            if r["p1_D_low"] == r["p1_D_high"] == 0
+            else f"{r['p1_D_median']:+.2f} ({r['p1_D_low']:+.2f} to {r['p1_D_high']:+.2f})"
+        )
+        lines.append(
+            f"| {r['generation']} ({r['age_now_y']:.1f} y) | {d} | "
+            f"{r['p1_Lopex_low']:.1f}-{r['p1_Lopex_high']:.1f} y | "
+            f"{r['p2_Lopex_low']:.1f}-{r['p2_Lopex_high']:.1f} y | "
+            f"{r['p3_median']:.1f} ({r['p3_p10']:.1f}-{r['p3_p90']:.1f}) |"
+        )
+    return "\n".join(lines) + "\n"
+
+
 def main() -> int:
     from gel.viz import triangulation_figure
 
@@ -198,6 +220,7 @@ def main() -> int:
     tri.write_csv(TABLES / "m8_triangulation.csv")
     blend.write_csv(TABLES / "m8_blended_fleet.csv")
     attribution.write_csv(TABLES / "m8_attribution.csv")
+    (TABLES / "m8_triangulation.md").write_text(markdown_table(tri))
     triangulation_figure.render(tri)
     pl.Config.set_tbl_width_chars(230)
     pl.Config.set_tbl_rows(40)
