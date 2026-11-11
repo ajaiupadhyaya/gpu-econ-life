@@ -131,3 +131,13 @@ def test_many_matches_single(panel):
     one = hc.wild_cluster_bootstrap(fit, rs[0], clusters, draws=999)
     assert many[0] == one
     assert many[1].estimate == pytest.approx(fit.coef[1])
+
+
+def test_wcr_p_value_large_under_null_small_under_alternative(panel):
+    clusters = hc._codes(panel, ["chip"]).ravel().astype(np.int64)
+    fit = hc.fit_ols(panel, "y", ["x1", "x2"], ["chip", "month"])
+    # true x2 coefficient is -0.25; test the truth and a false value
+    p_true = hc.wild_cluster_bootstrap_restricted(fit, fit.combo({"x2": 1.0}), clusters, -0.25, 999)
+    p_false = hc.wild_cluster_bootstrap_restricted(fit, fit.combo({"x2": 1.0}), clusters, 1.0, 999)
+    assert p_true > 0.1
+    assert p_false < 0.05

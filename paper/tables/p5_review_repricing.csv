@@ -1,0 +1,17 @@
+provider,contract_type,transitions,share_unchanged
+aws,on_demand,510,0.9921568627450981
+aws,reserved_1y,380,0.9947368421052631
+aws,reserved_3y,401,0.9850374064837906
+aws,spot,2388,0.1721105527638191
+azure,on_demand,628,1.0
+azure,spot,621,0.5619967793880838
+coreweave,on_demand,318,1.0
+coreweave,spot,38,1.0
+google_cloud,on_demand,6147,0.9559134537172604
+google_cloud,spot,6019,0.6524339591294235
+lambda,on_demand,553,0.9095840867992767
+lambda,other,96,0.9375
+lambda,reserved_1y,26,0.8846153846153846
+lambda,reserved_3y,40,0.9
+paperspace,on_demand,132,0.9848484848484849
+paperspace,reserved_3y,51,1.0

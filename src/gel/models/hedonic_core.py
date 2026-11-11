@@ -216,3 +216,48 @@ def wild_cluster_bootstrap(
 ) -> BootResult:
     """WCU percentile-t bootstrap for theta = r'b, clustered on `clusters` (Webb weights)."""
     return wild_cluster_bootstrap_many(fit, r[None, :], clusters, draws, seed, alpha)[0]
+
+
+def wild_cluster_bootstrap_restricted(
+    fit: Fit,
+    r: np.ndarray,
+    clusters: np.ndarray,
+    theta0: float = 0.0,
+    draws: int = 9999,
+    seed: int = 20261111,
+    chunk: int = 250,
+) -> float:
+    """WCR p-value for H0: r'b = theta0 (restricted residuals, Webb weights, CR1 t-statistic).
+
+    Restricted estimate: b_R = b - A r (r'A r)^-1 (r'b - theta0), A = (X'X)^-1. Draws are built
+    from b_R and its residuals, so the bootstrap DGP satisfies H0 (MacKinnon and Webb's WCR)."""
+    rng = np.random.default_rng(seed)
+    a_r = fit.xtx_inv @ r
+    theta = float(r @ fit.coef)
+    se = cr1_se(fit, r, clusters)
+    t_hat = (theta - theta0) / se
+    b_r = fit.coef - a_r * (theta - theta0) / float(r @ a_r)
+    yd = fit.x @ fit.coef + fit.resid
+    fitted_r = fit.x @ b_r
+    resid_r = yd - fitted_r
+    g = int(clusters.max()) + 1
+    n_g = len(np.unique(clusters))
+    k = len(fit.names)
+    c = n_g / (n_g - 1) * (fit.n - 1) / max(fit.n - k, 1)
+    z = fit.x @ a_r
+    onehot = np.zeros((g, fit.n))
+    onehot[clusters, np.arange(fit.n)] = 1.0
+    zc = onehot * z[None, :]
+    exceed = 0
+    done = 0
+    while done < draws:
+        b = min(chunk, draws - done)
+        wts = WEBB[rng.integers(0, 6, size=(g, b))]
+        y_star = fitted_r[:, None] + resid_r[:, None] * wts[clusters, :]
+        coef_star = fit.xtx_inv @ (fit.x.T @ y_star)
+        resid_star = y_star - fit.x @ coef_star
+        se_star = np.sqrt(c * np.sum((zc @ resid_star) ** 2, axis=0))
+        t_star = (r @ coef_star - theta0) / se_star
+        exceed += int(np.sum(np.abs(t_star) >= abs(t_hat)))
+        done += b
+    return exceed / draws

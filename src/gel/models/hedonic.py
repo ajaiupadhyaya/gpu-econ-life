@@ -48,6 +48,8 @@ SUBPERIODS = {
 }
 CONTRACTS = ["on_demand", "spot", "reserved_1y", "reserved_3y"]
 DRAWS = 9999
+# Below this many chips the chip-level bootstrap is not reported (review_01 point 7).
+MIN_CLUSTERS = 6
 
 
 def spline_basis(age: np.ndarray) -> dict[str, np.ndarray]:
@@ -175,7 +177,7 @@ MEASURES = {
     "d4": lambda f, lin: profile_row(f, 4.0, lin),
     "rate_0_2": lambda f, lin: profile_row(f, 2.0, lin) / 2.0,
     "rate_2_4": lambda f, lin: (profile_row(f, 4.0, lin) - profile_row(f, 2.0, lin)) / 2.0,
-    "front_loading": lambda f, lin: (
+    "early_minus_late_rate": lambda f, lin: (
         profile_row(f, 2.0, lin) / 2.0 - (profile_row(f, 4.0, lin) - profile_row(f, 2.0, lin)) / 2.0
     ),
 }
@@ -209,6 +211,7 @@ def infer(
                 "se_cr1_provider": hc.cr1_se(fit, r, prov),
                 "se_twoway_provider_month": hc.twoway_se(fit, r, prov, month),
                 "clusters": b.clusters,
+                "p_floor": 1.0 / (draws + 1),
                 "cluster_var": cluster,
             }
         )
@@ -262,7 +265,11 @@ def run_spec(
     fit = hc.fit_ols(df, "y", spec.x, spec.fe, weights=weights)
     # Without an identified linear term only the shape measure is meaningful; cumulative changes
     # for strategy 4 come from the sweep over assumed linear terms.
-    keep = MEASURES if spec.linear_identified else {"front_loading": MEASURES["front_loading"]}
+    keep = (
+        MEASURES
+        if spec.linear_identified
+        else {"early_minus_late_rate": MEASURES["early_minus_late_rate"]}
+    )
     rs = {m: f(fit, spec.linear_identified) for m, f in keep.items()}
     if "rel_frontier" in fit.names:
         rs["coef_rel_frontier"] = fit.combo({"rel_frontier": 1.0})
@@ -445,12 +452,12 @@ def run_all(draws: int = DRAWS) -> dict[str, pl.DataFrame]:
         # H3: by contract type; H4: by sub-period.
         for ct in CONTRACTS:
             sub = df.filter(pl.col("contract_type") == ct)
-            if sub["chip"].n_unique() >= 3:
+            if sub["chip"].n_unique() >= MIN_CLUSTERS:
                 _, r = run_spec(SPECS[name], sub, draws=draws)
                 rows += [dict(x, sample=f"contract:{ct}") for x in r]
         for label, (lo, hi) in SUBPERIODS.items():
             sub = df.filter(pl.col("month").is_between(lo, hi))
-            if sub["chip"].n_unique() >= 3:
+            if sub["chip"].n_unique() >= MIN_CLUSTERS:
                 _, r = run_spec(SPECS[name], sub, draws=draws)
                 rows += [dict(x, sample=f"period:{label}") for x in r]
     out["p5_summary"] = pl.DataFrame(rows, infer_schema_length=None)
@@ -465,6 +472,7 @@ def run_all(draws: int = DRAWS) -> dict[str, pl.DataFrame]:
     bins, meta = baseline_bins(df, draws=draws)
     out["p5_baseline_bins"] = bins.with_columns(
         pl.lit(meta["condition"]).alias("condition"),
+        pl.lit("diagnostic only: level set by the bin edges (review_01 point 4)").alias("note"),
         pl.lit(";".join(meta["dropped"])).alias("dropped"),
     )
     ev, counts = event_study(df, chips, capex, draws=draws)

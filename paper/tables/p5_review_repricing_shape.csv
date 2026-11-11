@@ -1,0 +1,4 @@
+check,spec,n,chips,early_minus_late_rate,early_minus_late_rate_se_provider,dropped
+all listings,s4_shape,20185,7,0.46605050367732304,0.16917165609992954,""
+listings that change price at least once,s4_shape,14612,7,0.6053257585647387,0.11076530846907569,""
+non-spot listings that change price,s4_shape,5226,7,-0.5242417825254364,0.2378660308443557,""

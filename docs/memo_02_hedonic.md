@@ -91,3 +91,29 @@ a negative number.
 - Google is 62% of rows. Equal provider-chip-month weights move strategy 1's TFLOP/s coefficient from 0.88
   to 0.70 [−0.04, 1.45] but leave the shape sign unchanged.
 - No announcement dates, no L40S or MI300X in the sample, and the live data stop on 10 November.
+
+## 6. After the adversarial review (Decision 24, added 2026-11-11)
+
+The review (`docs/review_01.md`) asked for checks the first run did not have. They change how
+strong the shape result is, not its sign in the pooled data. All numbers are from
+`paper/tables/p5_review_*.csv`.
+
+- **Inference.** On a simulated version of this panel with no true curvature, the unrestricted
+  chip bootstrap used above covers the truth 66-73% of the time instead of 95%. The restricted
+  version (WCR) covers 98-99%. Under WCR the strategy 4 shape has p = 0.29 and a 95% interval of
+  −0.44 to 1.03. Every bracket in sections 2-4 is therefore too narrow. **[AJ to confirm]** that
+  the paper reports WCR as the headline (Decision 24 (a)).
+- **Market matters more than strategy.** Spot prices give a back-loaded shape (+0.87). List
+  prices that actually change give a front-loaded one: −0.52 (provider-clustered SE 0.24) for
+  non-spot listings with at least one price change. 96% of on-demand and reserved month-to-month
+  transitions show no change at all. **[AJ to confirm]** The pooled "against H1" reading in section
+  3 is a spot-market result.
+- **Weighting.** Weighting providers equally cuts the strategy 4 shape from 0.47 to 0.19; Google is
+  62% of rows.
+- **Identification of the shape.** It comes from differences in calendar-time trends across the
+  seven chips. With chip-specific trends it is not identified, and the chip trends are not
+  monotone in release date (H200 the outlier).
+- **Event study.** Dating each successor by its first cloud listing rather than Epoch's release
+  moves the only negative bin earlier; H2 is not detected under either dating.
+- **Shortage windows.** Removing the H100's 2023-01 to 2024-06 months leaves the shape at 0.46;
+  removing H200 and B200 too leaves 0.35, with a much wider error.

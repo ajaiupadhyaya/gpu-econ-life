@@ -99,11 +99,14 @@ def test_strategy4_shape_is_invariant_to_any_linear_trend():
     tilted = base.with_columns((pl.col("y") - 0.30 * pl.col("age")).alias("y"))
     _, r0 = h.run_spec(h.SPECS["s4_shape"], base, draws=99)
     _, r1 = h.run_spec(h.SPECS["s4_shape"], tilted, draws=99)
-    f0, f1 = _measure(r0, "front_loading")["estimate"], _measure(r1, "front_loading")["estimate"]
+    f0, f1 = (
+        _measure(r0, "early_minus_late_rate")["estimate"],
+        _measure(r1, "early_minus_late_rate")["estimate"],
+    )
     assert f0 == pytest.approx(f1, abs=1e-6)
     # curvature 0.02 per year^2: rate(0-2) - rate(2-4) = 0.02*(4/2) - 0.02*(16-4)/2 = -0.08
     assert f0 == pytest.approx(-0.08, abs=0.01)
-    assert [r["measure"] for r in r0] == ["front_loading"]
+    assert [r["measure"] for r in r0] == ["early_minus_late_rate"]
 
 
 def test_profile_row_includes_linear_only_when_identified():
@@ -157,3 +160,23 @@ def test_detrended_curvature_has_zero_average_slope_on_grid():
     slope = np.polyfit(ages, vals, 1)[0]
     assert slope == pytest.approx(0.0, abs=1e-9)
     assert vals[0] == pytest.approx(0.0, abs=1e-12)
+
+
+def test_chip_trend_check_drops_age2_and_matches_no_trend_reference():
+    from gel.models import review_checks as rc
+
+    df = synthetic(age_slope=-0.15, curvature=0.02)
+    out = rc.chip_trend_check(df)
+    assert set(out["dropped"]) == {"age2"}
+    # The shape is linear in the assumed c2 with slope -4.
+    x, y = out["assumed_c2"].to_numpy(), out["early_minus_late_rate"].to_numpy()
+    assert np.allclose(np.diff(y) / np.diff(x), -4.0)
+    assert out["no_trend_estimate"][0] == pytest.approx(-0.08, abs=0.01)
+
+
+def test_bin_shift_check_covers_six_shifts():
+    from gel.models import review_checks as rc
+
+    out = rc.bin_shift_check(synthetic())
+    assert sorted(out["shift_k"].unique().to_list()) == [0, 1, 2, 3, 4, 5]
+    assert set(out["age_months"].unique().to_list()) == {12, 24, 36, 48}

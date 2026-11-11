@@ -586,3 +586,38 @@ Made while building P3, within the handoff's design. The owner can reverse any o
   (5) Observed cohort paths use CR1 by provider-region (100 clusters), because each path belongs
   to one chip. (6) Sub-period up to 2022 has three chips, so its chip-level bootstrap has 3
   clusters and is not informative.
+
+## Decision 24: follow-up to the Phase 5 adversarial review (2026-11-11)
+
+- **Date:** 2026-11-11, step B4 of `docs/finish_plan.md`. `docs/review_01.md` was written by a
+  session with no history (15 points). AJ then asked for the whole project to be finished, so
+  the checks below were run without waiting for his point-by-point answers. Each point in
+  review_01 carries a Claude draft response; AJ's own "Response (AJ)" lines stay empty for him.
+- **What changed in the logged specifications (none of the estimators):** (1) the shape measure
+  is renamed `early_minus_late_rate` (= rate over years 0-2 minus rate over years 2-4; H1 predicts
+  < 0), because "front_loading" read as the opposite of what it measures; (2) sub-samples with
+  fewer than 6 chips are no longer estimated or reported (`MIN_CLUSTERS`), which drops the
+  pre-2023 runs whose 3-cluster bootstrap gave zero-width intervals; (3) bootstrap p-values carry
+  their floor 1/(B+1); (4) the pooled-bin table carries a "diagnostic only" note.
+- **Checks added, all in `gel.models.review_checks`, outputs `paper/tables/p5_review_*.csv`:**
+  chip-specific trends and the chip time slopes behind the strategy 4 curvature (point 1);
+  randomization inference over release dates (point 1); bin-edge shifts (point 4); restricted
+  wild bootstrap (WCR) p-values for every summary measure, a WCR test-inversion interval for the
+  strategy 4 shape and a Monte Carlo of interval coverage on this panel's design (point 7);
+  repricing shares and the shape on listings whose price moves (point 3); strategy 2 with
+  in-sample frontiers and year effects (point 5); event dates by first panel listing (point 6);
+  unique price points, provider-equal weights and no Google (point 8); leave one chip out
+  (point 9); nominal cohort paths (point 13); shortage windows removed (memo 02's open question).
+- **Findings that change the reading of Phase 5:** with valid few-cluster inference, the strategy
+  4 shape (+0.47) is not distinguishable from zero (WCR p = 0.29; WCR interval -0.44 to 1.03). In
+  the Monte Carlo the unrestricted bootstrap covers 66-73% and CR1 by chip 74-76% against a nominal
+  95%; WCR covers 98-99%. The shape's sign depends on the market: spot +0.87; list prices that
+  actually move (non-spot listings with at least one change) -0.52 (CR1-by-provider SE 0.24, in
+  H1's direction); on-demand -0.13. Provider-equal weights cut the shape to +0.19.
+- **Proposed, not adopted (logged-spec changes need AJ, rule 7):** (a) make WCR p-values and
+  test-inversion intervals the headline inference instead of the unrestricted bootstrap;
+  (b) build strategy 2's frontier from in-sample chips (the 2023-12 step is the MI300X, not
+  rentable in the panel until 2026-10; estimates barely move); (c) date successor events by
+  first cloud availability; (d) report spot and list-price profiles separately as the primary
+  split. Until AJ decides, the paper reports the logged specs with the review's checks beside
+  them.
