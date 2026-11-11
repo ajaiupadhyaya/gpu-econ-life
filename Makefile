@@ -1,4 +1,4 @@
-.PHONY: interim edgar-fetch edgar restate release-manifest verify-raw dataset paper-numbers asset-values review-checks hedonic p5-figures panel p4-figures cpi-fetch cpi chips eia-states reference m8 figures p1-figures p2 p3-validate spot-panel install test test-fast lint coverage-preview collect health bench-dryrun bench-parse bench-report p3-calibrate p3-capex p3-market p3 data models paper all
+.PHONY: paper-public interim edgar-fetch edgar restate release-manifest verify-raw dataset paper-numbers asset-values review-checks hedonic p5-figures panel p4-figures cpi-fetch cpi chips eia-states reference m8 figures p1-figures p2 p3-validate spot-panel install test test-fast lint coverage-preview collect health bench-dryrun bench-parse bench-report p3-calibrate p3-capex p3-market p3 data models paper all
 
 install:
 	uv sync
@@ -120,6 +120,11 @@ paper-numbers: models
 paper: paper-numbers
 	cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
 	cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error summary.tex
+
+# Public PDFs: the same sources with the [AJ] review marks hidden.
+paper-public: paper
+	cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error -jobname=rental-implied-depreciation -usepretex='\def\ajfinalflag{}' main.tex
+	cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error -jobname=rental-implied-depreciation-summary -usepretex='\def\ajfinalflag{}' summary.tex
 
 all: interim data figures models paper
 

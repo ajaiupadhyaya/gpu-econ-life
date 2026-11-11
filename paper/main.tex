@@ -20,6 +20,7 @@
 % Interpretations Claude drafted that AJ must confirm. \ajfinaltrue hides the marks.
 \newif\ifajfinal
 \ajfinalfalse
+\ifdefined\ajfinalflag\ajfinaltrue\fi
 \newcommand{\ajcheck}[1]{\ifajfinal#1\else{\color{blue!60!black}#1}\textsuperscript{\color{red}[AJ]}\fi}
 
 \input{numbers}
@@ -27,7 +28,7 @@
 \graphicspath{{figures/}}
 
 \title{Rental-Implied Depreciation of AI Accelerators:\\ Why the Estimates Disagree}
-\author{[Author name: AJ to fill in]\thanks{Virginia Commonwealth University. Working paper draft;
+\author{Ajai Upadhyaya\thanks{Virginia Commonwealth University. Working paper draft;
 comments welcome. Replication package: see the data and code availability statement.}}
 \date{Draft, \today}
 

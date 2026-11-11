@@ -1,16 +1,17 @@
-# Author name is a placeholder for AJ to set (docs/release_audit.md item 3).
 cff-version: 1.2.0
 message: "If you use this software or data, please cite it as below."
 title: "gpu-econ-life: rental-implied depreciation of AI accelerators (replication package)"
 type: software
 authors:
-  - name: "AJ (author name to be set)"
+  - given-names: "Ajai"
+    family-names: "Upadhyaya"
 license: MIT
-repository-code: "https://github.com/OWNER/gpu-econ-life"
+repository-code: "https://github.com/ajaiupadhyaya/gpu-econ-life"
 preferred-citation:
   type: article
   title: "Rental-Implied Depreciation of AI Accelerators: Why the Estimates Disagree"
   authors:
-    - name: "AJ (author name to be set)"
+    - given-names: "Ajai"
+      family-names: "Upadhyaya"
   year: 2027
   notes: "Working paper; SSRN and arXiv identifiers to be added on posting."

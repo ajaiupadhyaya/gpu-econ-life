@@ -47,3 +47,17 @@ values), $12 on billions in `p7_restatement.csv`, and P3's runtime field. The re
 network dependency, now removed: `gel.collect.aws_history --parse` read AWS's live version index;
 it now parses the archived files. `make review-checks` (permutation test and Monte Carlo, over an
 hour) was not part of this run; its outputs are committed.
+
+## Going public (2026-11-11)
+
+AJ asked to "publish it all". The six items above were settled with these defaults:
+
+1. Research log and 2. deploy README: left as they are (terminated pod ids and an SSH alias; no
+   credentials or addresses).
+3. Author name: Ajai Upadhyaya, as on ajaiupadhyaya.com.
+4. Licences: MIT for code, CC BY 4.0 for the released dataset, as drafted.
+5. SkyPilot-only rows stay out of the public dataset (finish plan: do not republish).
+6. Only `own` and `open` raw files are candidates for a Zenodo deposit.
+
+The history checks above were re-run on all commits on 2026-11-11 before the repository was made
+public: no contact email, personal address, token or key, and no raw data files tracked.

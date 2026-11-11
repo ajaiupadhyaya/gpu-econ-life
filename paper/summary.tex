@@ -10,6 +10,7 @@
 \setlist{nosep,leftmargin=*}
 \newif\ifajfinal
 \ajfinalfalse
+\ifdefined\ajfinalflag\ajfinaltrue\fi
 \newcommand{\ajcheck}[1]{\ifajfinal#1\else{\color{blue!60!black}#1}\textsuperscript{\color{red}[AJ]}\fi}
 \input{numbers}
 \pagestyle{empty}
@@ -17,7 +18,7 @@
 \begin{center}
 {\Large\bfseries How fast do AI chips lose value?}\\[2pt]
 {\large What nine years of GPU rental prices say about tech-company depreciation}\\[4pt]
-Two-page summary of the working paper ``Rental-Implied Depreciation of AI Accelerators''
+Ajai Upadhyaya $\cdot$ two-page summary of the working paper ``Rental-Implied Depreciation of AI Accelerators''
 \end{center}
 
 \paragraph{The question.} The biggest AI spenders (Microsoft, Alphabet, Amazon, Meta, Oracle,
