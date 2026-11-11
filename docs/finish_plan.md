@@ -169,6 +169,8 @@ backups and $0-4 for optional GPU top-ups; the droplet is already paid for.
   repository's committed tables).
 - **D2 public PDFs:** `make paper-public` builds the paper and summary with the [AJ] marks hidden
   and the author line set.
-- **D3 still AJ's:** the repository is pushed but still private; flipping it to public was blocked
-  by the session's permission rules. Then tag v1.0.0 and connect Zenodo (D4); SSRN/arXiv (D5)
+- **D3 done (2026-11-11, AJ approved):** repository public; release v1.0.0 with the paper, the
+  summary and the dataset attached
+  (https://github.com/ajaiupadhyaya/gpu-econ-life/releases/tag/v1.0.0).
+- **Still AJ's:** connect the repository to Zenodo and re-release for a DOI (D4); SSRN/arXiv (D5)
   need AJ's accounts and, by the plan, faculty review (C4) first.
