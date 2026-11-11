@@ -1,4 +1,4 @@
-.PHONY: edgar-fetch edgar restate release-manifest verify-raw dataset paper-numbers asset-values review-checks hedonic p5-figures panel p4-figures cpi-fetch cpi chips eia-states reference m8 figures p1-figures p2 p3-validate spot-panel install test test-fast lint coverage-preview collect health bench-dryrun bench-parse bench-report p3-calibrate p3-capex p3-market p3 data models paper all
+.PHONY: interim edgar-fetch edgar restate release-manifest verify-raw dataset paper-numbers asset-values review-checks hedonic p5-figures panel p4-figures cpi-fetch cpi chips eia-states reference m8 figures p1-figures p2 p3-validate spot-panel install test test-fast lint coverage-preview collect health bench-dryrun bench-parse bench-report p3-calibrate p3-capex p3-market p3 data models paper all
 
 install:
 	uv sync
@@ -63,6 +63,13 @@ eia-states:
 
 reference: chips eia-states cpi
 
+# Parsed per-source files from data/raw (Phase 2 history). Live rows are parsed at collection time
+# into data/interim/live/ and are an input here (their raw copies are on the collection host).
+interim:
+	uv run python -m gel.parse.wayback
+	uv run python -m gel.collect.aws_history --parse
+	uv run python -m gel.collect.skypilot_history --parse
+
 # Phase 4 panel, cleaning report and descriptive figures (Decision 22).
 panel: reference
 	uv run python -m gel.build.panel
@@ -115,7 +122,7 @@ paper: paper-numbers
 	cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
 	cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error summary.tex
 
-all: data models paper
+all: interim data figures models paper
 
 # Release (finish plan D2/D4): raw-data manifest with checksums, verification, public dataset.
 release-manifest:

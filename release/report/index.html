@@ -1,0 +1,96 @@
+<title>GPU Economic Life Report</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,600&display=swap">
+<style>
+/* Layout: one reading column of a research status memo, wide tables in their own scrollers. */
+:root {
+  --bg: #fbfbf9; --surface: #f1f2ee; --fg: #18201c; --muted: #56605a; --rule: #d9ddd6;
+  --accent: #1d6b52; --warn: #9a5b0b; --ok: #1d6b52; --todo: #7a3e9d;
+  --display: "Fraunces", Georgia, "Times New Roman", serif;
+  --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #121614; --surface: #1b211e; --fg: #e6ebe7; --muted: #9aa69f; --rule: #2e3732;
+  --accent: #5fc39e; --warn: #e2a24d; --ok: #5fc39e; --todo: #c79be0; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #121614; --surface: #1b211e; --fg: #e6ebe7; --muted: #9aa69f; --rule: #2e3732;
+  --accent: #5fc39e; --warn: #e2a24d; --ok: #5fc39e; --todo: #c79be0; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font: 16px/1.6 var(--body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+main { max-width: 760px; margin: 0 auto; padding-block: 48px 72px; display: grid; gap: 40px; }
+h1 { font: 600 clamp(28px, 5vw, 40px)/1.15 var(--display); margin: 0; text-wrap: balance; }
+h2 { font: 600 22px/1.25 var(--display); margin: 0 0 12px; text-wrap: balance; }
+p { margin: 0; max-width: 65ch; }
+.eyebrow { font: 500 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+header { display: grid; gap: 12px; }
+.lede { color: var(--muted); font-size: 17px; }
+section { display: grid; gap: 12px; }
+ol.findings { margin: 0; padding-left: 1.3em; display: grid; gap: 10px; }
+ol.findings li::marker { color: var(--accent); font-family: var(--mono); }
+.num { font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.scroll { overflow-x: auto; border: 1px solid var(--rule); border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 14px; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font: 500 12px/1.3 var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--muted); background: var(--surface); }
+tr:last-child td { border-bottom: 0; }
+.pill { display: inline-block; font: 500 12px/1 var(--mono); padding: 4px 8px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap; }
+.pill.done { color: var(--ok); } .pill.aj { color: var(--todo); } .pill.part { color: var(--warn); }
+ul.plain { margin: 0; padding-left: 1.2em; display: grid; gap: 8px; }
+code { font-family: var(--mono); font-size: 0.9em; background: var(--surface); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
+footer { color: var(--muted); font-size: 13px; border-top: 1px solid var(--rule); padding-top: 16px; }
+</style>
+
+<main>
+  <header>
+    <div class="eyebrow">gpu-econ-life · status 11 Nov 2026</div>
+    <h1>Rental-implied depreciation of AI accelerators</h1>
+    <p class="lede">The research, paper draft and replication package are finished up to the steps that need AJ: AJ's edits to the prose, faculty review, and posting under AJ's own accounts.</p>
+  </header>
+
+  <section>
+    <h2>What the data say</h2>
+    <ol class="findings">
+      <li><strong>Realized rents fall slowly.</strong> Holding provider, region and contract fixed, the V100's rent changed by <span class="num">−0.38</span> log points over nine years (about <span class="num">32%</span>). The A100 40GB reached <span class="num">−0.45</span> at five years. The H100 rose <span class="num">+0.24</span> in year one, fell to <span class="num">−0.50</span> at three years, and recovered to <span class="num">−0.04</span> in the 2026 shortage.</li>
+      <li><strong>Posted prices rarely move.</strong> <span class="num">96%</span> of month-to-month on-demand and reserved transitions show no price change. AWS has charged <span class="num">$3.06</span>/hour for an on-demand V100 in every year from 2017 to 2026.</li>
+      <li><strong>The market you read changes the answer.</strong> The early-minus-late decline rate is <span class="num">+0.87</span> for spot prices (back-loaded). It is <span class="num">−0.52</span> for list prices that actually change (front-loaded, the direction H1 predicts).</li>
+      <li><strong>With valid inference, nothing is pinned down.</strong> On this panel's design, the pre-registered bootstrap covers the truth only <span class="num">66–72%</span> of the time. Under the restricted bootstrap, the pooled shape has <span class="num">p = 0.29</span> and a 95% interval of <span class="num">[−0.44, 1.03]</span>.</li>
+      <li><strong>Rents never reach operating cost.</strong> An H100 rents for <span class="num">$4.50</span>/hour against about <span class="num">$0.30</span> of power and maintenance. Along the realized path it loses <span class="num">32%</span> of its value by year three, slower than any 5–6 year straight line. Economic life is set by obsolescence: the power-constrained retirement model gives a median of <span class="num">4.1</span> years.</li>
+      <li><strong>The earnings effect depends on the rent path.</strong> At a GPU share of one half, the realized-path schedule would raise the five hyperscalers' latest operating income by <span class="num">2.6–15.5%</span>. The steepest assumed decline would cut it by up to <span class="num">11.0%</span> (Oracle, FY2026).</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Where each stage stands</h2>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Stage</th><th>Status</th><th>Output</th></tr></thead>
+        <tbody>
+          <tr><td>B4 adversarial review and checks</td><td><span class="pill part">AJ to answer</span></td><td><code>docs/review_01.md</code>: 15 points, each with a Claude draft response; checks in <code>docs/review_01_checks.md</code></td></tr>
+          <tr><td>B5 asset values and economic life</td><td><span class="pill done">done</span></td><td><code>gel.models.asset_value</code>, Decision 25</td></tr>
+          <tr><td>B6 EDGAR facts, useful lives, restatement</td><td><span class="pill done">done</span></td><td>7 firms; 56 filing quotes checked against the raw files; Decision 26</td></tr>
+          <tr><td>C1–C3 paper, 65 verified references, draft prose</td><td><span class="pill part">AJ to rewrite</span></td><td><code>paper/main.tex</code>, 19 pages; every number is a generated macro</td></tr>
+          <tr><td>C5 two-page summary</td><td><span class="pill done">done</span></td><td><code>paper/summary.tex</code></td></tr>
+          <tr><td>D1 pre-public audit</td><td><span class="pill done">done</span></td><td>No secrets or raw data in history; 6 items to decide</td></tr>
+          <tr><td>D2 replication package</td><td><span class="pill done">done</span></td><td><code>make all</code>, raw manifest with SHA-256, Zenodo dataset builder</td></tr>
+          <tr><td>C4, D3–D7 faculty review, public repo, DOI, SSRN/arXiv, site</td><td><span class="pill aj">AJ</span></td><td>Needs AJ's accounts and approval</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Decisions only AJ can make</h2>
+    <ul class="plain">
+      <li><strong>Inference headline.</strong> Switch the paper's headline from the unrestricted to the restricted wild bootstrap (Decision 24a). The Monte Carlo favours the switch.</li>
+      <li><strong>Logged-spec changes from the review.</strong> An in-sample frontier for strategy 2, GA-dated successor events, and spot versus list as the primary split (Decision 24b–d).</li>
+      <li><strong>Restatement inputs.</strong> The server share of capex (now a 0.4 / 0.6 / 0.8 grid with no filing source), finance-lease capex, and whether Amazon's 2025 "subset" includes GPU servers.</li>
+      <li><strong>Operating cost.</strong> A sourced colocation price per kW-month, so hosting can enter the valuation.</li>
+      <li><strong>Release.</strong> Your name for the author line and <code>CITATION.cff</code>, the MIT and CC BY licence drafts, and whether to publish SkyPilot-derived monthly medians and redact pod ids in the research log.</li>
+      <li><strong>Earlier open items.</strong> Mid-January reconciliation note, site timing, optional B200 run and second price snapshot, and the droplet's alerts and backups.</li>
+    </ul>
+  </section>
+
+  <footer>Every figure on this page comes from the generated files in <code>paper/tables/</code> and <code>paper/numbers.tex</code> in the repository, built by <code>make all</code>.</footer>
+</main>

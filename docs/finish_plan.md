@@ -147,3 +147,15 @@ backups and $0-4 for optional GPU top-ups; the droplet is already paid for.
 - **Collector or droplet failure before April** (no alerts or backups yet). Stage A fixes this.
 - **Time:** the paper's core (Phases 3-7) is still ahead. Keep the gates, and keep scope extras
   (more chips, resale prices) until after the draft exists.
+
+## Status update (2026-11-11, after AJ asked for everything to be finished)
+
+- **Done:** B4 checks with Claude draft responses (Decision 24); B5 Phase 6 (Decision 25); B6
+  Phase 7 (Decision 26); C1 scaffold and `make paper`; C2 references (65, all verified);
+  C3 first-draft prose for every section, built only from generated number macros; C5 summary;
+  D1 audit (`docs/release_audit.md`); D2 replication tooling (`make all`, `make verify-raw`,
+  `make dataset`, licence and citation drafts).
+- **AJ's, still open:** answers in `docs/review_01.md`; rewriting the prose (Decision 17); the
+  logged-spec proposals in Decision 24 (a)-(d); restatement inputs (server share of capex,
+  finance leases, Amazon's 2025 subset); a sourced hosting cost; the six audit items; decisions
+  2, 4, 5 and 6 above; C4 faculty review; D3-D7 (public repo, Zenodo, SSRN/arXiv, site, journal).

@@ -591,8 +591,8 @@ Made while building P3, within the handoff's design. The owner can reverse any o
 
 - **Date:** 2026-11-11, step B4 of `docs/finish_plan.md`. `docs/review_01.md` was written by a
   session with no history (15 points). AJ then asked for the whole project to be finished, so
-  the checks below were run without waiting for his point-by-point answers. Each point in
-  review_01 carries a Claude draft response; AJ's own "Response (AJ)" lines stay empty for him.
+  the checks below were run without waiting for AJ's point-by-point answers. Each point in
+  review_01 carries a Claude draft response; AJ's own "Response (AJ)" lines stay empty for AJ.
 - **What changed in the logged specifications (none of the estimators):** (1) the shape measure
   is renamed `early_minus_late_rate` (= rate over years 0-2 minus rate over years 2-4; H1 predicts
   < 0), because "front_loading" read as the opposite of what it measures; (2) sub-samples with

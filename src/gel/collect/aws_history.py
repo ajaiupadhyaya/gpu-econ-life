@@ -34,6 +34,13 @@ def versions_since(index: dict, first_month: str) -> list[str]:
     return sorted(v for v in index["versions"] if v[:6] >= first_month)
 
 
+def stored_versions(root: Path) -> list[str]:
+    """Versions archived in data/raw for the history region, from FIRST_MONTH on."""
+    suffix = f"-{REGION}.csv.gz"
+    names = [p.name[: -len(suffix)] for p in (root / RAW_DIR).glob(f"*{suffix}")]
+    return sorted(v for v in names if v[:6] >= FIRST_MONTH)
+
+
 def version_timestamp(version: str) -> str:
     v = version
     return f"{v[:4]}-{v[4:6]}-{v[6:8]}T{v[8:10]}:{v[10:12]}:{v[12:14]}Z"
@@ -88,14 +95,16 @@ def main(argv: list[str] | None = None, *, root: Path = ROOT) -> int:
     args = parser.parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     logging.getLogger("httpx").setLevel(logging.WARNING)
-    headers = {"User-Agent": user_agent()}
-    with httpx.Client(headers=headers, timeout=TIMEOUT, follow_redirects=True) as client:
-        index = get_with_backoff(client, VERSION_INDEX).json()
-        versions = versions_since(index, FIRST_MONTH)
-        log.info("%d versions from %s", len(versions), FIRST_MONTH)
-        if args.download:
+    if args.download:
+        headers = {"User-Agent": user_agent()}
+        with httpx.Client(headers=headers, timeout=TIMEOUT, follow_redirects=True) as client:
+            index = get_with_backoff(client, VERSION_INDEX).json()
+            versions = versions_since(index, FIRST_MONTH)
+            log.info("%d versions from %s", len(versions), FIRST_MONTH)
             fetch_versions(versions, REGION, root, client, Throttle())
     if args.parse:
+        # Parse what is archived, so a rebuild from data/raw needs no network.
+        versions = stored_versions(root)
         config = yaml.safe_load((root / "config/skus.yaml").read_text())
         paths = [root / RAW_DIR / f"{v}-{REGION}.csv.gz" for v in versions]
         log.info("parsed %d rows", parse_versions(paths, root, config["aws"]["instances"]))
