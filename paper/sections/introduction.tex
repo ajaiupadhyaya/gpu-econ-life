@@ -1,0 +1,86 @@
+\section{Introduction}
+\label{sec:intro}
+
+Reported earnings at the largest AI spenders now hinge on one management estimate: how many years
+a server lasts. Between 2020 and 2025 Microsoft, Alphabet, Amazon, Meta, Oracle and CoreWeave
+lengthened the useful lives of their servers, and Amazon partly reversed course for a subset of
+them in 2025 (Section~\ref{sec:background} and Table~\ref{tab:lives}). Whether five- or six-year
+straight-line lives are defensible for graphics processing units (GPUs) bought at the peak of an
+investment boom is now a live question for investors, auditors and regulators.
+
+The first academic and practitioner estimates of accelerator depreciation have appeared, and they
+disagree. \citet{amissahocran2026collateral} fit a rent--age profile at one date and find a
+retention path consistent with roughly 40\% a year; \citet{chincholikar2026economic} use executed
+resale prices and find 24--27\%; \citet{huang2026gpu} measure rental contribution on a
+peer-to-peer marketplace and find 17--32\%; and archived posted on-demand prices show declines
+from roughly 15\% a year to none at all \citep{ccir2026rental}. These studies measure different
+things: resale value, net cash flow or posted rent, at one date or along a path.
+
+This paper puts those measurements on one basis, using the object that is easiest to observe
+over time: what it costs to rent an accelerator for an hour. I build a panel of \nPanelRows{}
+listing-months of posted rents for seven NVIDIA chips, from the V100 (2017) to the B200 (2024),
+covering October 2017 to November 2026. It combines Amazon Web Services (AWS) price-list history,
+archived pricing pages, the SkyPilot catalog history and live collection, across hyperscalers and
+neoclouds and across on-demand, spot and reserved contracts (Section~\ref{sec:data}).
+
+The central econometric problem is old. Age equals calendar time minus vintage, so with chip and
+month fixed effects the linear part of the age profile is not identified \citep{hall1968technical}.
+Following the advice to report each chip's realized path first, I then run four identification
+strategies side by side: a quality-adjusted vintage effect, a frontier-relative obsolescence term
+after \citet{geske2007computers}, a successor event study, and a shape-only specification that
+sweeps an assumed linear rate (Section~\ref{sec:method}). Inference is at the chip level, which
+leaves seven clusters.
+
+Three results stand out.
+
+\emph{Realized rents fall slowly.} Holding provider, region and contract fixed, the V100's rent
+changes by \nPathVHundredFour{} log points over its first four years and \nPathVHundredNine{}
+over nine; the A100 40GB's falls to \nPathAHundredFive{} by year five. The H100's rent rose by
+\nPathHHundredOne{} in its first year and was \nPathHHundredThree{} at three years, before 2026's
+shortage brought it back to \nPathHHundredFour{} at four years.
+
+\emph{The shape of the age profile depends on the market, and the data mostly measure pricing
+habits.} \nListUnchanged{} of month-to-month on-demand and reserved transitions in the panel show
+no price change; AWS has charged \$\nAwsVHundredPrice{} an hour for a V100 on demand in every year
+from \nAwsVHundredFirstYear{} to \nAwsVHundredLastYear{}. Spot prices give a back-loaded profile
+(rate over years 0--2 minus the rate over years 2--4 of \nFourShapeSpot), while list prices that
+do change give a front-loaded one (\nShapeListMovers, provider-clustered standard error
+\nShapeListMoversSe). \ajcheck{Which of these is ``the'' age profile is a choice of market, not a
+technical detail.}
+
+\emph{With valid inference, the data do not pin down the rate or the shape.} Under the
+unrestricted wild cluster bootstrap that the analysis pre-registered, the pooled shape estimate
+(\nFourShape) excludes zero. A Monte Carlo on this panel's design shows that the unrestricted
+bootstrap's 95\% intervals cover the truth only \nCovWcuLo--\nCovWcuHi{} of the time, while the
+restricted version covers about \nCovWcrHi; under the restricted bootstrap the shape has
+$p = \nFourShapeWcrP$ and a 95\% interval of [\nFourShapeWcrLo, \nFourShapeWcrHi]. No
+identification strategy that identifies a linear rate finds a significant decline over years 0--4.
+
+Turning rents into asset values (Section~\ref{sec:values}), the present value of net rent falls
+along the realized path by \nValRealLostThree{} by year three for an H100, which is slower than any
+five- or six-year straight-line schedule. The H100's neocloud rent of \$\nValRentNow{} an hour
+compares with roughly \$\nValOpex{} of power and maintenance, so rents never fall to operating cost within the
+nine-year horizon: economic life is set by obsolescence and power scarcity, not by rents reaching
+operating cost. A separate benchmark, term-structure and retirement analysis
+(Section~\ref{sec:triangulation}) places the power-constrained retirement age at
+\nPThreeMedian{} years and the life to operating cost at \nPTwoLopexLo--\nPTwoLopexHi{} years,
+with book lives in between.
+
+\ajcheck{The contribution is a reconciliation. The spread of published rates comes mostly from
+three choices that are rarely stated: which price series is read (resale, spot, posted list, or
+transacted rent), which identification assumption pins the linear age term, and whether value is
+taken to end when rent reaches operating cost or when a better chip displaces the old one in a
+power-constrained slot.} The paper's open panel, code and identification range let readers make
+those choices explicitly.
+
+\paragraph{Related literature.} The paper applies the vintage-price approach to depreciation
+\citep{hulten1981estimation, oliner1993constant, doms2004computers, geske2007computers} and
+hedonic price measurement \citep{rosen1974hedonic, berndt1993price, triplett2006handbook} to a new
+asset class with an active rental market, as \citet{gavazza2011leasing} does for aircraft. Its
+identification problem is the age--period--cohort problem of \citet{hall1968technical} and
+\citet{deaton1997analysis}. On inference with few clusters it follows
+\citet{cameron2008bootstrap}, \citet{mackinnon2017wild}, \citet{webb2023reworking} and
+\citet{mackinnon2023cluster}. On the accounting side it relates to \citet{keating1999depreciation}.
+Recent work measures cloud prices \citep{byrne2018cloud, sawyer2023ppi} and GPU price-performance
+\citep{hobbhahn2022trends}, and a fast-growing practitioner and working-paper literature argues
+about accelerator lives \citep{dutta2026priced, rosenzweig2026second}.
