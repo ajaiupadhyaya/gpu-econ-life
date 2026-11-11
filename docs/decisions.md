@@ -472,3 +472,22 @@ Made while building P3, within the handoff's design. The owner can reverse any o
   software stack, and its data is our own and fully releasable; (3) MLPerf results are vendor
   submissions on differing systems and software, and their chip coverage would not line up with
   ours. It can be revisited after the draft if a referee asks for an external benchmark.
+
+## Decision 21: CPI-U deflator (2026-11-11)
+
+- **Date:** 2026-11-11, step B1 of `docs/finish_plan.md`.
+- **Source route:** BLS flat files at https://download.bls.gov/pub/time.series/cu/ (layout in
+  `cu.txt`), fetched by `gel.collect.bls_cpi` with the contact User-Agent. Not the BLS API,
+  because https://api.bls.gov/robots.txt disallows all user agents (rule 5); not FRED, which
+  needs a key and carries a third-party-copyright caveat. download.bls.gov serves no robots.txt.
+  BLS material is public domain.
+- **Series:** CUUR0000SA0, "All items in U.S. city average, all urban consumers, not seasonally
+  adjusted" (confirmed in the archived `cu.series`). Not seasonally adjusted because a deflator
+  should not be revised by seasonal-factor updates; the adjusted CUSR0000SA0 is kept alongside.
+- **Base:** constant 2025 dollars, the BLS 2025 annual average (M13) = 321.943.
+  Real = nominal x 321.943 / CPI_t. Alternatives: the latest month (moves with each release), or
+  1982-84 = 100 (unfamiliar dollars).
+- **Gap:** BLS published no October 2025 value (footnote X, "Data unavailable due to the 2025
+  lapse in appropriations"). The raw column keeps the gap; `cpi_u_nsa_filled` uses the geometric
+  mean of September and November 2025 (324.46) with `cpi_imputed = true`, so October 2025 prices
+  can still be deflated. Only isolated single-month gaps are filled.

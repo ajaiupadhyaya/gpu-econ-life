@@ -341,3 +341,15 @@ These are the items tagged UNVERIFIED above, grouped by source, so the owner can
 - Used by: gel.models.p3_capex (P3 capex anchor, growth, release gaps); gel.build.chips (Phase 3
   chip reference table: release date, tensor FP16/BF16, FP8, memory, memory bandwidth, TDP,
   release price; Decisions 18-19). Field definitions: https://epoch.ai/data/machine-learning-hardware-documentation/records
+
+## BLS CPI-U flat files (used 2026-11-11, Decision 21)
+
+- URL: https://download.bls.gov/pub/time.series/cu/ (documentation in `cu.txt`); files
+  `cu.data.1.AllItems`, `cu.series`, `cu.footnote`.
+- Access: no key. https://api.bls.gov/robots.txt is "User-agent: * / Disallow: /", so the API
+  is not used; download.bls.gov returns 404 for robots.txt. Requests carry the project
+  User-Agent with the contact email (BLS policy asks robots for contact information).
+- Licence: public domain ("everything that we publish ... is in the public domain"); cite the
+  Bureau of Labor Statistics.
+- Raw copy: data/raw/indices/bls_cpi/2026-11-11/ (+ .json sidecars). Collector:
+  gel.collect.bls_cpi. Builder: gel.build.cpi.

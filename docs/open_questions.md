@@ -143,7 +143,7 @@ Unknown values, unreachable sources and anything waiting on a decision.
 - **Dense vs sparse throughput.** Epoch's notes state "Listed performance figures are without
   sparsity" for the H100 SXM, H100 PCIe and B200 only. The V100, A100, H200 and MI300X rows carry no
   such note; confirm against their datasheets before comparing across chips.
-- **CPI-U waits on the contact email.** BLS asks for a contact-bearing User-Agent and FRED needs
+- **(Resolved 2026-11-11, Decision 21: CPI-U built from BLS flat files.)** **CPI-U waits on the contact email.** BLS asks for a contact-bearing User-Agent and FRED needs
   an API key; `GEL_CONTACT_EMAIL` is not yet in `.env`. Until then the panel has nominal prices
   only.
 - **(Decided 2026-11-11, Decision 20: not built; P1 is the throughput measure.)** **MLPerf throughput index (proposal Phase 3 item 2).** Not built: MLCommons' terms of use could
