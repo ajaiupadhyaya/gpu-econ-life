@@ -346,3 +346,25 @@ Made while building P3, within the handoff's design. The owner can reverse any o
   (a) stays as a robustness column. Reason: hyperscaler list prices are structurally higher and
   sticky (Phase 0 review), and one provider's price is noisy. The two specs disagree: paid
   prices make every old chip look discounted, medians put most near parity.
+
+## Decision 14: P1 and P2 results choices (2026-11-11)
+
+- **Operating point for P1 figures:** concurrency 32 (handoff P3 default), best available precision
+  for cost figures, BF16 for the like-for-like discount figure. P1-a shows all concurrencies.
+- **Rental cost per token** uses the M4 neocloud median on-demand price (Decision 13); energy cost
+  uses EIA's $0.089/kWh and PUE 1.3 (Decision 12), not the $0.08 default stored in the run snapshots.
+- **L40S release date:** 2023-08-08, the NVIDIA announcement ("available starting this fall"),
+  `data/raw/manual/chip_dates.csv`. Epoch has no L40S row, and its L40 (a different SKU) is not
+  used as a proxy. Age error is at most about a quarter of a year.
+- **P2 observations:** reserved/on-demand ratios for the same provider, chip and month from the
+  Phase 2 history and the November live files, including Azure's 5-year reservations. Medians
+  are taken across providers and months, separately for neoclouds and hyperscalers.
+- **P2 estimation:** one constant delta per chip x provider type, least squares across tenors,
+  on r {5, 8, 12}% x pi {0, 1, 2, 3}%/yr. Level 4 only where three tenors exist (H100,
+  hyperscalers: 12/36/60). With three parameters on three points that fit is exact, so it is
+  illustrative only.
+- **L_opex** = age today + ln(R_now / opex) / delta, with R_now the group's current median on-demand
+  price. opex = power (P1 c=32 board power x EIA price x PUE) + maintenance at 4% of the Epoch
+  release price where Epoch has one (H100, H200); power only otherwise (A100 80GB, L40S), flagged.
+- **`make figures`** regenerates every table and figure from raw data (bench parse -> M4 panel ->
+  P1 tables and figures; P3 calibration, Monte Carlo and validation; P2) in about 40 seconds.

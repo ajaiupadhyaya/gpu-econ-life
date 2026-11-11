@@ -188,3 +188,12 @@ pages for 2026-11-03 to 11-10 (20 rows a day; no new requests to Lambda). The da
 active (next run 06:11 UTC). OhCamel, Tidewater and Strata containers were unaffected. The host's
 `runs/<day>.json` summaries for those days still record the original failure, which is accurate
 history.
+
+## M5 and M6: P1 and P2 results, 2026-11-11
+
+Built the shared plotting style (`gel.viz.style`, the dataviz skill's validated palette), the P1
+figures P1-a to P1-d and the P2 module with figures P2-a to P2-c (`gel.models.p2_term`). Each
+figure was rendered and inspected, and label collisions were fixed. `make figures` regenerates
+everything from raw data in about 40 seconds. A single-scenario P3 sanity run briefly overwrote
+the 16-scenario P3 tables; they were regenerated with `make p3`. Summary in
+`docs/results_p1_p2.md`.

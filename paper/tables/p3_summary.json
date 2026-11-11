@@ -43,7 +43,7 @@
     },
     "markup_mean": 0.9094380974123665,
     "share_months_constrained": 0.6966775,
-    "runtime_s": 1.2612159999553114
+    "runtime_s": 1.1170382919954136
   },
   {
     "scenario": "fast_frontier",
@@ -89,7 +89,7 @@
     },
     "markup_mean": 0.9094380974123665,
     "share_months_constrained": 0.6966775,
-    "runtime_s": 1.1754674999974668
+    "runtime_s": 1.1221785829402506
   },
   {
     "scenario": "slow_frontier",
@@ -135,7 +135,7 @@
     },
     "markup_mean": 0.9091109921762911,
     "share_months_constrained": 0.6967875,
-    "runtime_s": 0.5477805000264198
+    "runtime_s": 0.5455362920183688
   },
   {
     "scenario": "always_constrained",
@@ -181,7 +181,7 @@
     },
     "markup_mean": 0.9094380974123665,
     "share_months_constrained": 1.0,
-    "runtime_s": 0.8553751249564812
+    "runtime_s": 0.8234263330232352
   },
   {
     "scenario": "power_abundant",
@@ -227,7 +227,7 @@
     },
     "markup_mean": 0.9094380974123665,
     "share_months_constrained": 0.0,
-    "runtime_s": 0.8684827500255778
+    "runtime_s": 0.8155110420193523
   },
   {
     "scenario": "scarcity_boom",
@@ -273,7 +273,7 @@
     },
     "markup_mean": 1.5705559539066316,
     "share_months_constrained": 0.6966775,
-    "runtime_s": 0.8452017910312861
+    "runtime_s": 0.8427012499887496
   },
   {
     "scenario": "scarcity_jump",
@@ -319,7 +319,7 @@
     },
     "markup_mean": 1.4381889621027575,
     "share_months_constrained": 0.6966775,
-    "runtime_s": 0.8630792499752715
+    "runtime_s": 0.8526574999559671
   },
   {
     "scenario": "virginia_power",
@@ -365,7 +365,7 @@
     },
     "markup_mean": 0.9094380974123665,
     "share_months_constrained": 0.6966775,
-    "runtime_s": 0.8910517090698704
+    "runtime_s": 0.8192517079878598
   },
   {
     "scenario": "failure_low",
@@ -411,7 +411,7 @@
     },
     "markup_mean": 0.9094380974123665,
     "share_months_constrained": 0.6966775,
-    "runtime_s": 0.8991454999195412
+    "runtime_s": 0.8419807500904426
   },
   {
     "scenario": "failure_high",
@@ -457,7 +457,7 @@
     },
     "markup_mean": 0.9094380974123665,
     "share_months_constrained": 0.6966775,
-    "runtime_s": 0.8425282499520108
+    "runtime_s": 0.8463282500160858
   },
   {
     "scenario": "failure_handoff",
@@ -503,7 +503,7 @@
     },
     "markup_mean": 0.9094380974123665,
     "share_months_constrained": 0.6966775,
-    "runtime_s": 0.8376761249965057
+    "runtime_s": 0.8370579170295969
   },
   {
     "scenario": "empirical_cadence",
@@ -549,7 +549,7 @@
     },
     "markup_mean": 0.9092099807776534,
     "share_months_constrained": 0.6956061111111111,
-    "runtime_s": 0.7042325829388574
+    "runtime_s": 0.6691330829635262
   },
   {
     "scenario": "capex_low",
@@ -595,7 +595,7 @@
     },
     "markup_mean": 0.9094380974123665,
     "share_months_constrained": 0.6966775,
-    "runtime_s": 0.852403917000629
+    "runtime_s": 0.838588707963936
   },
   {
     "scenario": "capex_flat",
@@ -641,7 +641,7 @@
     },
     "markup_mean": 0.9094380974123665,
     "share_months_constrained": 0.6966775,
-    "runtime_s": 0.86266862496268
+    "runtime_s": 0.8473452500766143
   },
   {
     "scenario": "maintenance_high",
@@ -687,7 +687,7 @@
     },
     "markup_mean": 0.9094380974123665,
     "share_months_constrained": 0.6966775,
-    "runtime_s": 0.8651329580461606
+    "runtime_s": 0.8282530000433326
   },
   {
     "scenario": "markup_level_process",
@@ -733,6 +733,6 @@
     },
     "markup_mean": 0.9427494638803516,
     "share_months_constrained": 0.695805,
-    "runtime_s": 0.8484394170809537
+    "runtime_s": 0.80247724999208
   }
 ]

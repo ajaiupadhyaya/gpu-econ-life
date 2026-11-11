@@ -1,4 +1,4 @@
-.PHONY: spot-panel install test test-fast lint coverage-preview collect health bench-dryrun bench-parse bench-report p3-calibrate p3-capex p3-market p3 data models paper all
+.PHONY: figures p1-figures p2 p3-validate spot-panel install test test-fast lint coverage-preview collect health bench-dryrun bench-parse bench-report p3-calibrate p3-capex p3-market p3 data models paper all
 
 install:
 	uv sync
@@ -41,7 +41,7 @@ p3-capex:
 p3-market:
 	uv run python -m gel.models.p3_market_calibration
 
-p3: p3-calibrate p3-capex p3-market p3-market
+p3: p3-calibrate p3-capex p3-market
 	uv run python -m gel.models.monte_carlo
 
 bench-parse:
@@ -57,3 +57,16 @@ paper:
 	@echo "placeholder: built in Phase 8"
 
 all: data models paper
+
+# Every table and figure from raw data (handoff M9): P1 parse -> M4 panel -> P1 tables/figures,
+# P3 calibration + Monte Carlo + validation, P2 term structure.
+p1-figures: bench-report
+	uv run python -m gel.viz.p1_figures
+
+p2: p3-market
+	uv run python -m gel.models.p2_term
+
+p3-validate: p3
+	uv run python -m gel.models.p3_validation
+
+figures: bench-parse p1-figures p3-validate p2

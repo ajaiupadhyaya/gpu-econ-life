@@ -1,0 +1,16 @@
+chip,provider_type,term_months,observed_ratio,n_obs,providers
+a100_80gb,hyperscaler,12,0.615620924796934,46,"aws,azure"
+a100_80gb,hyperscaler,36,0.38138448826153554,46,"aws,azure"
+a100_80gb,neocloud,12,0.9049999999999999,6,lambda
+a100_80gb,neocloud,36,0.36163522012578614,16,"lambda,paperspace"
+b200,neocloud,12,0.6993987975951904,6,lambda
+b200,neocloud,36,0.5991983967935872,1,lambda
+h100_sxm,hyperscaler,12,0.6400003372427774,1,azure
+h100_sxm,hyperscaler,36,0.43894436533767295,35,"aws,azure"
+h100_sxm,hyperscaler,60,0.3999999428402072,1,azure
+h100_sxm,neocloud,12,1.1114649681528663,2,lambda
+h100_sxm,neocloud,36,0.37647058823529417,43,"lambda,paperspace"
+h200,hyperscaler,12,0.5485999827690187,1,azure
+h200,hyperscaler,36,0.49789997415352805,1,azure
+l40s,hyperscaler,12,0.6299997599930584,23,aws
+l40s,hyperscaler,36,0.4319997563006438,23,aws
