@@ -205,3 +205,11 @@ Fig T-1, attribution and the blended-fleet table, wired into `make figures`. Mai
 market-based lives to operating cost (P1, P2) and P3 without power constraints agree on a long life
 (roughly 10 years and up). P3 in a power-constrained market with a scarcity markup gives about 4
 years, inside or just below the 4-6 year accounting band.
+
+## M9: reproducible from raw data, 2026-11-11
+
+Rebuilt every output from scratch in a scratch copy of the repository (the project's own outputs
+were not deleted). A missing Makefile dependency surfaced and was fixed. After that, all 26
+outputs reproduced exactly apart from timestamps and runtimes. Added the EIA-priced energy-cost
+column, reorganised `docs/assumptions.md` and rewrote the README. All nine handoff milestones are
+now met.

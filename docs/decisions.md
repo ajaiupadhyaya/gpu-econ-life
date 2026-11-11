@@ -390,3 +390,15 @@ Made while building P3, within the handoff's design. The owner can reverse any o
   m/(1+m) = 0.47 (base) and 0.61 (2026 boom).
 - **Blended fleet** (handoff's bounding exercise): 1/(s/L_gpu + (1-s)/L_other) for s in
   {0.3, 0.5, 0.7}, L_other in {6, 7}, for five GPU-life sources. Table `m8_blended_fleet.csv`.
+
+## Decision 16: M9 reproducibility check and energy-cost consistency (2026-11-11)
+
+- **Clean rebuild:** a copy of the repository with every generated output deleted was rebuilt
+  with `make figures`. It first failed: `p1-figures` needed `p3_market.json` without declaring it.
+  The Makefile now declares the full chain (bench-parse -> spot-panel / p3-calibrate -> p3-market
+  -> bench-report, p1-figures, p3, p2 -> validation -> triangulation). All 26 outputs then matched
+  the committed versions, apart from generation timestamps and P3 runtimes.
+- **Energy cost:** the P1 summary gains `energy_cost_per_mtok_eia_mean` at EIA's price (Decision 12).
+  The run snapshots' $0.08 column stays for provenance. Figures and P2/P3 use the EIA price.
+- **README** rewritten for the whole project; `docs/assumptions.md` reorganised by project with
+  every assumption, source and decision.

@@ -79,7 +79,7 @@ Unknown values, unreachable sources and anything waiting on a decision.
   now gets HTTP 200 on `config.json` and `model-00001-of-00004.safetensors`. The same token goes
   on the Runpod template as `HF_TOKEN`.
 - **Still open from the handoff:** (electricity resolved by Decision 12: national base, Virginia
-  scenario; P1 energy-cost tables still use the $0.08 default and should switch); any private rate cards for `prices_term.csv`. Model,
+  scenario; the P1 summary has an EIA-priced column, Decision 16); any private rate cards for `prices_term.csv`. Model,
   frontier GPU (B200, approved) and smoke-test card were settled in Decision 7.
 - **Benchmark image not built or pushed.** `bench/Dockerfile` has not been built (it needs a
   linux/amd64 build of a ~10 GB base image and a registry account). The harness logic is proven
