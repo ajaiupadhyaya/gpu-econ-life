@@ -429,3 +429,33 @@ Made while building P3, within the handoff's design. The owner can reverse any o
 - **Coverage of the archived Epoch file (2026-11-10):** rows exist for V100, A100 40GB and 80GB,
   H100 SXM and PCIe, H200 SXM, B200 and MI300X. Missing: the L40S (Epoch lists the L40, a different
   card); FP8 throughput for the H100 PCIe and the MI300X. Logged in `docs/open_questions.md`.
+
+## Decision 19: Phase 3 reference tables, chip and electricity (2026-11-11)
+
+- **Date:** 2026-11-11, step B1 of `docs/finish_plan.md`.
+- **Chip table** (`gel.build.chips`, `make chips`): one row per chip x field with status
+  (`ok`, `not_supported`, `missing`), source kind (epoch, datasheet, manual) and source
+  reference. `tests/test_chips.py` fails if any value lacks a source or any gap lacks a reason.
+- **Fields:** release date, tensor FP16/BF16 TFLOP/s, FP8 TFLOP/s, memory GB, memory bandwidth
+  TB/s, TDP W, release price (nominal USD), announcement date. Epoch's "Release date" is "The
+  date when the hardware could first be rented, used for machine learning workloads, or purchased
+  (excluding pre-orders)" (Epoch records documentation, checked 2026-11-10), which is the
+  proposal's availability date. Announcement dates come only from hand records
+  (`data/raw/manual/chip_dates.csv`) and are never used as release dates.
+- **Variant choice:** `v100` = Epoch's "NVIDIA Tesla V100 SXM2" (the row that cites NVIDIA's
+  datasheets; 16 GB). Alternatives were the SXM2 16 GB row (memory blank) and SXM2 32 GB row
+  (released 2018-03-27). Other chips map one-to-one (`config/chips.yaml`).
+- **Not supported:** taken only from an Epoch note of the form "FP8 and FP4: native compute not
+  supported." (A100 40 GB). Blanks without such a note stay missing.
+- **Architecture** labels (Volta, Ampere, ...) are left out: Epoch has no such field, and chip
+  ids already identify the generation. They can come from datasheets if the paper needs them.
+- **Manual datasheet values** go in `data/raw/manual/chip_specs_manual.csv`
+  (chip_id, field, value, source_url, notes) when AJ supplies them; they fill gaps only and never
+  overwrite Epoch.
+- **Electricity table** (`gel.build.eia_states`, `make eia-states`): EIA-861M monthly
+  commercial and industrial prices for VA, TX, OR, GA, AZ, OH and the US, 2010-01 to 2026-08.
+  Price = revenue / sales; it matches EIA's own rounded price column within 0.005 cents/kWh. US
+  = sum over 50 states and DC, identical to the P3 calibration (US industrial $0.0890/kWh and
+  Virginia $0.1000/kWh over the latest 12 months in both).
+- **Deferred:** CPI-U (needs the contact email for the BLS User-Agent) and MLPerf (see
+  `docs/open_questions.md`).

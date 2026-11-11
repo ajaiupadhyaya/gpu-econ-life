@@ -1,4 +1,4 @@
-.PHONY: m8 figures p1-figures p2 p3-validate spot-panel install test test-fast lint coverage-preview collect health bench-dryrun bench-parse bench-report p3-calibrate p3-capex p3-market p3 data models paper all
+.PHONY: chips eia-states reference m8 figures p1-figures p2 p3-validate spot-panel install test test-fast lint coverage-preview collect health bench-dryrun bench-parse bench-report p3-calibrate p3-capex p3-market p3 data models paper all
 
 install:
 	uv sync
@@ -47,8 +47,17 @@ p3: p3-calibrate p3-capex p3-market
 bench-parse:
 	uv run python -m gel.bench.parse --root data/raw/bench --out data/interim/bench/bench_windows.parquet
 
-data:
-	@echo "placeholder: built in Phases 2 to 4"
+# Phase 3 reference tables (Decisions 18-19). CPI-U waits for GEL_CONTACT_EMAIL (open_questions).
+chips:
+	uv run python -m gel.build.chips
+
+eia-states:
+	uv run python -m gel.build.eia_states
+
+reference: chips eia-states
+
+data: reference
+	@echo "panel: built in Phase 4"
 
 models:
 	@echo "placeholder: built in Phases 5 to 7"

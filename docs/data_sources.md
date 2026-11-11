@@ -338,4 +338,6 @@ These are the items tagged UNVERIFIED above, grouped by source, so the owner can
 - Fields used: "Release date", "Release price (USD)" ("Price of the processor when released, in
   nominal US dollars"; "Listed prices do not reflect bulk discounts"), "Source for the price".
 - Raw copy: data/raw/indices/epoch/2026-11-10/235424Z-ml_hardware.csv (+ .json sidecar).
-- Used by: gel.models.p3_capex (P3 capex anchor, growth, release gaps).
+- Used by: gel.models.p3_capex (P3 capex anchor, growth, release gaps); gel.build.chips (Phase 3
+  chip reference table: release date, tensor FP16/BF16, FP8, memory, memory bandwidth, TDP,
+  release price; Decisions 18-19). Field definitions: https://epoch.ai/data/machine-learning-hardware-documentation/records

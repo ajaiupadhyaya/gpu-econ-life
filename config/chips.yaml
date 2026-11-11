@@ -1,14 +1,37 @@
-# Stub. Phase 3 fills this in. Source order (Decision 18): Epoch AI's ML hardware CSV
-# (CC BY 4.0, archived under data/raw/indices/epoch/) first; for a value Epoch lacks, a
-# manufacturer datasheet downloaded by hand, cited by URL. Leave a value missing rather than
-# estimating it.
+# Chip reference table inputs (Phase 3, Decision 18).
+#
+# Source order: Epoch AI's machine-learning hardware CSV (CC BY 4.0, archived under
+# data/raw/indices/epoch/) first. For a value Epoch lacks, a manufacturer datasheet that AJ
+# downloads by hand, entered in data/raw/manual/chip_specs_manual.csv with its URL.
+# Leave a value missing rather than estimating it.
+#
+# epoch_name: the exact "Hardware name" row in the Epoch CSV, or null when Epoch has no row.
+# Where Epoch has several variants, the choice is logged in docs/decisions.md (Decision 19).
 chips:
   - id: v100
+    vendor: NVIDIA
+    epoch_name: NVIDIA Tesla V100 SXM2
   - id: a100_40gb
+    vendor: NVIDIA
+    epoch_name: NVIDIA A100 SXM4 40 GB
   - id: a100_80gb
+    vendor: NVIDIA
+    epoch_name: NVIDIA A100 SXM4 80 GB
   - id: h100_sxm
+    vendor: NVIDIA
+    epoch_name: NVIDIA H100 SXM5 80GB
   - id: h100_pcie
+    vendor: NVIDIA
+    epoch_name: NVIDIA H100 PCIe
   - id: h200
+    vendor: NVIDIA
+    epoch_name: NVIDIA H200 SXM
   - id: b200
+    vendor: NVIDIA
+    epoch_name: NVIDIA B200
   - id: mi300x
+    vendor: AMD
+    epoch_name: AMD Instinct MI300X
   - id: l40s
+    vendor: NVIDIA
+    epoch_name: null  # Epoch lists the L40, a different card; needs the NVIDIA datasheet

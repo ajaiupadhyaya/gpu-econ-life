@@ -129,3 +129,23 @@ Unknown values, unreachable sources and anything waiting on a decision.
   datasheet, which is a new source and needs AJ's approval (rule 7). V100 and A100 have no FP8
   entry because they lack FP8 hardware; Phase 3 should cite that from the datasheet, not leave it
   as an unexplained blank.
+- **Phase 3 chip table gaps (Decision 19).** 22 values are missing. The L40S has only a
+  hand-recorded announcement date (2023-08-08); its specs need the NVIDIA L40S datasheet. FP8 is
+  blank for the H100 PCIe and MI300X (datasheets), and for the V100 and A100 80 GB without an Epoch
+  "not supported" note (the A100 40 GB has one). Release prices are blank for the A100 80 GB, H100
+  PCIe and B200. Announcement dates are hand-recorded only for the L40S.
+- **Check before Phase 4 uses release dates as age zero.** Epoch dates the B200 (2024-11-15) three
+  days before the H200 (2024-11-18), and the H100 SXM and PCIe both 2022-09-20. Phase 4 could
+  compare these with the first date each chip appears in our price panel as a robustness check.
+- **V100's tensor FP16/BF16 figure (125 TFLOP/s)** sits in Epoch's combined FP16/BF16 column. If
+  the V100 lacks BF16, the value is its FP16 tensor rate; confirm from the NVIDIA datasheet before
+  the paper describes it as BF16.
+- **Dense vs sparse throughput.** Epoch's notes state "Listed performance figures are without
+  sparsity" for the H100 SXM, H100 PCIe and B200 only. The V100, A100, H200 and MI300X rows carry no
+  such note; confirm against their datasheets before comparing across chips.
+- **CPI-U waits on the contact email.** BLS asks for a contact-bearing User-Agent and FRED needs
+  an API key; `GEL_CONTACT_EMAIL` is not yet in `.env`. Until then the panel has nominal prices
+  only.
+- **MLPerf throughput index (proposal Phase 3 item 2).** Not built: MLCommons' terms of use could
+  not be read (data_sources.md 3.12), and P1's own vLLM benchmark already measures throughput per
+  chip. AJ to decide whether the paper needs MLPerf as well.
