@@ -8,6 +8,15 @@ It builds an open panel of posted GPU rental prices (NVIDIA V100 to B200, Octobe
 values, triangulates with a benchmark, a term-structure model and a retirement model, and restates
 seven firms' earnings under rental-implied schedules.
 
+**Paper:** SSRN preprint, abstract ID 7692700:
+<https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7692700>.
+
+**DOIs:**
+- Code, results and paper (this repository, release v1.0.1):
+  <https://doi.org/10.5281/zenodo.24143074> (all versions: <https://doi.org/10.5281/zenodo.24143073>).
+- Public panel and redistributable raw data: <https://doi.org/10.5281/zenodo.24143180>
+  (all versions: <https://doi.org/10.5281/zenodo.24143179>), built by `make deposit`.
+
 The research design is in [docs/proposal.md](docs/proposal.md); the plan to finish and publish is
 [docs/finish_plan.md](docs/finish_plan.md). Project rules are in [CLAUDE.md](CLAUDE.md).
 

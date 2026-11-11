@@ -172,5 +172,8 @@ backups and $0-4 for optional GPU top-ups; the droplet is already paid for.
 - **D3 done (2026-11-11, AJ approved):** repository public; release v1.0.0 with the paper, the
   summary and the dataset attached
   (https://github.com/ajaiupadhyaya/gpu-econ-life/releases/tag/v1.0.0).
-- **Still AJ's:** connect the repository to Zenodo and re-release for a DOI (D4); SSRN/arXiv (D5)
-  need AJ's accounts and, by the plan, faculty review (C4) first.
+- **D4 done (2026-11-11):** Zenodo code record via the GitHub integration, release v1.0.1,
+  doi:10.5281/zenodo.24143074 (concept 10.5281/zenodo.24143073); data record
+  doi:10.5281/zenodo.24143180 (concept 10.5281/zenodo.24143179), from `make deposit`.
+- **D5 SSRN done (2026-11-11, AJ approved, ahead of C4 faculty review):** abstract ID 7692700,
+  CC BY, under SSRN staff review. arXiv still open (needs an endorser).

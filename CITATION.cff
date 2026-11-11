@@ -6,6 +6,8 @@ authors:
   - given-names: "Ajai"
     family-names: "Upadhyaya"
 license: MIT
+doi: 10.5281/zenodo.24143073
+date-released: 2026-11-11
 repository-code: "https://github.com/ajaiupadhyaya/gpu-econ-life"
 preferred-citation:
   type: article
@@ -13,5 +15,8 @@ preferred-citation:
   authors:
     - given-names: "Ajai"
       family-names: "Upadhyaya"
-  year: 2027
-  notes: "Working paper; SSRN and arXiv identifiers to be added on posting."
+  year: 2026
+  publisher:
+    name: "SSRN"
+  url: "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7692700"
+  notes: "Working paper, SSRN abstract ID 7692700."
