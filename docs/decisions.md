@@ -621,3 +621,40 @@ Made while building P3, within the handoff's design. The owner can reverse any o
   first cloud availability; (d) report spot and list-price profiles separately as the primary
   split. Until AJ decides, the paper reports the logged specs with the review's checks beside
   them.
+- **Amendment 2 (2026-11-11, after review_01; reporting only, estimates unchanged):** the shape
+  measure is renamed `early_minus_late_rate` and every table states that H1 predicts a negative
+  value; subsamples with fewer than 6 chips get no chip-level bootstrap (`MIN_CLUSTERS`); p-values
+  carry their floor 1/(B+1); `p5_baseline_bins.csv` is marked diagnostic only. The checks the
+  review requested (chip trends, release-date permutation, bin shifts, restricted bootstrap,
+  coverage Monte Carlo) are in `gel.models.review_checks` (`make p5-review`) and summarized in
+  `docs/review_01_checks.md`. Whether the headline inference moves from the unrestricted (WCU) to
+  the restricted (WCR) bootstrap is a change to this logged spec and is left to AJ (rule 7).
+
+## Decision 25: Phase 6 asset values and economic life (2026-11-11)
+
+- **Date:** 2026-11-11, step B5 of `docs/finish_plan.md`, after B4 (Decision 24). Implements
+  proposal Step 3 with its "changes after review": survival, system power, net rent floored at
+  zero, V(0)/capex reported, share of value lost by years 1-6 and a straight-line-equivalent life
+  as headlines, T* secondary.
+- **Valuation:** monthly. V(a) = sum of 730 x max(u p - o, 0) x survival x discount over the
+  remaining horizon; o = system power x PUE x electricity + maintenance (4% of capex a year).
+  Straight-line-equivalent life = 2 x the integral of V(a)/V(0), i.e. the straight-line life with
+  the same average book value. Alternatives considered: the first age at which V falls below 10%
+  (depends on an arbitrary cut-off), and T* (never binds here; see below).
+- **Rent paths:** each chip's current neocloud median on-demand price (M4 snapshot, the project's
+  primary rent, Decision 13), moved along a log-rent profile. Profiles: (a) realized, chain-linking
+  the V100, A100 40GB and A100 80GB observed cohort paths (increments between consecutive 6-month
+  bins averaged over the chips that have both, because each path is relative to its own first
+  bin); (b) strategies 1a, 1b, 2 and the strategy 4 sweep (d = 0 to −0.40) from Phase 5, to age 6,
+  then realized increments (switchable: realized, V100 only, flat). The review's point that spot
+  and list prices differ (Decision 24) is why the anchor is an on-demand price.
+- **Horizon:** 9 years, the oldest age observed (V100); sensitivity 6 and 5 years. Because the
+  neocloud rents stay far above power plus maintenance for every profile, T* never binds and the
+  value curve's end point is set by the horizon. The paper reports this as a finding: rents alone
+  do not pin down economic life once hosting costs are left out; retirement comes from
+  obsolescence (P3) or from the horizon assumed.
+- **Hosting cost:** left out (no sourced figure); logged in open_questions.
+- **Schedules for Phase 7:** base case, H100 SXM, no failure, share of initial value lost in each
+  year: realized, strategy 2, strategy 4 at d = −0.20 and −0.40 (`p6_schedules.csv`). Profiles
+  whose value rises in any year (strategies 1a, 1b) are not turned into schedules, because a book
+  schedule cannot appreciate.

@@ -1,4 +1,4 @@
-.PHONY: review-checks hedonic p5-figures panel p4-figures cpi-fetch cpi chips eia-states reference m8 figures p1-figures p2 p3-validate spot-panel install test test-fast lint coverage-preview collect health bench-dryrun bench-parse bench-report p3-calibrate p3-capex p3-market p3 data models paper all
+.PHONY: asset-values review-checks hedonic p5-figures panel p4-figures cpi-fetch cpi chips eia-states reference m8 figures p1-figures p2 p3-validate spot-panel install test test-fast lint coverage-preview collect health bench-dryrun bench-parse bench-report p3-calibrate p3-capex p3-market p3 data models paper all
 
 install:
 	uv sync
@@ -79,7 +79,15 @@ hedonic: panel
 p5-figures: hedonic
 	uv run python -W ignore -m gel.viz.hedonic_figures
 
-models: hedonic p5-figures
+models: hedonic p5-figures asset-values
+
+# Phase 6 asset values and economic life (Decision 25); seconds.
+asset-values: hedonic
+	uv run python -m gel.models.asset_value
+
+# Checks requested by the Phase 5 review (docs/review_01.md points 1, 4, 7); about 15 minutes.
+p5-review: panel
+	uv run python -W ignore -m gel.models.review_checks all
 
 # Checks requested by the adversarial review (docs/review_01.md, Decision 24). Slow: the
 # permutation test and the coverage Monte Carlo take over an hour; `extra` alone takes ~2 minutes.

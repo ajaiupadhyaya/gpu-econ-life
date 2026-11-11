@@ -162,3 +162,13 @@ Unknown values, unreachable sources and anything waiting on a decision.
 - **H1 shape result is driven by demand timing? (Phase 5).** Every strategy finds prices falling
   later rather than earlier. Phase 6 and the B4 review should test whether this survives removing
   the 2023-24 H100 and 2025-26 H200 shortage windows, which fall at young ages.
+- **Headline inference for Phase 5: WCU or WCR? (AJ, rule 7).** On this design the unrestricted
+  wild bootstrap logged in Decision 23 covers 66-73% at nominal 95%; the restricted version covers
+  97.5-98.5% (`docs/review_01_checks.md`). Under WCR nothing in the headline table is significant.
+- **Hosting cost per kW-month for Phase 6 (Decision 25).** No sourced colocation price could be read
+  (the CBRE H2 2025 trends URL returned 404). Phase 6 therefore leaves hosting, network and staff
+  out of operating cost, so V(0)/capex is an upper bound and T* never binds within 9 years. A
+  named report figure (CBRE, JLL, Cushman & Wakefield or datacenterHawk) would close this.
+- **DGX A100 system power scope (Decision 25).** NVIDIA's DGX A100 user guide lists "6.5 kW max."
+  under a "Specification for Each Power Supply" header. Phase 6 reads it as the system maximum, as
+  the DGX H100 guide's 10.2 kW is; confirm.

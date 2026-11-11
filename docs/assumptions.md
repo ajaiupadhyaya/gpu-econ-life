@@ -87,3 +87,19 @@ owner's leave; each has a sensitivity case. Decisions are in `docs/decisions.md`
 | P1-implied decay | cross-sectional slope of log neocloud rent on age (0.23/yr at medians; 0.21-0.27 at max/min prices) | Decision 15 (vintage-price assumption) | P1 life to opex |
 | Accounting lives | 4, 5, 5.5, 6 years (generic set; firm-specific lives await Phase 7) | Handoff section 6 | T-1 |
 | Blended fleet | 1/(s/L_gpu + (1-s)/L_other), s in {0.3, 0.5, 0.7}, L_other in {6, 7} | Handoff section 6 | `m8_blended_fleet.csv` |
+
+## Phase 6 asset values (Decision 25; `config/assumptions.yaml`)
+
+| Assumption | Value | Source | Used in |
+| --- | --- | --- | --- |
+| Grid | r in {8, 10, 12}%, u in {50, 70, 90}%, PUE in {1.2, 1.4} | Proposal Step 3 | `p6_summary.csv` (grid rows) |
+| Base case | r 10% (grid midpoint), u 70%, PUE 1.3 | Shared defaults above; r = proposal grid midpoint | Base rows, schedules |
+| Rent level | M4 neocloud median on-demand price per chip, 2026-11-10/11 (A100 80GB $2.245, H100 SXM $4.50, H200 $5.695, B200 $8.345) | `m4_spot_medians.csv` (Decision 13) | Anchor of every rent path |
+| Rent paths | realized (chain-linked V100/A100 cohort paths), strategies 1a, 1b, 2 and 4 (d = 0 to −0.40) from Phase 5; beyond age 6, realized increments | Decision 25; `p5_cohort_paths.csv`, `p5_profiles.csv`, `p5_strategy4_sweep.csv` | Value curves |
+| Real terms | rents in 2025 dollars, r read as a real rate | Decision 25 | All values |
+| System power per GPU (base) | A100 0.8125 kW, H100 and H200 1.275 kW, B200 1.7875 kW: DGX maximum system power / 8 ("6.5 kW max.", "10.2 kW max.", "~14.3 kW max") | NVIDIA DGX A100 and DGX H100/H200 user guides (docs.nvidia.com), DGX B200 product page, read 2026-11-10; the A100 figure sits under a per-power-supply header (scope unclear, open_questions) | Opex |
+| Power, sensitivity | chip TDP (Epoch) | Epoch AI hardware data | Opex (sensitivity rows) |
+| Electricity, maintenance, failure | $0.089/kWh; 4% of capex per year; 2%/yr (0.5% and 11.1% sensitivity) | Shared and P3 rows above | Opex, survival |
+| Capex | H100 $33,600; H200 $30,000 (Epoch release price); A100 80GB $15,000 (A100 40GB card, lower bound); B200 $54,656 (H100 x 1.63 per-generation growth, derived) | Epoch; `p3_capex.json` (Decision 10) | Maintenance, V(0)/capex |
+| Hosting (colocation, network, staff) | not included | No sourced $/kW-month figure could be read (open_questions) | Opex understated: V(0)/capex is an upper bound |
+| Horizon | 9 years (sensitivity 6 and 5) | Oldest age observed in the panel (V100) | All values |
