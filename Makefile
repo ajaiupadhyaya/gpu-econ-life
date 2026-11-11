@@ -1,4 +1,4 @@
-.PHONY: asset-values review-checks hedonic p5-figures panel p4-figures cpi-fetch cpi chips eia-states reference m8 figures p1-figures p2 p3-validate spot-panel install test test-fast lint coverage-preview collect health bench-dryrun bench-parse bench-report p3-calibrate p3-capex p3-market p3 data models paper all
+.PHONY: paper-numbers asset-values review-checks hedonic p5-figures panel p4-figures cpi-fetch cpi chips eia-states reference m8 figures p1-figures p2 p3-validate spot-panel install test test-fast lint coverage-preview collect health bench-dryrun bench-parse bench-report p3-calibrate p3-capex p3-market p3 data models paper all
 
 install:
 	uv sync
@@ -94,8 +94,12 @@ p5-review: panel
 review-checks: hedonic
 	uv run python -W ignore -m gel.models.review_checks all
 
-paper:
-	@echo "placeholder: built in Phase 8"
+# Paper (Stage C): numbers and small tables from result files, then the PDF.
+paper-numbers:
+	uv run python -m gel.viz.paper_numbers
+
+paper: paper-numbers
+	cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
 
 all: data models paper
 

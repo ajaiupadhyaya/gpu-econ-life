@@ -1,0 +1,56 @@
+% Rental-implied depreciation of AI accelerators. Built by `make paper`.
+% Draft prose by Claude Code for AJ to rewrite (Decision 17). Every number is a macro from
+% numbers.tex (gel.viz.paper_numbers) or a generated table; nothing is typed by hand.
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{xcolor}
+\usepackage{adjustbox}
+\usepackage[authoryear,round]{natbib}
+\usepackage[hidelinks]{hyperref}
+\usepackage{setspace}
+\onehalfspacing
+
+% Interpretations Claude drafted that AJ must confirm. \ajfinaltrue hides the marks.
+\newif\ifajfinal
+\ajfinalfalse
+\newcommand{\ajcheck}[1]{\ifajfinal#1\else{\color{blue!60!black}#1}\textsuperscript{\color{red}[AJ]}\fi}
+
+\input{numbers}
+
+\graphicspath{{figures/}}
+
+\title{Rental-Implied Depreciation of AI Accelerators:\\ Why the Estimates Disagree}
+\author{[Author name: AJ to fill in]\thanks{Virginia Commonwealth University. Working paper draft;
+comments welcome. Replication package: see the data and code availability statement.}}
+\date{Draft, \today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\input{sections/abstract}
+\end{abstract}
+
+\input{sections/introduction}
+\input{sections/background}
+\input{sections/data}
+\input{sections/methodology}
+\input{sections/results}
+\input{sections/accounting}
+\input{sections/robustness}
+\input{sections/conclusion}
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\appendix
+\input{sections/appendix}
+
+\end{document}
