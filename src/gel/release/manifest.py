@@ -10,7 +10,7 @@ BY 4.0, EIA and BLS public domain, SEC EDGAR), derived_only (provider price file
 aggregates, not the files), refetch (no licence or third-party pages: SkyPilot history, Wayback
 pages; re-run the collector).
 
-Usage: uv run python -m gel.release.manifest [build|verify]
+Usage: uv run python -m gel.release.manifest [build|verify|deposit [OUT]]
 """
 
 from __future__ import annotations
@@ -120,8 +120,32 @@ def verify() -> int:
     return 1 if bad else 0
 
 
+def deposit(out: str = "release/deposit") -> int:
+    """Zip for the Zenodo data record: every raw file classed own or open (with its sidecar),
+    the manifest, and the public panel in release/dataset/."""
+    import zipfile
+
+    target = Path(out)
+    target.mkdir(parents=True, exist_ok=True)
+    path = target / "gpu-econ-life-public-data.zip"
+    n = 0
+    with MANIFEST.open() as fh, zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as zf:
+        for r in csv.DictReader(fh):
+            if r["class"] in ("own", "open"):
+                zf.write(RAW / r["path"], f"data/raw/{r['path']}")
+                n += 1
+        zf.write(MANIFEST, "release/raw_manifest.csv")
+        for f in sorted(Path("release/dataset").glob("*")):
+            zf.write(f, f"release/dataset/{f.name}")
+    print(f"wrote {path}: {n} raw files, {path.stat().st_size / 1e6:.0f} MB")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
-    cmd = (argv or ["build"])[0]
+    argv = argv or ["build"]
+    cmd = argv[0]
+    if cmd == "deposit":
+        return deposit(*argv[1:])
     return {"build": build, "verify": verify}[cmd]()
 
 

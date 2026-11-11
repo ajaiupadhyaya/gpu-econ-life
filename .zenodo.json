@@ -1,0 +1,21 @@
+{
+  "title": "Rental-Implied Depreciation of AI Accelerators: replication package (code, results and paper)",
+  "upload_type": "software",
+  "creators": [
+    {
+      "name": "Upadhyaya, Ajai"
+    }
+  ],
+  "description": "Code, result tables, figures, decision and assumption logs, and the working paper for Rental-Implied Depreciation of AI Accelerators: Why the Estimates Disagree. An open panel of 24,210 listing-months of posted GPU rental prices (NVIDIA V100 to B200, 2017-2026), four identification strategies for the age-price profile, asset values and economic life, and a seven-firm earnings restatement. `make all` rebuilds every table, figure and the paper from the archived raw files. The raw files whose sources permit redistribution and the public panel are deposited as a separate Zenodo dataset; the rest are re-fetched by the repository's collectors, with checksums in release/raw_manifest.csv. Code is MIT-licensed; the dataset is CC BY 4.0. See README.md.",
+  "license": "MIT",
+  "access_right": "open",
+  "keywords": [
+    "GPU",
+    "AI accelerators",
+    "depreciation",
+    "hedonic pricing",
+    "useful life",
+    "replication package"
+  ],
+  "version": "1.0.1"
+}

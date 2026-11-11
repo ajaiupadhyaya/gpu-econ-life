@@ -1,4 +1,4 @@
-.PHONY: paper-public interim edgar-fetch edgar restate release-manifest verify-raw dataset paper-numbers asset-values review-checks hedonic p5-figures panel p4-figures cpi-fetch cpi chips eia-states reference m8 figures p1-figures p2 p3-validate spot-panel install test test-fast lint coverage-preview collect health bench-dryrun bench-parse bench-report p3-calibrate p3-capex p3-market p3 data models paper all
+.PHONY: deposit paper-public interim edgar-fetch edgar restate release-manifest verify-raw dataset paper-numbers asset-values review-checks hedonic p5-figures panel p4-figures cpi-fetch cpi chips eia-states reference m8 figures p1-figures p2 p3-validate spot-panel install test test-fast lint coverage-preview collect health bench-dryrun bench-parse bench-report p3-calibrate p3-capex p3-market p3 data models paper all
 
 install:
 	uv sync
@@ -137,6 +137,10 @@ verify-raw:
 
 dataset: panel
 	uv run python -m gel.release.dataset
+
+# Zenodo data record: own and open raw files, the manifest and the public panel.
+deposit: release-manifest dataset
+	uv run python -m gel.release.manifest deposit
 
 # Every table and figure from raw data (handoff M9): P1 parse -> M4 panel -> P1 tables/figures,
 # P3 calibration + Monte Carlo + validation, P2 term structure.
