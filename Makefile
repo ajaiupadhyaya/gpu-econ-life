@@ -26,19 +26,19 @@ health:
 bench-dryrun:
 	bench/dryrun.sh
 
-spot-panel:
+spot-panel: bench-parse
 	uv run python -m gel.build.spot_panel --day 2026-11-10
 
-bench-report: spot-panel
+bench-report: spot-panel p3-market
 	uv run python -m gel.bench.report --frontier H200_SXM
 
-p3-calibrate:
+p3-calibrate: bench-parse
 	uv run python -m gel.models.p3_calibration
 
 p3-capex:
 	uv run python -m gel.models.p3_capex
 
-p3-market:
+p3-market: p3-calibrate p3-capex
 	uv run python -m gel.models.p3_market_calibration
 
 p3: p3-calibrate p3-capex p3-market
@@ -60,10 +60,10 @@ all: data models paper
 
 # Every table and figure from raw data (handoff M9): P1 parse -> M4 panel -> P1 tables/figures,
 # P3 calibration + Monte Carlo + validation, P2 term structure.
-p1-figures: bench-report
+p1-figures: bench-report p3-market
 	uv run python -m gel.viz.p1_figures
 
-p2: p3-market
+p2: p3-market spot-panel
 	uv run python -m gel.models.p2_term
 
 p3-validate: p3

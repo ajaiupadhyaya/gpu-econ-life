@@ -23,6 +23,7 @@ import polars as pl
 from gel.bench import metrics
 
 WINDOWS = Path("data/interim/bench/bench_windows.parquet")
+PUE = 1.3  # handoff default (docs/assumptions.md)
 KEYS = ["gpu_label", "chip_id", "precision_mode", "concurrency"]
 
 
@@ -93,6 +94,18 @@ def main(argv: list[str] | None = None) -> int:
     from gel.bench.parse import summarize
 
     summary = add_price(summarize(windows), windows)
+    market_path = Path("data/processed/p3_market.json")
+    if market_path.exists():
+        # Decision 12/16: energy cost at EIA's US industrial price (the run snapshots hold the
+        # handoff's $0.08 default, kept as energy_cost_per_mtok_mean for provenance).
+        import json
+
+        e = json.loads(market_path.read_text())["electricity"]["mean_usd_kwh"]
+        summary = summary.with_columns(
+            (1e6 / pl.col("tokens_per_joule_mean") / metrics.J_PER_KWH * e * PUE).alias(
+                "energy_cost_per_mtok_eia_mean"
+            )
+        )
     args.out_dir.mkdir(parents=True, exist_ok=True)
     summary.write_csv(args.out_dir / "p1_benchmark_summary.csv")
     print(f"wrote {args.out_dir / 'p1_benchmark_summary.csv'} ({len(summary)} rows)")
