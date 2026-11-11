@@ -402,3 +402,15 @@ Made while building P3, within the handoff's design. The owner can reverse any o
   The run snapshots' $0.08 column stays for provenance. Figures and P2/P3 use the EIA price.
 - **README** rewritten for the whole project; `docs/assumptions.md` reorganised by project with
   every assumption, source and decision.
+
+## Decision 17: who writes the paper's prose (2026-11-11)
+
+- **Date:** 2026-11-11, answering decision 1 of `docs/finish_plan.md`.
+- **Choice:** Claude drafts a first pass of each section of `paper/main.tex`; AJ rewrites it in
+  their own voice and approves every section before it counts as done.
+- **Alternatives:** AJ writes all section text (the original Phase 8 brief's default).
+- **Reason:** owner's choice; drafting from generated results speeds Stage C, and AJ keeps final authorship.
+- **Guardrails for the drafts:** every number is pulled from a generated table, figure or CSV
+  (rule 3); citations come only from verified `references.bib` entries; interpretation and
+  hypotheses are marked for AJ to confirm rather than asserted; each draft section is committed
+  separately so AJ's edits show as their own diffs.

@@ -33,9 +33,10 @@ The project is finished when all of these exist and link to each other:
 ## Who does what
 
 - **Claude Code** builds code, data, tables and figures, the LaTeX scaffold, verified references,
-  the replication package and the site PR. It reports numbers and does not interpret them for
-  you unless asked.
-- **You** own the hypotheses and the prose, and you approve new data sources (rule 7). You also
+  the replication package and the site PR. It also drafts a first pass of each section's prose
+  (decided 2026-11-11, Decision 17), which you rewrite in your own voice.
+- **You** own the hypotheses, the interpretation and the final prose, and you approve new data
+  sources (rule 7). You also
   hold the accounts: SSRN, arXiv, Zenodo, GitHub visibility, faculty contact, and the droplet's
   alerts and backups. Every publish step is yours to approve.
 
@@ -73,7 +74,7 @@ Gate after B4 and after B6: you review before writing starts.
 | --- | --- | --- | --- |
 | C1 Scaffold | `paper/main.tex`: Introduction, Background, Data, Methodology, Results (age profiles; benchmark, term structure and retirement model; triangulation), Accounting implications, Robustness, Conclusion. Tables and figures come only from generated files, with bullet notes of key results under each heading | `make paper` builds a PDF | 1 |
 | C2 References | `references.bib`: every entry verified (DOI or stable URL, title, authors, year, venue); none invented; unverified ones listed in open_questions | No unverified references remain | 1 |
-| C3 Prose | Section text | Complete draft by 2027-03-21 | yours (see decision 1) |
+| C3 Prose | Claude drafts each section from the generated results and bullet notes, citing only verified references and quoting no number that is not in a generated file; you rewrite and approve every section | Complete draft by 2027-03-21 | 2-3 + your editing |
 | C4 Faculty review | A VCU finance or accounting reader; also your arXiv endorser | Comments addressed | yours + 1 |
 | C5 Two-page summary | Plain English, for recruiting | Done | 1 |
 
@@ -123,8 +124,8 @@ backups and $0-4 for optional GPU top-ups; the droplet is already paid for.
 
 ## Decisions needed from you
 
-1. **Prose.** The original brief says to leave section text for you. Either you write it all, or
-   Claude drafts a first pass of each section for you to rewrite in your own voice.
+1. ~~**Prose.**~~ Decided 2026-11-11: Claude drafts a first pass of each section; you edit and
+   own the final text (Decision 17).
 2. **Reconciliation note.** Post a short dated note to SSRN in mid-January to stake the claim
    (the proposal's plan, made because related papers keep appearing), or go straight to the full
    paper in April.
