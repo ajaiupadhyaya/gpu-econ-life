@@ -213,3 +213,10 @@ were not deleted). A missing Makefile dependency surfaced and was fixed. After t
 outputs reproduced exactly apart from timestamps and runtimes. Added the EIA-priced energy-cost
 column, reorganised `docs/assumptions.md` and rewrote the README. All nine handoff milestones are
 now met.
+
+## Billing attribution resolved, 2026-11-11
+
+The two larger pods flagged earlier as unattributed, `nvb5w84zur9dfh` ($1.73, 2026-11-10 01:00-03:00
+UTC) and `wxm8ugeu3zsbqy` ($1.30, 02:00-04:00 UTC), belong to the owner's separate look-ahead probe
+project, which rented a Runpod A100 that morning in a different session (its notes name
+`nvb5w84zur9dfh`). They are not this project's spend and not a leak.
