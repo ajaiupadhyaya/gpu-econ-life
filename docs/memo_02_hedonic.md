@@ -6,6 +6,14 @@ intervals from a wild cluster bootstrap at the chip level (7 chips, Webb weights
 unless stated. Log points: −0.10 is about a 10% fall. Readings marked **[AJ to confirm]** are
 interpretations.
 
+> **Update after the review checks (2026-11-11; details in section 6 and `docs/review_01_checks.md`).** The shape result in
+> sections 2–3 does not survive. Under the restricted wild bootstrap the strategy 4 shape has
+> p = 0.29 and a 95% interval of [−0.44, 1.03]. Once each chip may have its own calendar trend, its
+> sign is not identified. A Monte Carlo on this design shows the unrestricted bootstrap intervals
+> used below cover only 66–73% at the 95% level. Read the intervals below as too narrow, and the
+> shape as "not established" (H1 neither supported nor rejected). The shape measure is now named
+> `early_minus_late_rate`; H1 predicts it is negative.
+
 Sample: 20,185 listing-months, seven NVIDIA chips (V100 to B200), October 2017 to October 2026.
 Controls in every model: provider × region, contract × term, GPUs per instance, price basis, form
 factor.
@@ -56,8 +64,10 @@ a negative number.
 
 ## 3. Where they agree and disagree
 
-- **Agreement on shape, against H1.** Every strategy's shape estimate is positive: prices fall
-  *later*, not earlier. Strategies 2 and 4 exclude zero. This survives weighting each
+- **Shape: point estimates agree, but the evidence is weak.** Every strategy's shape estimate is
+  positive (prices fall *later*, not earlier), and under the unrestricted bootstrap strategies 2
+  and 4 exclude zero. After the review checks neither is significant (restricted bootstrap
+  p = 0.30 and 0.29), and the sign depends on assuming no vintage-specific trends. This survives weighting each
   provider-chip-month equally (strategy 4: +0.29 [0.07, 0.50]) and dropping the anomalous Google
   July 2026 snapshot (+0.47). **[AJ to confirm]** The most likely reason is demand timing rather than
   physics: the H100 and H200 were young during the 2023–26 shortages, so scarcity loads onto early

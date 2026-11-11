@@ -208,7 +208,7 @@ def wcr_table(df: pl.DataFrame, draws: int = h.DRAWS) -> pl.DataFrame:
                     "estimate": wcu.estimate,
                     "wcu_p": wcu.p_value,
                     "wcr_p": p_wcr,
-                    "p_floor": 1.0 / draws,
+                    "p_floor": 1.0 / (draws + 1),
                     "se_cr1_chip": wcu.se_cr1,
                 }
             )
