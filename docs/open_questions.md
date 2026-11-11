@@ -146,6 +146,6 @@ Unknown values, unreachable sources and anything waiting on a decision.
 - **CPI-U waits on the contact email.** BLS asks for a contact-bearing User-Agent and FRED needs
   an API key; `GEL_CONTACT_EMAIL` is not yet in `.env`. Until then the panel has nominal prices
   only.
-- **MLPerf throughput index (proposal Phase 3 item 2).** Not built: MLCommons' terms of use could
+- **(Decided 2026-11-11, Decision 20: not built; P1 is the throughput measure.)** **MLPerf throughput index (proposal Phase 3 item 2).** Not built: MLCommons' terms of use could
   not be read (data_sources.md 3.12), and P1's own vLLM benchmark already measures throughput per
   chip. AJ to decide whether the paper needs MLPerf as well.

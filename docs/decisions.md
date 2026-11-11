@@ -459,3 +459,16 @@ Made while building P3, within the handoff's design. The owner can reverse any o
   Virginia $0.1000/kWh over the latest 12 months in both).
 - **Deferred:** CPI-U (needs the contact email for the BLS User-Agent) and MLPerf (see
   `docs/open_questions.md`).
+
+## Decision 20: no MLPerf throughput index (2026-11-11)
+
+- **Date:** 2026-11-11. The owner left the choice to Claude ("I'm okay either way").
+- **Choice:** the paper uses P1's own vLLM benchmark as its per-chip throughput measure and does
+  not build an MLPerf index (proposal Phase 3 item 2 dropped).
+- **Alternatives:** an MLPerf Inference index from one or two common benchmarks.
+- **Reasons:** (1) MLCommons' terms of use could not be read (data_sources.md 3.12), so automated
+  use and redistribution are unverified, against project rule 5; (2) P1 already measures
+  throughput, energy and cost per token on the chips that matter, under one fixed workload and
+  software stack, and its data is our own and fully releasable; (3) MLPerf results are vendor
+  submissions on differing systems and software, and their chip coverage would not line up with
+  ours. It can be revisited after the draft if a referee asks for an external benchmark.
