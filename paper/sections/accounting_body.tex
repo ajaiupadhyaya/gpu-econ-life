@@ -1,0 +1,46 @@
+No firm reports GPUs separately, so the restatement estimates a GPU asset base. Each year's cash
+capital expenditure from XBRL is multiplied by the share that is servers and network equipment
+(0.6 in the baseline, 0.4 and 0.8 as alternatives; no firm discloses it) and by the GPU share of
+server spending (0.3 to 0.8). For Microsoft in fiscal \nAcctMsftFy, for example, \$\nAcctMsftCapexBn{}
+billion of capital expenditure becomes a GPU base of \$\nAcctMsftGpuCapexBn{} billion at a GPU share
+of one half. Each year's purchases form a cohort from fiscal 2020, depreciated under the firm's
+disclosed straight-line life (Table~\ref{tab:lives}; changes applied prospectively, as the firms
+did) and under each alternative schedule. The change in operating income is the negative of the
+change in depreciation; the change in diluted EPS applies the firm-year effective tax rate.
+Every firm-year number traces to an XBRL fact listed with its accession number in the replication
+package.
+
+Table~\ref{tab:restate} reports the latest fiscal year for each firm. Under the rental-implied
+schedule built on the realized cohort paths, which depreciates slower than any of the disclosed
+lives, the five hyperscalers' operating income would be \nAcctRealOiPctLo--\nAcctRealOiPctHi{}
+\emph{higher} (\$\nAcctRealOiBnLo--\nAcctRealOiBnHi{} billion) at a GPU share of one half. Under
+the steepest schedule, strategy 4 with an assumed decline of 0.40 log points a year, the change
+ranges from \nAcctFourFortyOiPctLo{} to \nAcctFourFortyOiPctHi{}; the largest cut is
+\nAcctFourFortyWorstFirm's, \nAcctFourFortyWorstPct{} of fiscal \nAcctFourFortyWorstFy{} operating
+income, or \$\nAcctFourFortyWorstEps{} per diluted share. A four-year straight-line life gives a
+similar range (\nAcctSlFourOiPctLo{} to \nAcctSlFourOiPctHi). CoreWeave and Nebius, whose operating
+income is small relative to their GPU spending, are shown in dollars only.
+
+\begin{table}[htbp]
+\centering
+\caption{Change in operating income and diluted EPS under alternative GPU depreciation schedules,
+latest fiscal year}
+\label{tab:restate}
+\begin{adjustbox}{max width=\textwidth}
+\input{tables/p7_restatement.tex}
+\end{adjustbox}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\textwidth]{p7_restatement.png}
+\caption{Change in operating income by firm and schedule across the GPU-share grid.}
+\label{fig:restate}
+\end{figure}
+
+\ajcheck{The sign of the restatement depends on the rent path, not on the method. Posted rents,
+read through the realized paths, imply that book lives are, if anything, conservative. Only an
+assumption of steep age-driven decline, which the rent data do not establish, produces the large
+earnings overstatements discussed in the public debate.} The restatement inherits the limits of
+the asset base: cash capital expenditure excludes finance-lease additions, which are material for
+Amazon and Microsoft, and the server and GPU shares are assumptions shown as a grid.
