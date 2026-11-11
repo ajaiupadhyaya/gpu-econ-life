@@ -1,0 +1,68 @@
+% Two-page plain-English summary (finish plan C5). Numbers are macros from numbers.tex.
+% Draft by Claude Code for AJ to rewrite (Decision 17).
+\documentclass[11pt]{article}
+\usepackage[margin=0.9in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\setlist{nosep,leftmargin=*}
+\newif\ifajfinal
+\ajfinalfalse
+\newcommand{\ajcheck}[1]{\ifajfinal#1\else{\color{blue!60!black}#1}\textsuperscript{\color{red}[AJ]}\fi}
+\input{numbers}
+\pagestyle{empty}
+\begin{document}
+\begin{center}
+{\Large\bfseries How fast do AI chips lose value?}\\[2pt]
+{\large What nine years of GPU rental prices say about tech-company depreciation}\\[4pt]
+Two-page summary of the working paper ``Rental-Implied Depreciation of AI Accelerators''
+\end{center}
+
+\paragraph{The question.} The biggest AI spenders (Microsoft, Alphabet, Amazon, Meta, Oracle,
+CoreWeave, Nebius) spread the cost of their servers over five to six years. If AI chips actually
+lose their value faster, today's profits are overstated; if slower, understated. Published
+estimates of how fast the chips lose value disagree wildly, from roughly flat to about 40\% a year.
+
+\paragraph{What I did.} I built an open dataset of \nPanelRows{} monthly rental prices for seven
+generations of NVIDIA data-center chips, from the 2017 V100 to the 2024 B200, across cloud
+providers and contract types, mostly from public price files and archived web pages. I then asked
+how a chip's rent changes as it ages, turned rents into asset values, and compared the result
+with the companies' accounting lives.
+
+\paragraph{The hard part.} A chip's age goes up exactly as fast as the calendar, so ``older chips
+rent for less'' and ``rents fell this year'' are hard to tell apart. I report what actually
+happened to each chip and four different ways of separating age from time, side by side, and I
+had an independent reviewer try to break the analysis before writing it up.
+
+\paragraph{What I found.}
+\begin{itemize}
+\item \textbf{Rents fall slowly.} Holding the seller and contract fixed, the 2017 V100's rent
+fell by about \nPathVHundredNinePct{} over nine years.
+\item \textbf{Most posted prices hardly ever move.} \nListUnchanged{} of month-to-month on-demand
+and reserved price observations show no change. Amazon has charged \$\nAwsVHundredPrice{} an hour
+for a V100 since \nAwsVHundredFirstYear{}.
+\item \textbf{Which market you look at changes the answer.} Spot prices fall late in a chip's
+life; list prices that do move fall early. Published estimates disagree partly because they read
+different markets.
+\item \textbf{With honest statistics, the data cannot pin down a precise rate.} With only seven
+chip generations, standard methods overstate precision: in a simulation they caught the true value
+only \nCovWcuLo--\nCovWcuHi{} of the time instead of 95\%. Corrected, no method finds a
+statistically clear decline.
+\item \textbf{Rents never get close to running costs.} An H100 rents for about
+\$\nValRentNow{} an hour against about \$\nValOpex{} of electricity and maintenance. So a chip is
+not retired because it stops covering its costs; it is retired when a newer chip would earn more
+in the same scarce power slot. A retirement model puts that at about \nPThreeMedian{} years, and
+the companies' five- to six-year book lives sit near it.
+\end{itemize}
+
+\paragraph{Why it matters.} \ajcheck{The depreciation debate is less about facts than about three
+unstated choices: which price to read, how to separate age from time, and what ends a chip's
+useful life. Making those choices explicit, with open data and code, is the paper's contribution.}
+
+\paragraph{Skills used.} Building a panel dataset from APIs, price files and web archives (Python,
+Polars, DuckDB); fixed-effects regression and few-cluster inference (wild bootstrap, Monte Carlo
+coverage checks); asset valuation; SEC XBRL financial data; a fully reproducible pipeline
+(\texttt{make all} rebuilds every number from raw data).
+\end{document}

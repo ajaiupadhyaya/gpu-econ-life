@@ -100,6 +100,7 @@ paper-numbers:
 
 paper: paper-numbers
 	cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
+	cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error summary.tex
 
 all: data models paper
 

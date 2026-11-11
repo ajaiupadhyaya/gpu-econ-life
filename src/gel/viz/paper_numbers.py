@@ -10,6 +10,7 @@ Usage: uv run python -m gel.viz.paper_numbers
 
 from __future__ import annotations
 
+import math
 import re
 import sys
 from pathlib import Path
@@ -192,6 +193,7 @@ def profile_numbers(n: Numbers) -> None:
     ):
         r = _row(paths, chip=chip, age_months_from=age)
         n.add(f"nPath{nm}", r["estimate"])
+        n.add(f"nPath{nm}Pct", -(math.exp(r["estimate"]) - 1), "pct")
 
 
 def value_numbers(n: Numbers) -> None:
