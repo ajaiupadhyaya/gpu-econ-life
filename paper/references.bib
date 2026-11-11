@@ -1,0 +1,851 @@
+% references.bib -- "Rental-implied depreciation of AI accelerators"
+%
+% Every entry carries verified = {yes|no} and verified_source = {<url checked>}.
+% Checks run 2026-11-10 (local date; 2026-11-11 UTC) against the DOI resolver, the Crossref
+% REST API (https://api.crossref.org/works/<DOI>), publisher, NBER, RePEc/IDEAS, Statistics
+% Canada, Zenodo, arXiv or the source page itself. Corrections against docs/proposal.md and
+% docs/related_work.md, and anything left unverified, are listed in the session notes file
+% c2_references_notes.md. Never add an entry here without checking it.
+%
+% Sections: 1 methods and econometrics; 2 depreciation, hedonics and capital measurement;
+% 3 cloud and GPU price measurement (background); 4 direct predecessors; 5 partial overlaps;
+% 6 practitioner and press sources cited in the proposal; 7 data sources and software.
+
+% ---------------------------------------------------------------------------------------
+% 1. Methods and econometrics
+% ---------------------------------------------------------------------------------------
+
+@article{cameron2008bootstrap,
+  author          = {Cameron, A. Colin and Gelbach, Jonah B. and Miller, Douglas L.},
+  title           = {Bootstrap-Based Improvements for Inference with Clustered Errors},
+  journal         = {Review of Economics and Statistics},
+  year            = {2008},
+  volume          = {90},
+  number          = {3},
+  pages           = {414--427},
+  doi             = {10.1162/rest.90.3.414},
+  verified        = {yes},
+  verified_source = {https://api.crossref.org/works/10.1162/rest.90.3.414}
+}
+
+@article{webb2023reworking,
+  author          = {Webb, Matthew D.},
+  title           = {Reworking Wild Bootstrap-Based Inference for Clustered Errors},
+  journal         = {Canadian Journal of Economics/Revue canadienne d'{\'e}conomique},
+  year            = {2023},
+  volume          = {56},
+  number          = {3},
+  pages           = {839--858},
+  doi             = {10.1111/caje.12661},
+  verified        = {yes},
+  verified_source = {https://api.crossref.org/works/10.1111/caje.12661}
+}
+
+@article{mackinnon2017wild,
+  author          = {MacKinnon, James G. and Webb, Matthew D.},
+  title           = {Wild Bootstrap Inference for Wildly Different Cluster Sizes},
+  journal         = {Journal of Applied Econometrics},
+  year            = {2017},
+  volume          = {32},
+  number          = {2},
+  pages           = {233--254},
+  doi             = {10.1002/jae.2508},
+  note            = {Published online 2016},
+  verified        = {yes},
+  verified_source = {https://api.crossref.org/works/10.1002/jae.2508}
+}
+
+@article{mackinnon2023cluster,
+  author          = {MacKinnon, James G. and Nielsen, Morten {\O}rregaard and Webb, Matthew D.},
+  title           = {Cluster-Robust Inference: A Guide to Empirical Practice},
+  journal         = {Journal of Econometrics},
+  year            = {2023},
+  volume          = {232},
+  number          = {2},
+  pages           = {272--299},
+  doi             = {10.1016/j.jeconom.2022.04.001},
+  verified        = {yes},
+  verified_source = {https://api.crossref.org/works/10.1016/j.jeconom.2022.04.001}
+}
+
+@article{bell2002bias,
+  author          = {Bell, Robert M. and McCaffrey, Daniel F.},
+  title           = {Bias Reduction in Standard Errors for Linear Regression with Multi-Stage Samples},
+  journal         = {Survey Methodology},
+  year            = {2002},
+  volume          = {28},
+  number          = {2},
+  pages           = {169--181},
+  note            = {Statistics Canada Catalogue No. 12-001-X; no DOI},
+  url             = {https://www150.statcan.gc.ca/n1/en/catalogue/12-001-X20020029058},
+  verified        = {yes},
+  verified_source = {https://www150.statcan.gc.ca/n1/en/pub/12-001-x/2002002/article/9058-eng.pdf}
+}
+
+@article{imbens2016robust,
+  author          = {Imbens, Guido W. and Koles{\'a}r, Michal},
+  title           = {Robust Standard Errors in Small Samples: Some Practical Advice},
+  journal         = {Review of Economics and Statistics},
+  year            = {2016},
+  volume          = {98},
+  number          = {4},
+  pages           = {701--712},
+  doi             = {10.1162/REST_a_00552},
+  verified        = {yes},
+  verified_source = {https://api.crossref.org/works/10.1162/rest_a_00552}
+}
+
+@article{cameron2011robust,
+  author          = {Cameron, A. Colin and Gelbach, Jonah B. and Miller, Douglas L.},
+  title           = {Robust Inference with Multiway Clustering},
+  journal         = {Journal of Business \& Economic Statistics},
+  year            = {2011},
+  volume          = {29},
+  number          = {2},
+  pages           = {238--249},
+  doi             = {10.1198/jbes.2010.07136},
+  verified        = {yes},
+  verified_source = {https://api.crossref.org/works/10.1198/jbes.2010.07136}
+}
+
+@article{borusyak2024revisiting,
+  author          = {Borusyak, Kirill and Jaravel, Xavier and Spiess, Jann},
+  title           = {Revisiting Event-Study Designs: Robust and Efficient Estimation},
+  journal         = {Review of Economic Studies},
+  year            = {2024},
+  volume          = {91},
+  number          = {6},
+  pages           = {3253--3285},
+  doi             = {10.1093/restud/rdae007},
+  verified        = {yes},
+  verified_source = {https://api.crossref.org/works/10.1093/restud/rdae007}
+}
+
+@article{cengiz2019effect,
+  author          = {Cengiz, Doruk and Dube, Arindrajit and Lindner, Attila and Zipperer, Ben},
+  title           = {The Effect of Minimum Wages on Low-Wage Jobs},
+  journal         = {Quarterly Journal of Economics},
+  year            = {2019},
+  volume          = {134},
+  number          = {3},
+  pages           = {1405--1454},
+  doi             = {10.1093/qje/qjz014},
+  verified        = {yes},
+  verified_source = {https://api.crossref.org/works/10.1093/qje/qjz014}
+}
+
+@book{deaton1997analysis,
+  author          = {Deaton, Angus},
+  title           = {The Analysis of Household Surveys: A Microeconometric Approach to Development Policy},
+  publisher       = {World Bank},
+  year            = {1997},
+  isbn            = {9780801852541},
+  doi             = {10.1596/0-8018-5254-4},
+  verified        = {yes},
+  verified_source = {https://api.crossref.org/works/10.1596/0-8018-5254-4}
+}
+
+% ---------------------------------------------------------------------------------------
+% 2. Depreciation, hedonics and capital measurement
+% ---------------------------------------------------------------------------------------
+
+@article{rosen1974hedonic,
+  author          = {Rosen, Sherwin},
+  title           = {Hedonic Prices and Implicit Markets: Product Differentiation in Pure Competition},
+  journal         = {Journal of Political Economy},
+  year            = {1974},
+  volume          = {82},
+  number          = {1},
+  pages           = {34--55},
+  doi             = {10.1086/260169},
+  verified        = {yes},
+  verified_source = {https://api.crossref.org/works/10.1086/260169}
+}
+
+@article{gavazza2011leasing,
+  author          = {Gavazza, Alessandro},
+  title           = {Leasing and Secondary Markets: Theory and Evidence from Commercial Aircraft},
+  journal         = {Journal of Political Economy},
+  year            = {2011},
+  volume          = {119},
+  number          = {2},
+  pages           = {325--377},
+  doi             = {10.1086/660730},
+  verified        = {yes},
+  verified_source = {https://api.crossref.org/works/10.1086/660730}
+}
+
+@article{keating1999depreciation,
+  author          = {Keating, A. Scott and Zimmerman, Jerold L.},
+  title           = {Depreciation-Policy Changes: Tax, Earnings Management, and Investment Opportunity Incentives},
+  journal         = {Journal of Accounting and Economics},
+  year            = {1999},
+  volume          = {28},
+  number          = {3},
+  pages           = {359--389},
+  doi             = {10.1016/S0165-4101(00)00004-5},
+  verified        = {yes},
+  verified_source = {https://api.crossref.org/works/10.1016/s0165-4101(00)00004-5}
+}
+
+@article{hulten1981estimation,
+  author          = {Hulten, Charles R. and Wykoff, Frank C.},
+  title           = {The Estimation of Economic Depreciation Using Vintage Asset Prices},
+  journal         = {Journal of Econometrics},
+  year            = {1981},
+  volume          = {15},
+  number          = {3},
+  pages           = {367--396},
+  doi             = {10.1016/0304-4076(81)90101-9},
+  verified        = {yes},
+  verified_source = {https://api.crossref.org/works/10.1016/0304-4076(81)90101-9}
+}
+
+@article{hall1968technical,
+  author          = {Hall, R. E.},
+  title           = {Technical Change and Capital from the Point of View of the Dual},
+  journal         = {Review of Economic Studies},
+  year            = {1968},
+  volume          = {35},
+  number          = {1},
+  pages           = {35--46},
+  doi             = {10.2307/2974405},
+  verified        = {yes},
+  verified_source = {https://api.crossref.org/works/10.2307/2974405; https://ideas.repec.org/a/oup/restud/v35y1968i1p35-46..html}
+}
+
+@incollection{oliner1993constant,
+  author          = {Oliner, Stephen D.},
+  title           = {Constant-Quality Price Change, Depreciation, and Retirement of Mainframe Computers},
+  booktitle       = {Price Measurements and Their Uses},
+  editor          = {Foss, Murray and Manser, Marylin and Young, Allan},
+  series          = {Studies in Income and Wealth},
+  publisher       = {University of Chicago Press},
+  year            = {1993},
+  pages           = {19--62},
+  isbn            = {0226257304},
+  url             = {https://www.nber.org/chapters/c7797},
+  verified        = {yes},
+  verified_source = {https://www.nber.org/chapters/c7797.pdf; https://www.nber.org/books-and-chapters/price-measurements-and-their-uses}
+}
+
+@incollection{berndt1993price,
+  author          = {Berndt, Ernst R. and Griliches, Zvi},
+  title           = {Price Indexes for Microcomputers: An Exploratory Study},
+  booktitle       = {Price Measurements and Their Uses},
+  editor          = {Foss, Murray and Manser, Marylin and Young, Allan},
+  series          = {Studies in Income and Wealth},
+  publisher       = {University of Chicago Press},
+  year            = {1993},
+  pages           = {63--100},
+  isbn            = {0226257304},
+  url             = {https://www.nber.org/chapters/c7798},
+  verified        = {yes},
+  verified_source = {https://www.nber.org/chapters/c7798.pdf; https://www.nber.org/books-and-chapters/price-measurements-and-their-uses}
+}
+
+@article{doms2004fast,
+  author          = {Doms, Mark E. and Dunn, Wendy E. and Oliner, Stephen D. and Sichel, Daniel E.},
+  title           = {How Fast Do Personal Computers Depreciate? Concepts and New Estimates},
+  journal         = {Tax Policy and the Economy},
+  year            = {2004},
+  volume          = {18},
+  pages           = {37--79},
+  doi             = {10.1086/tpe.18.20061886},
+  verified        = {yes},
+  verified_source = {https://api.crossref.org/works/10.1086/tpe.18.20061886}
+}
+
+@incollection{geske2007computers,
+  author          = {Geske, Michael J. and Ramey, Valerie A. and Shapiro, Matthew D.},
+  title           = {Why Do Computers Depreciate?},
+  booktitle       = {Hard-to-Measure Goods and Services: Essays in Honor of {Zvi} {Griliches}},
+  editor          = {Berndt, Ernst R. and Hulten, Charles R.},
+  series          = {Studies in Income and Wealth},
+  publisher       = {University of Chicago Press},
+  year            = {2007},
+  pages           = {121--150},
+  doi             = {10.7208/chicago/9780226044507.003.0006},
+  verified        = {yes},
+  verified_source = {https://api.crossref.org/works/10.7208/chicago/9780226044507.003.0006; https://www.nber.org/books-and-chapters/hard-measure-goods-and-services-essays-honor-zvi-griliches/why-do-computers-depreciate}
+}
+
+@book{triplett2006handbook,
+  author          = {Triplett, Jack},
+  title           = {Handbook on Hedonic Indexes and Quality Adjustments in Price Indexes},
+  publisher       = {OECD},
+  year            = {2006},
+  doi             = {10.1787/9789264028159-en},
+  verified        = {yes},
+  verified_source = {https://api.crossref.org/works/10.1787/9789264028159-en}
+}
+
+% ---------------------------------------------------------------------------------------
+% 3. Cloud and GPU price measurement (background)
+% ---------------------------------------------------------------------------------------
+
+@techreport{byrne2018rise,
+  author          = {Byrne, David and Corrado, Carol and Sichel, Daniel E.},
+  title           = {The Rise of Cloud Computing: Minding Your {P}'s, {Q}'s and {K}'s},
+  institution     = {National Bureau of Economic Research},
+  type            = {NBER Working Paper},
+  number          = {25188},
+  year            = {2018},
+  doi             = {10.3386/w25188},
+  note            = {Also published as chapter 13 of \emph{Measuring and Accounting for Innovation in the Twenty-First Century}, University of Chicago Press, 2021, pp. 519--552, doi:10.7208/chicago/9780226728209.003.0014},
+  verified        = {yes},
+  verified_source = {https://www.nber.org/papers/w25188; https://api.crossref.org/works/10.3386/w25188}
+}
+
+@article{sawyer2023exploring,
+  author          = {Sawyer, Steven D. and O'Bryan, Claire},
+  title           = {Exploring Quality Adjustment in {PPI} Cloud Computing},
+  journal         = {Monthly Labor Review},
+  year            = {2023},
+  month           = feb,
+  doi             = {10.21916/mlr.2023.4},
+  url             = {https://www.bls.gov/opub/mlr/2023/article/exploring-quality-adjustment-in-ppi-cloud-computing.htm},
+  verified        = {yes},
+  verified_source = {https://api.crossref.org/works/10.21916/mlr.2023.4}
+}
+
+@techreport{coyle2018cloud,
+  author          = {Coyle, Diane and Nguyen, David},
+  title           = {Cloud Computing and National Accounting},
+  institution     = {Economic Statistics Centre of Excellence (ESCoE)},
+  type            = {ESCoE Discussion Paper},
+  number          = {DP-2018-19},
+  year            = {2018},
+  month           = dec,
+  url             = {https://ideas.repec.org/p/nsr/escoed/escoe-dp-2018-19.html},
+  verified        = {yes},
+  verified_source = {https://ideas.repec.org/p/nsr/escoed/escoe-dp-2018-19.html}
+}
+
+@misc{hobbhahn2022trends,
+  author          = {Hobbhahn, Marius and Besiroglu, Tamay},
+  title           = {Trends in {GPU} Price-Performance},
+  howpublished    = {Epoch AI},
+  year            = {2022},
+  month           = jun,
+  url             = {https://epoch.ai/publications/trends-in-gpu-price-performance},
+  urldate         = {2026-11-10},
+  note            = {Published 2022-06-27},
+  verified        = {yes},
+  verified_source = {https://epoch.ai/publications/trends-in-gpu-price-performance}
+}
+
+% ---------------------------------------------------------------------------------------
+% 4. Direct predecessors (docs/related_work.md, "Direct" rows)
+% ---------------------------------------------------------------------------------------
+
+@article{amissahocran2026collateral,
+  author          = {Amissah-Ocran, Benedict and Ayumu, Mark Tettey},
+  title           = {Collateral Without a Curve: A Residual-Value Methodology for Compute-Backed Credit},
+  journal         = {International Journal of Multidisciplinary Research and Growth Evaluation},
+  year            = {2026},
+  volume          = {7},
+  number          = {5},
+  pages           = {49--62},
+  doi             = {10.54660/.IJMRGE.2026.7.5.49-62},
+  verified        = {yes},
+  verified_source = {https://api.crossref.org/works/10.54660/.ijmrge.2026.7.5.49-62}
+}
+
+@misc{chincholikar2026economic,
+  author          = {Chincholikar, Samir and Chawla, Robin},
+  title           = {Economic Depreciation of {AI} Accelerators: Evidence from Secondary-Market Transactions --- Reproducibility Artifact},
+  howpublished    = {Zenodo (software), version v1.3.0},
+  year            = {2026},
+  month           = aug,
+  doi             = {10.5281/zenodo.21894454},
+  url             = {https://zenodo.org/records/21894454},
+  urldate         = {2026-11-10},
+  note            = {Published 2026-08-11; CC BY 4.0. Companion paper reported as submitted to \emph{Journal of Economics and Finance} (not checked)},
+  verified        = {yes},
+  verified_source = {https://zenodo.org/api/records/21894454}
+}
+
+@misc{huang2026gpu,
+  author          = {Huang, Junhong},
+  title           = {{GPU} Rental Value Curves: Replication Data for ``Underwriting {GPU} Depreciation''},
+  howpublished    = {Zenodo (dataset), version 1.6.1},
+  year            = {2026},
+  month           = aug,
+  doi             = {10.5281/zenodo.22053861},
+  url             = {https://zenodo.org/records/22053861},
+  urldate         = {2026-11-10},
+  note            = {Published 2026-08-22; CC BY 4.0},
+  verified        = {yes},
+  verified_source = {https://zenodo.org/api/records/22053861}
+}
+
+@misc{ccir2026rent,
+  author          = {{Compute Credit Index Research}},
+  title           = {Rent and Age: Five Generations},
+  howpublished    = {CCIR research note},
+  year            = {2026},
+  month           = jul,
+  url             = {https://ccir.io/research/gpu-age-curve},
+  urldate         = {2026-11-10},
+  note            = {Published 2026-07-06, updated 2026-09-29. Publisher: Compute Credit Index Research LLC; no named authors},
+  verified        = {yes},
+  verified_source = {https://ccir.io/research/gpu-age-curve}
+}
+
+@misc{ccir2026rental,
+  author          = {{Compute Credit Index Research}},
+  title           = {{GPU} Rental Rates by Generation: Nine Years of Posted Prices},
+  howpublished    = {CCIR research note},
+  year            = {2026},
+  month           = jul,
+  url             = {https://ccir.io/research/rental-rates-by-generation},
+  urldate         = {2026-11-10},
+  note            = {Published 2026-07-08; no named authors},
+  verified        = {yes},
+  verified_source = {https://ccir.io/research/rental-rates-by-generation}
+}
+
+@misc{watkins2026deriving,
+  author          = {Watkins, Jared},
+  title           = {Deriving the {AI} Depreciation Curve},
+  howpublished    = {The Infinite Unknown (blog)},
+  year            = {2026},
+  month           = sep,
+  url             = {https://www.jaredwatkins.com/posts/2026/08/ai-depreciation-curve/},
+  urldate         = {2026-11-10},
+  note            = {Published 2026-09-07},
+  verified        = {yes},
+  verified_source = {https://www.jaredwatkins.com/posts/2026/08/ai-depreciation-curve/}
+}
+
+@misc{cao2026dumpstercluster,
+  author          = {Cao, Zeyu and Guo, Xuan and Zhang, Cheng and Lau, Cheuk Hang and Shumailov, Ilia and Zhao, Yiren},
+  title           = {{DumpsterCluster}: From Dumpster Diving to Serving {LLaMA-70B} on \$60 {GPUs}},
+  howpublished    = {arXiv preprint},
+  year            = {2026},
+  eprint          = {2608.14614},
+  archiveprefix   = {arXiv},
+  primaryclass    = {cs.LG},
+  url             = {https://arxiv.org/abs/2608.14614},
+  urldate         = {2026-11-10},
+  verified        = {yes},
+  verified_source = {https://arxiv.org/abs/2608.14614}
+}
+
+@misc{gao2026illusion,
+  author          = {Gao, Yang},
+  title           = {The Illusion of Stability: Unpacking {H100} {GPU} Market Value Trends},
+  howpublished    = {Silicon Data},
+  year            = {2026},
+  month           = jan,
+  url             = {https://www.silicondata.com/use-cases/h100-gpu-market-value-trends},
+  urldate         = {2026-11-10},
+  note            = {Published 2026-01-30; vendor note},
+  verified        = {yes},
+  verified_source = {https://www.silicondata.com/use-cases/h100-gpu-market-value-trends}
+}
+
+@misc{margulies2026gpu,
+  author          = {Margulies, Bernie and {AC Research}},
+  title           = {{GPU} Depreciation Schedules vs Resale Data},
+  howpublished    = {American Compute blog},
+  year            = {2026},
+  month           = oct,
+  url             = {https://www.amcompute.com/blog/gpu-useful-life-depreciation-schedules},
+  urldate         = {2026-11-10},
+  note            = {Published 2026-10-27; vendor blog},
+  verified        = {yes},
+  verified_source = {https://www.amcompute.com/blog/gpu-useful-life-depreciation-schedules}
+}
+
+% ---------------------------------------------------------------------------------------
+% 5. Partial overlaps (docs/related_work.md, "Partial" rows)
+% ---------------------------------------------------------------------------------------
+
+@misc{dutta2026priced,
+  author          = {Dutta, Sunil and Patatoukas, Panos N.},
+  title           = {Priced to Last, but Built to Last? {The} Asset Life Question in the {AI} Buildout},
+  howpublished    = {SSRN working paper},
+  year            = {2026},
+  doi             = {10.2139/ssrn.7420380},
+  verified        = {yes},
+  verified_source = {https://api.crossref.org/works/10.2139/ssrn.7420380}
+}
+
+@misc{bodepudi2026depreciation,
+  author          = {Bodepudi, Megha Surya and Bodepudi, Mahesh},
+  title           = {The Depreciation Paradox: Accelerator Obsolescence, the Structural Collateral Floor, and the Safe Limits of {AI} Infrastructure Leverage},
+  howpublished    = {SSRN working paper},
+  year            = {2026},
+  doi             = {10.2139/ssrn.7346098},
+  verified        = {yes},
+  verified_source = {https://api.crossref.org/works/10.2139/ssrn.7346098}
+}
+
+@misc{shek2026price,
+  author          = {Shek, Helvin},
+  title           = {The Price of Compute: Hedonic Evidence from {GPU} Rental Markets},
+  howpublished    = {SSRN working paper},
+  year            = {2026},
+  doi             = {10.2139/ssrn.7541938},
+  verified        = {yes},
+  verified_source = {https://api.crossref.org/works/10.2139/ssrn.7541938}
+}
+
+@misc{polson2026compute,
+  author          = {Polson, Nicholas G.},
+  title           = {Compute as Collateral},
+  howpublished    = {SSRN working paper},
+  year            = {2026},
+  doi             = {10.2139/ssrn.7270603},
+  verified        = {yes},
+  verified_source = {https://api.crossref.org/works/10.2139/ssrn.7270603}
+}
+
+@misc{chronopoulos2026five,
+  author          = {Chronopoulos, Panagiotis I.},
+  title           = {Five Years for the Chip, One for the Model: Contract Menus and the Economic Life of {AI} Infrastructure},
+  howpublished    = {SSRN working paper},
+  year            = {2026},
+  doi             = {10.2139/ssrn.7295000},
+  verified        = {yes},
+  verified_source = {https://api.crossref.org/works/10.2139/ssrn.7295000}
+}
+
+@misc{rosenzweig2026second,
+  author          = {Rosenzweig, Russ W.},
+  title           = {The Second Rental: {CoreWeave}, {GPU} Depreciation and How Long {AI} Chips Earn},
+  howpublished    = {Zenodo working paper, version 1.0 (Vista Research)},
+  year            = {2026},
+  month           = oct,
+  doi             = {10.5281/zenodo.23483110},
+  url             = {https://zenodo.org/records/23483110},
+  urldate         = {2026-11-10},
+  note            = {Published 2026-10-05; identical HTML version at https://www.vistaresearch.ai/notes/coreweave-gpu-depreciation-economic-life.html},
+  verified        = {yes},
+  verified_source = {https://zenodo.org/api/records/23483110}
+}
+
+@misc{fang2026financed,
+  author          = {Fang, Zhongzheng},
+  title           = {How Is the {AI} Build-Out Financed? {Internal} Funds, Leases, and Depreciation Compared with the Dot-Com Boom},
+  howpublished    = {SSRN working paper},
+  year            = {2026},
+  doi             = {10.2139/ssrn.7643251},
+  verified        = {yes},
+  verified_source = {https://api.crossref.org/works/10.2139/ssrn.7643251}
+}
+
+@incollection{gautam2026hyperscalers,
+  author          = {Gautam, Deepali and Kramer, Johannes and Yokoyama, Aki},
+  title           = {Box 1.4. Hyperscalers' Balance Sheets and Obsolescence Risk: Stylized Scenario Analysis},
+  booktitle       = {Global Financial Stability Report, April 2026, Chapter 1: Global Financial Markets Confront the War in the Middle East and Amplification Risks},
+  publisher       = {International Monetary Fund},
+  year            = {2026},
+  month           = apr,
+  pages           = {40--41},
+  doi             = {10.5089/9798229035910.082},
+  url             = {https://www.imf.org/-/media/files/publications/gfsr/2026/april/english/ch1.pdf},
+  urldate         = {2026-11-10},
+  verified        = {yes},
+  verified_source = {https://www.imf.org/-/media/files/publications/gfsr/2026/april/english/ch1.pdf; https://api.crossref.org/works/10.5089/9798229035910.082}
+}
+
+@misc{zeoli2026gpu,
+  author          = {Zeoli, Chris},
+  title           = {How Long Does a {GPU} Last?},
+  howpublished    = {Data Gravity (Substack)},
+  year            = {2026},
+  month           = sep,
+  url             = {https://www.datagravity.dev/p/how-long-does-a-gpu-last},
+  urldate         = {2026-11-10},
+  note            = {Published 2026-09-21},
+  verified        = {yes},
+  verified_source = {https://www.datagravity.dev/p/how-long-does-a-gpu-last}
+}
+
+@misc{sternstein2026charts,
+  author          = {Sternstein, Moses},
+  title           = {Charts of the Week: Attention is All You Need},
+  howpublished    = {a16z newsletter},
+  year            = {2026},
+  month           = oct,
+  url             = {https://www.a16z.news/p/charts-of-the-week-attention-is-all},
+  urldate         = {2026-11-10},
+  note            = {Published 2026-10-23},
+  verified        = {yes},
+  verified_source = {https://www.a16z.news/p/charts-of-the-week-attention-is-all}
+}
+
+@misc{ornn2026economics,
+  author          = {{Ornn Data}},
+  title           = {The Economics of Open-Weight Inference},
+  howpublished    = {Ornn Data publication},
+  year            = {2026},
+  month           = sep,
+  url             = {https://data.ornn.com/publications/the-economics-of-open-weight-inference},
+  urldate         = {2026-11-10},
+  note            = {Published 2026-09-07; vendor publication, no named authors},
+  verified        = {yes},
+  verified_source = {https://data.ornn.com/publications/the-economics-of-open-weight-inference}
+}
+
+@misc{bandi2026early,
+  author          = {Bandi, Federico M. and Su, Yinan},
+  title           = {(Early) {AI} Compute Asset Pricing},
+  howpublished    = {arXiv preprint, version 4},
+  year            = {2026},
+  eprint          = {2607.12156},
+  archiveprefix   = {arXiv},
+  primaryclass    = {q-fin.PR},
+  url             = {https://arxiv.org/abs/2607.12156},
+  urldate         = {2026-11-10},
+  note            = {v1 2026-07-13; v4 2026-10-21},
+  verified        = {yes},
+  verified_source = {https://arxiv.org/abs/2607.12156}
+}
+
+@misc{cha2026compute,
+  author          = {Cha, Doohwi},
+  title           = {Is Compute the New Oil? {Cross-Asset} Risk and the Case for a Dedicated Market},
+  howpublished    = {SSRN working paper},
+  year            = {2026},
+  doi             = {10.2139/ssrn.6829278},
+  verified        = {yes},
+  verified_source = {https://api.crossref.org/works/10.2139/ssrn.6829278}
+}
+
+@misc{assody2026pricing,
+  author          = {Assody, Amine},
+  title           = {Pricing Compute Futures: Forward Curve and Volatility for a Non-Storable, Depreciating Commodity},
+  howpublished    = {SSRN working paper},
+  year            = {2026},
+  doi             = {10.2139/ssrn.6926798},
+  verified        = {yes},
+  verified_source = {https://api.crossref.org/works/10.2139/ssrn.6926798}
+}
+
+@misc{kshirsagar2025chip,
+  author          = {Kshirsagar, Mihir},
+  title           = {{AI} Chip Lifespans: A Note on the Secondary Market},
+  howpublished    = {CITP Blog, Princeton University},
+  year            = {2025},
+  month           = dec,
+  url             = {https://blog.citp.princeton.edu/2025/12/18/ai-chip-lifespans-a-note-on-the-secondary-market/},
+  urldate         = {2026-11-10},
+  note            = {Published 2025-12-18},
+  verified        = {yes},
+  verified_source = {https://blog.citp.princeton.edu/2025/12/18/ai-chip-lifespans-a-note-on-the-secondary-market/}
+}
+
+@misc{capefear2026residual,
+  author          = {{Cape Fear Advisors}},
+  title           = {{CoreWeave}'s Residual: What a Used {GPU} Has to Fetch},
+  howpublished    = {Substack},
+  year            = {2026},
+  month           = sep,
+  url             = {https://capefearadvisors.substack.com/p/coreweaves-call-option-on-used-gpus},
+  urldate         = {2026-11-10},
+  note            = {Published 2026-09-16. The page's og:title reads ``CoreWeave's Call Option on Used GPUs''},
+  verified        = {yes},
+  verified_source = {https://capefearadvisors.substack.com/p/coreweaves-call-option-on-used-gpus}
+}
+
+@misc{silicondata_residual,
+  author          = {{Silicon Data}},
+  title           = {{GPU} Residual Value},
+  howpublished    = {Silicon Data product page},
+  year            = {n.d.},
+  url             = {https://www.silicondata.com/products/gpu-residual-value},
+  urldate         = {2026-11-10},
+  note            = {Undated vendor product page},
+  verified        = {yes},
+  verified_source = {https://www.silicondata.com/products/gpu-residual-value}
+}
+
+@misc{mercatus2026h100,
+  author          = {{Mercatus Compute}},
+  title           = {{H100} Depreciation: How Fast {NVIDIA} {H100s} Lose Value (and What It Means for {TCO})},
+  howpublished    = {Mercatus blog},
+  year            = {2026},
+  month           = mar,
+  url             = {https://www.mercatus-ai.com/blog/h100-depreciation},
+  urldate         = {2026-11-10},
+  note            = {Published 2026-03-30; AI compute marketplace, not the Mercatus Center},
+  verified        = {yes},
+  verified_source = {https://www.mercatus-ai.com/blog/h100-depreciation}
+}
+
+% ---------------------------------------------------------------------------------------
+% 6. Practitioner and press sources cited in docs/proposal.md
+% ---------------------------------------------------------------------------------------
+
+@misc{amcompute2026useful,
+  author          = {{American Compute}},
+  title           = {{GPU} Depreciation: Useful Lives by Company},
+  howpublished    = {American Compute},
+  year            = {2026},
+  url             = {https://www.amcompute.com/gpu-depreciation-schedules},
+  urldate         = {2026-11-10},
+  note            = {Compilation of 10-K and 20-F useful-life disclosures; the proposal cites it as ``GPU Depreciation Schedules'', updated Oct 10, 2026 (update date not re-checked)},
+  verified        = {yes},
+  verified_source = {https://www.amcompute.com/gpu-depreciation-schedules}
+}
+
+@misc{sharwood2025aws,
+  author          = {Sharwood, Simon},
+  title           = {Low-Quality Hardware, Server Supply Chain Kinks, Slow {AWS} {AI}},
+  howpublished    = {The Register},
+  year            = {2025},
+  month           = feb,
+  url             = {https://www.theregister.com/software/2025/02/07/low-quality-hardware-server-supply-chain-kinks-slow-aws-ai/502483},
+  urldate         = {2026-11-10},
+  note            = {Published 2025-02-07. The proposal's URL https://www.theregister.com/2025/02/07/amazon_q4_fy_2024/ redirects here},
+  verified        = {yes},
+  verified_source = {https://www.theregister.com/2025/02/07/amazon_q4_fy_2024/}
+}
+
+@misc{davis2026gpu,
+  author          = {Davis, Patrick},
+  title           = {The {GPU} Depreciation Debate Behind This Week's {AI} Dip},
+  howpublished    = {Value The Markets},
+  year            = {2026},
+  month           = sep,
+  url             = {https://www.valuethemarkets.com/analysis/gpu-depreciation-debate-behind-this-weeks-ai-dip},
+  urldate         = {2026-11-10},
+  note            = {Published 2026-09-16},
+  verified        = {yes},
+  verified_source = {https://www.valuethemarkets.com/analysis/gpu-depreciation-debate-behind-this-weeks-ai-dip}
+}
+
+@misc{kucoin2026gpu,
+  author          = {{KuCoin}},
+  title           = {{GPU} Price Chaos: Four Indices Diverge, Market Lacks Consensus},
+  howpublished    = {KuCoin News (flash)},
+  year            = {2026},
+  month           = apr,
+  url             = {https://www.kucoin.com/news/flash/gpu-pricing-disarray-four-indices-diverge-market-lacks-consensus},
+  urldate         = {2026-11-10},
+  note            = {Published 2026-04-08. The proposal describes it as a repost of a Compute Desk analysis; the original Compute Desk piece was not located},
+  verified        = {yes},
+  verified_source = {https://www.kucoin.com/news/flash/gpu-pricing-disarray-four-indices-diverge-market-lacks-consensus}
+}
+
+@misc{getdeploying2026trends,
+  author          = {{getdeploying.com}},
+  title           = {{GPU} Rental Price Trends (2026)},
+  howpublished    = {getdeploying.com},
+  year            = {2026},
+  url             = {https://getdeploying.com/gpu-price-trends},
+  urldate         = {2026-11-10},
+  note            = {The proposal's URL https://getdeploying.com/gpu-price-index (``GPU Rental Price Index'') redirects here},
+  verified        = {yes},
+  verified_source = {https://getdeploying.com/gpu-price-index}
+}
+
+% ---------------------------------------------------------------------------------------
+% 7. Data sources and software
+% ---------------------------------------------------------------------------------------
+
+@misc{epoch2026hardware,
+  author          = {{Epoch AI}},
+  title           = {Data on Machine Learning Hardware},
+  howpublished    = {Published online at epoch.ai},
+  year            = {2026},
+  url             = {https://epoch.ai/data/machine-learning-hardware},
+  urldate         = {2026-11-10},
+  note            = {CC BY 4.0. Page last updated 2026-11-06. Raw copy used: data/raw/indices/epoch/2026-11-10/235424Z-ml\_hardware.csv},
+  verified        = {yes},
+  verified_source = {https://epoch.ai/data/machine-learning-hardware}
+}
+
+@misc{eia861m,
+  author          = {{U.S. Energy Information Administration}},
+  title           = {Form {EIA-861M} (formerly {EIA-826}) Detailed Data: Sales and Revenue (monthly)},
+  year            = {2026},
+  url             = {https://www.eia.gov/electricity/data/eia861m/},
+  urldate         = {2026-11-10},
+  note            = {File sales\_revenue.xlsx retrieved 2026-11-11T00:06:47Z (data/raw/eia). Public domain (U.S. government)},
+  verified        = {yes},
+  verified_source = {https://www.eia.gov/electricity/data/eia861m/}
+}
+
+@misc{eiaepm,
+  author          = {{U.S. Energy Information Administration}},
+  title           = {Electric Power Monthly},
+  year            = {2026},
+  url             = {https://www.eia.gov/electricity/monthly/},
+  urldate         = {2026-11-10},
+  verified        = {yes},
+  verified_source = {https://www.eia.gov/electricity/monthly/}
+}
+
+@misc{blscpiu,
+  author          = {{U.S. Bureau of Labor Statistics}},
+  title           = {Consumer Price Index for All Urban Consumers ({CPI-U})},
+  year            = {2026},
+  url             = {https://www.bls.gov/cpi/},
+  urldate         = {2026-11-10},
+  note            = {Series read from the flat files at https://download.bls.gov/pub/time.series/cu/ (cu.data.1.AllItems)},
+  verified        = {yes},
+  verified_source = {https://www.bls.gov/cpi/}
+}
+
+@misc{secedgarapi,
+  author          = {{U.S. Securities and Exchange Commission}},
+  title           = {{EDGAR} Application Programming Interfaces ({APIs})},
+  year            = {2025},
+  url             = {https://www.sec.gov/search-filings/edgar-application-programming-interfaces},
+  urldate         = {2026-11-10},
+  note            = {Page last reviewed or updated 2025-04-08. Endpoints used: data.sec.gov/submissions and data.sec.gov/api/xbrl/companyfacts},
+  verified        = {yes},
+  verified_source = {https://www.sec.gov/search-filings/edgar-application-programming-interfaces}
+}
+
+@misc{skypilotcatalog,
+  author          = {{skypilot-org}},
+  title           = {skypilot-catalog},
+  howpublished    = {GitHub repository},
+  year            = {2026},
+  url             = {https://github.com/skypilot-org/skypilot-catalog},
+  urldate         = {2026-11-10},
+  note            = {Commit history read 2026-10-31 (data/raw/skypilot\_history). No license stated},
+  verified        = {yes},
+  verified_source = {https://github.com/skypilot-org/skypilot-catalog}
+}
+
+@misc{internetarchivewayback,
+  author          = {{Internet Archive}},
+  title           = {Wayback Machine},
+  year            = {2026},
+  url             = {https://web.archive.org/},
+  urldate         = {2026-11-10},
+  note            = {Captures located with the Wayback CDX API, documented at https://archive.org/help/wayback_api.php},
+  verified        = {yes},
+  verified_source = {https://web.archive.org/; https://archive.org/help/wayback_api.php}
+}
+
+@misc{pyfixest2025,
+  author          = {{The PyFixest Authors}},
+  title           = {pyfixest: Fast High-Dimensional Fixed Effect Estimation in {Python}},
+  year            = {2025},
+  url             = {https://github.com/py-econometrics/pyfixest},
+  urldate         = {2026-11-10},
+  note            = {Version 0.60.0 used (uv.lock). Citation as requested in the project README and CITATION.cff},
+  verified        = {yes},
+  verified_source = {https://raw.githubusercontent.com/py-econometrics/pyfixest/master/README.md}
+}
+
+@techreport{berge2018efficient,
+  author          = {Berg{\'e}, Laurent},
+  title           = {Efficient Estimation of Maximum Likelihood Models with Multiple Fixed-Effects: The {R} Package {FENmlm}},
+  institution     = {Department of Economics, University of Luxembourg},
+  type            = {DEM Discussion Paper},
+  number          = {18-13},
+  year            = {2018},
+  url             = {https://ideas.repec.org/p/luc/wpaper/18-13.html},
+  note            = {The fixest package's reference paper. CRAN lists the same paper as CREA Discussion Paper 13},
+  verified        = {yes},
+  verified_source = {https://ideas.repec.org/p/luc/wpaper/18-13.html}
+}

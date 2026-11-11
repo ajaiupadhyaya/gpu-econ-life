@@ -172,3 +172,11 @@ Unknown values, unreachable sources and anything waiting on a decision.
 - **DGX A100 system power scope (Decision 25).** NVIDIA's DGX A100 user guide lists "6.5 kW max."
   under a "Specification for Each Power Supply" header. Phase 6 reads it as the system maximum, as
   the DGX H100 guide's 10.2 kW is; confirm.
+- **Venue rules not confirmed (docs/venues.md, 2026-11-11).** Financial Analysts Journal: length
+  limit, fee amount and data policy (official pages returned 403/500). Journal of Financial Data
+  Science: nothing confirmed. Economics Letters: the USD 125 fee rests on a search snippet. The
+  undergraduate pick (Issues in Political Economy): preprint policy and length not stated.
+- **Byrne, Corrado and Sichel exists as a 2018 NBER working paper and a 2021 book chapter.** The
+  bibliography cites the working paper; AJ to pick one.
+- **Outdated web-source titles in the proposal.** The verified titles are in `paper/references.bib`
+  (American Compute's page, The Register piece, the KuCoin repost, getdeploying's trends page).
