@@ -1,4 +1,4 @@
-.PHONY: cpi-fetch cpi chips eia-states reference m8 figures p1-figures p2 p3-validate spot-panel install test test-fast lint coverage-preview collect health bench-dryrun bench-parse bench-report p3-calibrate p3-capex p3-market p3 data models paper all
+.PHONY: panel p4-figures cpi-fetch cpi chips eia-states reference m8 figures p1-figures p2 p3-validate spot-panel install test test-fast lint coverage-preview collect health bench-dryrun bench-parse bench-report p3-calibrate p3-capex p3-market p3 data models paper all
 
 install:
 	uv sync
@@ -63,8 +63,14 @@ eia-states:
 
 reference: chips eia-states cpi
 
-data: reference
-	@echo "panel: built in Phase 4"
+# Phase 4 panel, cleaning report and descriptive figures (Decision 22).
+panel: reference
+	uv run python -m gel.build.panel
+
+p4-figures: panel
+	uv run python -m gel.viz.panel_figures
+
+data: reference panel p4-figures
 
 models:
 	@echo "placeholder: built in Phases 5 to 7"

@@ -1,0 +1,10 @@
+chip,months_both_types,median_hyperscaler_over_neocloud,lowess_first_age,lowess_first,lowess_last_age,lowess_last,median_max_over_min,months_2plus_providers,gd_overlap_months,median_panel_over_getdeploying
+v100,67,1.61,3.0,4.22,111.0,2.72,3.1,73,13,1.2
+a100_40gb,58,2.34,6.0,3.09,77.0,2.73,2.67,59,13,1.71
+a100_80gb,51,1.92,18.0,4.19,71.0,4.12,2.47,52,13,1.71
+h100_pcie,6,2.66,4.0,3.67,49.0,8.28,1.95,22,13,3.47
+h100_sxm,39,3.1,4.0,6.64,49.0,10.61,3.52,40,13,3.47
+l40s,19,1.5,,,,,1.5,19,13,1.85
+mi300x,,,,,,,,,1,2.65
+h200,20,0.73,2.0,7.04,23.0,11.47,1.73,21,13,1.56
+b200,18,1.54,7.0,11.1,23.0,10.12,2.08,18,13,1.57

@@ -149,3 +149,10 @@ Unknown values, unreachable sources and anything waiting on a decision.
 - **(Decided 2026-11-11, Decision 20: not built; P1 is the throughput measure.)** **MLPerf throughput index (proposal Phase 3 item 2).** Not built: MLCommons' terms of use could
   not be read (data_sources.md 3.12), and P1's own vLLM benchmark already measures throughput per
   chip. AJ to decide whether the paper needs MLPerf as well.
+- **Google H100 on-demand in SkyPilot's July 2026 catalog (Decision 22).** The accelerator-only
+  price is about $4.20 in 12 of 19 regions (7 in June 2026, none in August), against $10-11
+  elsewhere; our parse matches the raw file (`data/raw/skypilot_history/gcp/2026-07-*.csv.gz`). The
+  cause is unknown. Phase 5 should show results with and without that snapshot.
+- **Pull the droplet's live data before Phase 5.** The local live panel ends 2026-11-10. The
+  rsync command in `deploy/README.md` adds new raw files without touching existing ones; the
+  interim parse then needs rerunning.

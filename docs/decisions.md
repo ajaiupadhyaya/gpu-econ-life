@@ -491,3 +491,33 @@ Made while building P3, within the handoff's design. The owner can reverse any o
   lapse in appropriations"). The raw column keeps the gap; `cpi_u_nsa_filled` uses the geometric
   mean of September and November 2025 (324.46) with `cpi_imputed = true`, so October 2025 prices
   can still be deflated. Only isolated single-month gaps are filled.
+
+## Decision 22: Phase 4 panel construction (2026-11-11)
+
+- **Date:** 2026-11-11, step B2 of `docs/finish_plan.md`. The two unit-of-observation choices were
+  the owner's (rule 7), made with the numbers below.
+- **Spot zones -> region (owner's choice):** one regional spot price per listing and day = the
+  median across zones, with the zone count kept. AWS spot prices differ across zones on 73% of
+  region-days (median spread 8%); Google's are identical. Alternatives: minimum across zones;
+  zones as separate listings (changes the unit and over-weights AWS spot).
+- **Time unit (owner's choice):** one row per listing-month, the median of that month's
+  observations, keyed to the first day of the month. Live collectors record 4-7 rows per listing
+  per month and archive sources about one; without collapsing, daily sources would dominate.
+  Observation counts and first/last dates are kept.
+- **Collector overlap:** two collectors' rows are the same offer when provider, chip, GPU count,
+  form factor (sxm/pcie, read from interconnect or the SKU text), region, contract, term, price
+  basis, price kind and month match. SKU text is not matched because collectors name the same
+  offer differently (Lambda's page "8x NVIDIA A100|40GB" vs SkyPilot "gpu_8x_a100"); matching on
+  it double-counted Lambda in 283 offer-months. The most direct source wins (provider file or API,
+  then archived provider page, then SkyPilot's catalog). Equally direct sources in one month (AWS
+  history and live files) are merged. 239 rows dropped this way agree with the kept price
+  (median gap 0.00%, 98% within 5%).
+- **Age:** months from the chip's Epoch release month (Decision 19) to the listing month. The L40S
+  has no release date, so its age is missing, not borrowed from its announcement date.
+- **Real prices:** nominal x CPI deflator to 2025 dollars (Decision 21); missing for November 2026
+  until BLS publishes it.
+- **Flags, not drops:** `pre_release` (listing before the release month; none found) and
+  `price_outlier` (over 4x or under 1/4 of the chip-month-contract median; 169).
+- **Descriptive figures 4a-4d** use on-demand listings without outlier flags, as small multiples by
+  chip (at most two hues per figure). Figure 4d compares with getdeploying's weekly ON_DEMAND median
+  (CC BY 4.0), which pools A100 40/80GB and H100 SXM/PCIe.
