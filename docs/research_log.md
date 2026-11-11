@@ -127,3 +127,29 @@ Preliminary, with placeholders still in place (docs/assumptions.md):
   P2's observed ratios.
 - Regime does not move the rent path (price is set by the frontier's cost), and the boom scenario
   starts high, so validation check 3 (boom raises old-chip rents) needs a mid-path markup jump.
+
+## P3 calibrated and validated, 2026-11-11
+
+The owner asked Claude Code to resolve the P3 placeholders with its own judgement and approved
+the failure-data research. Decision 12 records every value and its source. Two model artefacts
+surfaced and were fixed: the floored OU markup drifted upward at the calibrated volatility (now a
+stationary log-OU), and the rent path used a mean of ratios (now a ratio of means). Calibrated
+base results (N = 20,000, 16 scenarios, ~17 s):
+
+- Base median retirement 4.08 years (P10 2.17, P90 7.00); 90% of retirements are obsolescence,
+  9% failure.
+- Power regime decides it: always constrained 3.58 years; power abundant 11.0 years (44% still
+  running at the horizon, 34% retired on negative margin).
+- Fast frontier 3.17, slow 5.58, empirical cadence 4.67; scarcity boom 2.83; high maintenance
+  3.25; flat capex 3.50; failure at the 11% incident upper bound 3.17; handoff's original failure
+  curve 3.50.
+- Economic value starts at 1.39x capex at a 0.90 markup and falls to 1.00 at year 1, 0.63 at year
+  2 and 0.47 at year 3. That is above every straight-line book value (4-6 years) from year 2 on,
+  with a long tail (0.27 at year 5).
+- Implied flat-rate ratios: 1.00 (12 months), 0.91 (36), 0.81 (60).
+- Validation: cross-section agrees for Lambda, CoreWeave and AWS. The term structure matches
+  Lambda's A100 commitments but not hyperscaler reserved discounts (term premium 19-38%/yr
+  needed). The scarcity jump passes. In the tornado the generation step dominates by far.
+
+These are not yet paper results: P2's write-up, the spot panel (M4) and triangulation (M8) are
+still to come.
