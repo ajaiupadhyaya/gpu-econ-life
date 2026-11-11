@@ -1,0 +1,19 @@
+\section{Data and code availability}
+\label{app:replication}
+
+The replication package rebuilds every table and figure, and this paper, from the archived raw
+files with one command (\texttt{make all}). Each raw file has a sidecar recording its source URL,
+retrieval time and HTTP status. Prices from providers whose terms do not permit redistribution are
+released as derived monthly aggregates; the SkyPilot catalog history and archived pages are
+re-fetched by a script with checksums rather than redistributed. Methodological choices are logged
+with dates and alternatives in \texttt{docs/decisions.md}, and every assumption with its value and
+source in \texttt{docs/assumptions.md}.
+
+\section{Adversarial review}
+\label{app:review}
+
+Before the results were written up, a reviewer with access only to the code, the result tables
+and the identification section of the research proposal was asked for the weakest identifying
+assumption and the most likely referee objection. Its fifteen points, the checks they led to and
+the responses are in \texttt{docs/review\_01.md} and \texttt{docs/review\_01\_checks.md}; the
+checks are in \texttt{gel.models.review\_checks} and Section~\ref{sec:review}.
