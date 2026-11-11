@@ -90,7 +90,7 @@ Unknown values, unreachable sources and anything waiting on a decision.
   `fp8_per_tensor` (online per-tensor FP8). All runs use the same flag, so it is consistent, but
   the paper's methods section should name the actual scheme: per-tensor dynamic FP8 (W8A8 on
   Hopper/Ada/Blackwell, W8A16 Marlin on Ampere).
-- **(Capex resolved 2026-11-10 by Decision 10; maintenance still open.)** P3 needed three sourced inputs: all-in capex per GPU for
+- **(Resolved 2026-11-10: capex by Decision 10, maintenance by Decision 11, weakly sourced.)** P3 needed three sourced inputs: all-in capex per GPU for
   generation 0 (A100, including its share of server and network), capex growth per generation,
   and maintenance per GPU-month. `config/p3_model.yaml` holds them as null and
   `gel.models.monte_carlo` refuses to run. Candidate sources need the owner's approval (rule 7),

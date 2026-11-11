@@ -64,8 +64,8 @@ def resolve(cfg: dict, calibration: dict | None = None, capex: dict | None = Non
         missing.append("capex.K0_usd")
     if not isinstance(cfg["capex"]["growth_per_generation"], int | float):
         missing.append("capex.growth_per_generation")
-    if cfg["maintenance_usd_per_month"] is None:
-        missing.append("maintenance_usd_per_month")
+    if not isinstance(cfg.get("maintenance_fraction_of_capex_per_year"), int | float):
+        missing.append("maintenance_fraction_of_capex_per_year")
     if missing:
         raise MissingInput(
             "unsourced P3 inputs (CLAUDE.md rule 1): "
@@ -94,7 +94,6 @@ def simulate(p: dict, seed: int | None = None) -> dict:
     n, horizon = int(p["n_paths"]), int(p["horizon_months"])
     mk, hw = p["market"], p["hardware"]
     u, pue, r = mk["utilization"], mk["pue"], mk["discount_rate_annual"]
-    maint = float(p["maintenance_usd_per_month"])
     months = np.asarray(p["cadence"]["months"])
     probs = np.asarray(p["cadence"]["probs"], dtype=float)
     probs = probs / probs.sum()
@@ -112,6 +111,7 @@ def simulate(p: dict, seed: int | None = None) -> dict:
     capex = p["capex"]["K0_usd"] * p["capex"]["growth_per_generation"] ** k * np.ones((n, 1))
     ann = np.array([rm.annuity_payment(c, r, mk["annuity_months"]) for c in capex[0]])
     ann = ann * np.ones((n, 1))
+    maint = p["maintenance_fraction_of_capex_per_year"] * capex / 12.0  # $/GPU-month, (n, g_max)
 
     # Market state.
     m = rm.ou_path(rng, n, horizon, **p["markup"])
@@ -124,9 +124,9 @@ def simulate(p: dict, seed: int | None = None) -> dict:
     def at_f(x):
         return np.take_along_axis(x, f, axis=1)
 
-    q_f, w_f, idle_f, ann_f = at_f(q), at_f(w), at_f(idle), at_f(ann)
+    q_f, w_f, idle_f, ann_f, maint_f = at_f(q), at_f(w), at_f(idle), at_f(ann), at_f(maint)
     hours = rm.SECONDS_PER_HOUR * rm.HOURS_PER_MONTH
-    _, opex_f, _ = rm.monthly_economics(0.0, q_f, u, e, w_f, idle_f, pue, maint)
+    _, opex_f, _ = rm.monthly_economics(0.0, q_f, u, e, w_f, idle_f, pue, maint_f)
     price = (ann_f + opex_f) / (q_f * hours * u) * (1.0 + m)  # $/token
     margin_f = price * q_f * hours * u - opex_f
 
@@ -138,7 +138,7 @@ def simulate(p: dict, seed: int | None = None) -> dict:
         if not tracked.any():
             continue
         _, _, margin = rm.monthly_economics(
-            price, q[:, g, None], u, e, w[:, g, None], idle[:, g, None], pue, maint
+            price, q[:, g, None], u, e, w[:, g, None], idle[:, g, None], pue, maint[:, g, None]
         )
         neg = margin < 0
         obs = s & (f != g) & rm.obsolete_in_power_slot(margin, w[:, g, None], margin_f, ann_f, w_f)

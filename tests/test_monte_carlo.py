@@ -29,7 +29,7 @@ def synthetic(n=1500, **over):
         {
             "n_paths": n,
             "capex": {"K0_usd": 30_000.0, "growth_per_generation": 1.3},  # SYNTHETIC
-            "maintenance_usd_per_month": 50.0,  # SYNTHETIC
+            "maintenance_fraction_of_capex_per_year": 0.04,
         },
     )
     cfg = mc.deep_merge(cfg, over)
@@ -42,15 +42,25 @@ def run(n=1500, seed=7, **over):
 
 
 def test_refuses_unsourced_inputs():
+    cfg = mc.deep_merge(CFG, {"maintenance_fraction_of_capex_per_year": None})
     with pytest.raises(mc.MissingInput) as exc:
-        mc.resolve(CFG, SYNTHETIC_CAL)
+        mc.resolve(cfg, SYNTHETIC_CAL)  # no capex file passed: from_epoch stays unresolved
     msg = str(exc.value)
-    assert "capex.K0_usd" in msg and "maintenance_usd_per_month" in msg
+    assert "capex.K0_usd" in msg and "maintenance_fraction_of_capex_per_year" in msg
 
 
 def test_cli_stops_cleanly_without_inputs(tmp_path, capsys):
-    assert mc.main(["--out-dir", str(tmp_path), "--scenarios", "base"]) == 2
+    cfg = mc.deep_merge(CFG, {"maintenance_fraction_of_capex_per_year": None})
+    path = tmp_path / "p3.yaml"
+    path.write_text(yaml.safe_dump(cfg))
+    assert mc.main(["--config", str(path), "--out-dir", str(tmp_path), "--scenarios", "base"]) == 2
     assert "unsourced" in capsys.readouterr().err
+
+
+def test_maintenance_scales_with_capex():
+    lo = run(maintenance_fraction_of_capex_per_year=0.0)
+    hi = run(maintenance_fraction_of_capex_per_year=0.30)
+    assert hi["retire_age_mean_y"] <= lo["retire_age_mean_y"]
 
 
 def test_deterministic_given_seed():
@@ -109,7 +119,7 @@ def test_rent_ratio_starts_at_one():
 
 
 def test_from_epoch_values_resolve():
-    cfg = mc.deep_merge(CFG, {"maintenance_usd_per_month": 50.0})  # SYNTHETIC maintenance
+    cfg = CFG
     p = mc.resolve(cfg, SYNTHETIC_CAL, {"K0_usd": 33_600.0, "growth_per_generation": 1.627})
     assert p["capex"]["K0_usd"] == 33_600.0
     assert p["hardware"]["gen0"]["eta"] == 8.75

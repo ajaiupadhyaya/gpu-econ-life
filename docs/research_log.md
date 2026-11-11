@@ -103,3 +103,27 @@ one positive D is the A100 at concurrency 128 under best-available precision (+0
 Ampere's weight-only FP8 cannot help at high load: format obsolescence leaves it with BF16
 throughput only. The H200 adds 16 to 30% throughput over the H100 at a 33% higher price.
 Idle board power ~94 W.
+
+## First full P3 run, 2026-11-11
+
+`make p3` ran end to end: calibration from P1, capex from Epoch (Decision 10), maintenance at
+4% of capex (Decision 11), 10 scenarios at N = 20,000 in about 9 seconds. Outputs:
+`paper/tables/p3_retirement_by_scenario.csv`, `p3_value_vs_book.csv`, `p3_summary.json`.
+
+Preliminary, with placeholders still in place (docs/assumptions.md):
+- Base median retirement 5.25 years (P10 1.8, P90 8.9). Power-constrained 4.8, power-abundant
+  6.3, fast frontier 4.7, slow frontier 6.2, scarcity boom 3.7, empirical cadence 5.7, flat
+  capex 4.2, high maintenance 4.5.
+- **Physical failure ends 59% of lives in the base case**, under the handoff's Weibull default
+  (8-year scale, shape 1.5). The retirement distribution is largely set by that assumption,
+  and P10 (~1.8 years) is pure failure. It needs field data before any result is reported.
+- Economic value is front-loaded: V/K falls 0.92 -> 0.72 -> 0.53 -> 0.40 over years 0-3. That is
+  below 6-year straight-line book value in years 1-3 and above 4-5-year book from year 3, with a
+  long tail.
+- V(0)/K = 0.92 in the base case: buying a new GPU at list capex is slightly NPV-negative at a
+  20% average markup, mostly because failure truncates life. In the scarcity boom V(0)/K > 1.
+- The model-implied 60-month flat-rate ratio F/R0 is 0.83 (36-month 0.93). That is close to the
+  handoff's unverified Ornn A100 point (~0.80), but this is not yet a validation: check 2 needs
+  P2's observed ratios.
+- Regime does not move the rent path (price is set by the frontier's cost), and the boom scenario
+  starts high, so validation check 3 (boom raises old-chip rents) needs a mid-path markup jump.

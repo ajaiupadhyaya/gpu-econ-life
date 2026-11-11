@@ -231,3 +231,19 @@ Made while building P3, within the handoff's design. The owner can reverse any o
   owner); wait for another source.
 - **Still missing:** maintenance per GPU-month (Epoch has none). Claude Code is searching for a
   citable source to bring to the owner.
+
+## Decision 11: P3 maintenance = 4% of capex per year (2026-11-10)
+
+- **Date:** 2026-11-10, chosen by the owner after Claude Code searched for a source.
+- **Choice:** M_g = 0.04 x K_g / 12 per GPU-month (about $112 for the H100 generation). Source:
+  CloudRift, "The True Cost of GPU Ownership" (Natalia Trifonova, 2026-01-21): "Spares" line,
+  spare parts and support contracts at 4% of capex annually, based on the author's conversations
+  with data-centre operators. Sensitivity scenario `maintenance_high` at 12.5% (midpoint of GMI
+  Cloud's "10-15% of hardware cost annually", 2026-04-14, uncited).
+- **Quality:** weak. Both sources are blogs by GPU-rental vendors, and neither cites its figure.
+  No peer-reviewed or primary source was found; SemiAnalysis's TCO model is paywalled. A search
+  summary claimed GMI quoted "$20k-50k per 8-GPU system per year", but the page does not say
+  that, so the claim was discarded. The paper must flag maintenance as weakly sourced.
+- **Alternatives:** 12.5% base; $0 base with sensitivity; owner-supplied figure.
+- **Form:** proportional to each generation's capex, following CloudRift's reasoning that spares
+  and support "scale with system value".

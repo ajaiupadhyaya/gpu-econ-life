@@ -29,7 +29,7 @@ capex:                         # Decision 10, from data/processed/p3_capex.json 
   source_file: data/processed/p3_capex.json
   K0_usd: from_epoch           # $33,600: Epoch AI, H100 SXM5 DGX $269k / 8 (server share included)
   growth_per_generation: from_epoch  # 1.63x: H100 GPU+baseboard BOM / A100 40GB card price
-maintenance_usd_per_month: null  # NO SOURCE: M_g per GPU-month
+maintenance_fraction_of_capex_per_year: 0.04  # Decision 11: CloudRift (2026-01-21) 'spares' 4% of capex/yr; M_g = 0.04 K_g / 12
 
 cadence:                       # months between frontier launches
   months: [18, 24, 30, 36]     # handoff support
@@ -68,3 +68,4 @@ scenarios:                     # overrides of the base parameters (handoff 5.3)
   empirical_cadence: {cadence: {months: [26, 28, 34], probs: [0.3333, 0.3333, 0.3334]}}  # Epoch release gaps V100->A100->H100->B200
   capex_low: {capex: {K0_usd: 24400.0}}            # sensitivity: H100 GPU + baseboard only (Epoch note)
   capex_flat: {capex: {growth_per_generation: 1.0}}  # sensitivity: flat capex per generation
+  maintenance_high: {maintenance_fraction_of_capex_per_year: 0.125}  # sensitivity: GMI Cloud 10-15% midpoint

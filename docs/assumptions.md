@@ -23,4 +23,4 @@ Every assumption with its value and source.
 | Power regime | monthly stay prob. 0.97 each, start constrained | Placeholder | P3 base scenario |
 | Capex per GPU (gen 0, H100) | $33,600 all-in (sensitivity $24,400) | Epoch AI hardware data (CC BY 4.0), citing SemiAnalysis DGX H100 $269k/8 (Decision 10) | P3 |
 | Capex growth per generation | 1.63x (sensitivity 1.0x) | Epoch: H100 GPU+baseboard $24.4k / A100 40GB card $15,000 (Decision 10) | P3 |
-| Maintenance per GPU-month | NO SOURCE (null) | Needed; model refuses to run | P3 |
+| Maintenance per GPU-month | 4% of capex/yr (~$112 for H100); sensitivity 12.5% | CloudRift blog 2026-01-21 (weak, vendor); GMI Cloud 10-15% (Decision 11) | P3 opex |
