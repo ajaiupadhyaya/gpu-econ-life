@@ -1,4 +1,4 @@
-.PHONY: panel p4-figures cpi-fetch cpi chips eia-states reference m8 figures p1-figures p2 p3-validate spot-panel install test test-fast lint coverage-preview collect health bench-dryrun bench-parse bench-report p3-calibrate p3-capex p3-market p3 data models paper all
+.PHONY: hedonic p5-figures panel p4-figures cpi-fetch cpi chips eia-states reference m8 figures p1-figures p2 p3-validate spot-panel install test test-fast lint coverage-preview collect health bench-dryrun bench-parse bench-report p3-calibrate p3-capex p3-market p3 data models paper all
 
 install:
 	uv sync
@@ -72,8 +72,14 @@ p4-figures: panel
 
 data: reference panel p4-figures
 
-models:
-	@echo "placeholder: built in Phases 5 to 7"
+# Phase 5 hedonic models (Decision 23): about 20 minutes with 9,999 bootstrap draws.
+hedonic: panel
+	uv run python -W ignore -m gel.models.hedonic
+
+p5-figures: hedonic
+	uv run python -W ignore -m gel.viz.hedonic_figures
+
+models: hedonic p5-figures
 
 paper:
 	@echo "placeholder: built in Phase 8"

@@ -521,3 +521,68 @@ Made while building P3, within the handoff's design. The owner can reverse any o
 - **Descriptive figures 4a-4d** use on-demand listings without outlier flags, as small multiples by
   chip (at most two hues per figure). Figure 4d compares with getdeploying's weekly ON_DEMAND median
   (CC BY 4.0), which pools A100 40/80GB and H100 SXM/PCIe.
+
+## Decision 23: Phase 5 estimation specifications (2026-11-11, logged before any regression)
+
+- **Date:** 2026-11-11, step B3 of `docs/finish_plan.md`, before any regression was run.
+  Implements proposal Steps 1-2 as amended by Decision 2 (observed cohort paths first; all four
+  strategies; linear-term sweep; chip-level wild-cluster inference). H1-H4 are unchanged.
+- **Sample:** panel listing-months (Decision 22) for the NVIDIA chips with an age: V100, A100 40GB,
+  A100 80GB, H100 PCIe, H100 SXM, H200, B200. Excluded: MI300X (one month of data), L40S (no
+  release date), outlier-flagged rows, November 2026 (partial month, no CPI). Outcome:
+  ln(real price, 2025 USD per GPU-hour). With month fixed effects real and nominal are identical;
+  without them (cohort paths, strategy 2) the real price matters.
+- **Controls (absorbed as fixed effects):** provider x region, contract type x term, GPUs per
+  instance, price basis (instance vs accelerator-only) and form factor.
+- **Age:** years since the Epoch release month. Bins: 6-month bins, reference 0-5 months. Spline:
+  truncated-power cubic, a, a^2, a^3, (a-k)^3_+ with knots k = 1.5, 3, 5 years.
+- **Observed cohort paths (lead result):** no month effects; chip x 6-month age-bin dummies plus
+  controls, each chip relative to its first observed bin. Shown with and without 2026.
+- **Baseline:** chip and month fixed effects plus controls, g(a) as (i) bins, (ii) spline. The
+  spline's linear term is exactly collinear with chip + month effects (age = month - vintage) and is
+  dropped, so (ii) is identical to strategy 4 at a zero linear term. The bins' linear component is
+  identified only through the binning (a sawtooth), which is reported as a caveat, not a result.
+- **Strategy 1, quality-adjusted vintage:** month effects, no chip effects; vintage as (a) ln BF16
+  dense TFLOP/s alone (single quality index, after the review's degrees-of-freedom point; MLPerf
+  dropped in Decision 20) and (b) ln TFLOP/s, ln memory bandwidth, ln memory GB (the proposal's
+  three specs); g(a) = full spline including the linear term.
+- **Strategy 2, frontier-relative obsolescence:** chip effects, no month effects; adds
+  ln(TFLOP/s of the chip / best TFLOP/s of any chip in the reference table released by that month)
+  after Geske, Ramey and Shapiro (2007); g(a) = full spline. Assumption: market-wide time effects
+  act only through the frontier term.
+- **Strategy 3, successor event study (H2):** chip and month effects plus controls; event-time
+  dummies for a predecessor around its successor's release (Epoch dates): V100 at A100 40GB
+  (2020-05), A100 40GB and 80GB at H100 SXM (2022-09), H100 SXM and PCIe at B200 (2024-11).
+  Event-time bins of 6 months from -18 to +18+, reference -6 to -1. The post-minus-pre log change,
+  divided by the mean gap between NVIDIA architectures (p3_capex: 34.4, 28.2, 25.9 months), gives
+  an implied annual obsolescence rate. Announcement dates are not available for these chips
+  (open_questions), so markets' advance knowledge is a stated limitation.
+- **Strategy 4, shape only:** chip and month effects; g(a) = curvature (a^2, a^3, knots) only;
+  reported g_d(a) = d*a + curvature for an assumed linear term d in {0, -0.05, ..., -0.40} log
+  points per year.
+- **Summary numbers per profile:** g(1)-g(0), g(2)-g(0), g(4)-g(0) in log points, and the average
+  annual change over years 0-2 and 2-4 (H1: front-loaded if the first exceeds the second).
+- **H3:** strategies 1a, 2 and 4 and the cohort paths, estimated separately for on-demand, spot,
+  1-year and 3-year reserved prices.
+- **H4:** the same, separately for months up to 2022-12, 2023-01 to 2025-12, and 2026 onward
+  (breaks at the post-ChatGPT demand surge and at the early-2026 price rise H4 cites).
+- **Inference:** primary is a wild cluster bootstrap at the chip level (7 clusters), unrestricted,
+  Webb six-point weights, 9,999 draws, percentile-t intervals and symmetric p-values, applied to
+  each summary number as a linear combination of coefficients. CR1 by provider (6 clusters) and
+  two-way provider x month are shown for comparison; both are known to be too narrow here.
+- **Robustness:** (1) weights so each provider-chip-month counts once (Google is 62% of rows);
+  (2) dropping Google's July 2026 SkyPilot snapshot (open_questions).
+- **Engine:** fixed effects partialled out with pyfixest's demeaning, then OLS; coefficients are
+  tested against pyfixest's `feols`.
+- **Amendment (2026-11-11, after the first full run; estimates unchanged):**
+  (1) The baseline spline is not reported separately: with chip and month effects its linear term
+  is dropped, so it is numerically identical to strategy 4. (2) For strategy 4, only the shape
+  measure (rate over years 0-2 minus rate over years 2-4) is reported in the summary, because it is
+  the one number that does not depend on the assumed linear term; cumulative changes come from the
+  sweep. (3) Sweep normalization: the curvature is detrended by its least-squares slope over ages
+  0-6, so the assumed d is the average annual log change over ages 0-6. Without this, d was the
+  slope at age 0 only, and d = 0 implied a 5-log-point fall by age 6. (4) Runs with chip effects
+  whose longest within-chip age span is under 4 years are flagged `extrapolated` (2026-only runs).
+  (5) Observed cohort paths use CR1 by provider-region (100 clusters), because each path belongs
+  to one chip. (6) Sub-period up to 2022 has three chips, so its chip-level bootstrap has 3
+  clusters and is not informative.

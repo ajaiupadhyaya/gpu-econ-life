@@ -156,3 +156,9 @@ Unknown values, unreachable sources and anything waiting on a decision.
 - **Pull the droplet's live data before Phase 5.** The local live panel ends 2026-11-10. The
   rsync command in `deploy/README.md` adds new raw files without touching existing ones; the
   interim parse then needs rerunning.
+- **Announcement dates for H2 (Decision 23).** The successor event study uses Epoch release dates
+  only; a drop priced in at announcement would be missed. Hand-recorded NVIDIA announcement dates
+  (as for the L40S in `chip_dates.csv`) would allow the review's announcement-date version.
+- **H1 shape result is driven by demand timing? (Phase 5).** Every strategy finds prices falling
+  later rather than earlier. Phase 6 and the B4 review should test whether this survives removing
+  the 2023-24 H100 and 2025-26 H200 shortage windows, which fall at young ages.
