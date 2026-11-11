@@ -414,3 +414,18 @@ Made while building P3, within the handoff's design. The owner can reverse any o
   (rule 3); citations come only from verified `references.bib` entries; interpretation and
   hypotheses are marked for AJ to confirm rather than asserted; each draft section is committed
   separately so AJ's edits show as their own diffs.
+
+## Decision 18: chip-spec source for Phase 3 (2026-11-11)
+
+- **Date:** 2026-11-11, answering decision 3 of `docs/finish_plan.md`.
+- **Choice:** chip specifications (release date, BF16 and FP8 dense throughput, memory, memory
+  bandwidth, TDP) come from Epoch AI's machine-learning hardware CSV (CC BY 4.0, already archived
+  and approved in Decision 10). A manufacturer datasheet is used only for a value Epoch lacks; AJ
+  downloads it by hand (NVIDIA's terms bar automated access) and the value is entered with its URL.
+- **Alternatives:** NVIDIA datasheets as the primary source (restrictive terms: personal,
+  non-commercial use, manual download only).
+- **Reason:** owner's choice; Epoch is redistributable with attribution, which keeps the reference
+  table in the public replication package.
+- **Coverage of the archived Epoch file (2026-11-10):** rows exist for V100, A100 40GB and 80GB,
+  H100 SXM and PCIe, H200 SXM, B200 and MI300X. Missing: the L40S (Epoch lists the L40, a different
+  card); FP8 throughput for the H100 PCIe and the MI300X. Logged in `docs/open_questions.md`.

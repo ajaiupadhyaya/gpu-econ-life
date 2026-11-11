@@ -58,7 +58,7 @@ estimates.
 
 | Step | Content | Done when | Sessions |
 | --- | --- | --- | --- |
-| B1 Phase 3, reference tables | Chip specs with sources, EIA state electricity (file already archived), CPI-U deflator (BLS, no key), optional MLPerf index | Every value has a source; a test fails if one doesn't | 1-2 |
+| B1 Phase 3, reference tables | Chip specs from Epoch with NVIDIA datasheets as backup (Decision 18), EIA state electricity (file already archived), CPI-U deflator (BLS, no key), optional MLPerf index | Every value has a source; a test fails if one doesn't | 1-2 |
 | B2 Phase 4, panel and descriptives | Merge live and historical rows into `panel.parquet`, age since availability, real prices, cleaning report, four descriptive figures, plain-English memo | `make data` rebuilds the panel; memo written | 2 |
 | B3 Phase 5, hedonic models | Chip and month fixed effects; age bins and spline; identification strategies 1-4; contract-type (H3) and sub-period (H4) splits; successor event study (H2); wild-cluster or CR2 inference | `make models` reproduces every table; memo written | 3-4 |
 | B4 Adversarial review | A fresh session critiques identification from code and results alone; you answer each point | `docs/review_01.md` answered | 1 |
@@ -129,9 +129,9 @@ backups and $0-4 for optional GPU top-ups; the droplet is already paid for.
 2. **Reconciliation note.** Post a short dated note to SSRN in mid-January to stake the claim
    (the proposal's plan, made because related papers keep appearing), or go straight to the full
    paper in April.
-3. **Chip-spec source for Phase 3.** NVIDIA datasheets restrict use to personal, non-commercial
-   purposes and manual download (you would download them), or use Epoch AI's CC BY specs, which
-   are already approved, with NVIDIA cited for anything Epoch lacks.
+3. ~~**Chip-spec source for Phase 3.**~~ Decided 2026-11-11: Epoch AI (CC BY 4.0) first; an
+   NVIDIA datasheet you download by hand only for a value Epoch lacks (Decision 18). Known gaps:
+   the L40S is not in Epoch at all; FP8 is missing for the H100 PCIe and the MI300X.
 4. **Site timing.** Publish the BASIS essay with the paper (recommended), or a shorter preview
    earlier.
 5. **Optional top-ups:** a second price snapshot (B7), a B200 run (B7).

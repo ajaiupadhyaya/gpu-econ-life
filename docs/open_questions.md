@@ -123,3 +123,9 @@ Unknown values, unreachable sources and anything waiting on a decision.
 - **Firm-specific useful lives (Phase 7).** M8 compares against the handoff's generic 4/5/5.5/6 years.
   Attributing those to Microsoft, Alphabet, Amazon, Meta, Oracle, CoreWeave and Nebius needs the
   SEC/EDGAR work (contact email required for the EDGAR User-Agent).
+- **Chip specs Epoch lacks (Decision 18).** The archived Epoch CSV has no L40S row (only the L40)
+  and no FP8 figure for the H100 PCIe or the MI300X. Backup sources: the NVIDIA L40S and H100
+  datasheets (AJ downloads by hand). The MI300X is an AMD part, so its backup would be an AMD
+  datasheet, which is a new source and needs AJ's approval (rule 7). V100 and A100 have no FP8
+  entry because they lack FP8 hardware; Phase 3 should cite that from the datasheet, not leave it
+  as an unexplained blank.

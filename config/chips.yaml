@@ -1,5 +1,7 @@
-# Stub. Phase 3 fills this in; every value needs a source URL from an official
-# NVIDIA or AMD datasheet or announcement. Leave a value missing rather than estimating it.
+# Stub. Phase 3 fills this in. Source order (Decision 18): Epoch AI's ML hardware CSV
+# (CC BY 4.0, archived under data/raw/indices/epoch/) first; for a value Epoch lacks, a
+# manufacturer datasheet downloaded by hand, cited by URL. Leave a value missing rather than
+# estimating it.
 chips:
   - id: v100
   - id: a100_40gb
