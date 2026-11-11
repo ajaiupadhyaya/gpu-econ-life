@@ -129,3 +129,22 @@ def test_unparseable_price_fails_loudly():
     html = page(("8x", instance_row("NVIDIA H100 SXM", 80, "contact us")))
     with pytest.raises(LayoutError, match="price"):
         parse_pricing(html, **COMMON)
+
+
+def test_project_config_maps_hgx_cluster_plans():
+    # Lambda added "NVIDIA HGX H100" and "NVIDIA HGX A100" cluster tables on 2026-11-03. HGX H100
+    # is read as SXM (Decision 5); HGX A100 states no VRAM, so it is ignored, not assumed.
+    from pathlib import Path
+
+    import yaml
+
+    cfg = yaml.safe_load((Path(__file__).resolve().parents[1] / "config/skus.yaml").read_text())
+    lam = cfg["lambda"]
+    html = page(
+        ("NVIDIA HGX H100", cluster_row("NVIDIA HGX H100", "1 week – 3 months", "16+", "2.99")),
+        ("NVIDIA HGX A100", cluster_row("NVIDIA HGX A100", "1 week – 3 months", "16+", "1.79")),
+        ("8x", instance_row("NVIDIA H100 SXM", 80, "3.99")),
+    )
+    rows = parse_pricing(html, **(COMMON | {"plans": lam["plans"], "ignore": lam["ignore"]}))
+    clusters = [r for r in rows if r.contract_type == "other"]
+    assert [r.chip for r in clusters] == ["h100_sxm"]

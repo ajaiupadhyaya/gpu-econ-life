@@ -83,7 +83,10 @@ lambda:
     NVIDIA H100 SXM: {chip: h100_sxm}
     NVIDIA H100 PCIe: {chip: h100_pcie}
     NVIDIA H100: {chip: h100_sxm}
+    NVIDIA HGX H100: {chip: h100_sxm}  # cluster tables since 2026-11-03; HGX = SXM (Decision 5)
     NVIDIA A100 SXM: {by_vram: {40: a100_40gb, 80: a100_80gb}}
     NVIDIA A100 PCIe: {by_vram: {40: a100_40gb, 80: a100_80gb}}
     NVIDIA Tesla V100: {chip: v100}
-  ignore: [NVIDIA A10, NVIDIA GH200, NVIDIA A6000, NVIDIA Quadro RTX 6000, NVIDIA RTX 6000]
+  # NVIDIA HGX A100 (cluster tables since 2026-11-03) states no VRAM, so 40 vs 80 GB is unsettled:
+  # left out rather than assumed (Decision 5).
+  ignore: [NVIDIA A10, NVIDIA GH200, NVIDIA A6000, NVIDIA Quadro RTX 6000, NVIDIA RTX 6000, NVIDIA HGX A100]
