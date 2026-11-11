@@ -1,0 +1,41 @@
+\section{Institutional background}
+\label{sec:background}
+
+\subsection{Useful lives in financial statements}
+
+Under U.S. GAAP a firm depreciates property and equipment over its estimated useful life, and a
+change in that estimate is applied prospectively as a change in accounting estimate. Servers and
+network equipment are reported inside property and equipment, and no firm in the sample reports
+GPUs as a separate asset class. Table~\ref{tab:lives} lists the server useful-life policies and
+changes disclosed by the seven firms studied here, each with the filing it comes from
+(\texttt{docs/useful\_lives.md} holds the exact quotations and accession numbers).
+
+\begin{table}[htbp]
+\centering
+\caption{Server useful-life policies and changes disclosed in SEC filings}
+\label{tab:lives}
+\begin{adjustbox}{max width=\textwidth}
+\IfFileExists{tables/p7_useful_lives.tex}{\input{tables/p7_useful_lives.tex}}{\emph{Table generated in Phase 7.}}
+\end{adjustbox}
+\par\smallskip\footnotesize Source: 10-K and 20-F filings on SEC EDGAR; quotations and accession
+numbers in the replication package.
+\end{table}
+
+The economic stakes are large because server capital expenditure has grown fast: a one-year
+change in the assumed life of a cohort of servers moves annual depreciation by billions of dollars
+at each of the largest spenders (Section~\ref{sec:accounting}).
+
+\subsection{How accelerators are rented}
+
+Accelerators are rented by the hour in three main ways. Hyperscalers (AWS, Microsoft Azure and
+Google Cloud) post on-demand list prices for every region and instance type, discounted prices for
+one- and three-year commitments, and interruptible spot prices. Neoclouds (here Lambda, CoreWeave
+and Paperspace) post simpler price lists, often per GPU-hour. Marketplaces match owners and
+renters at transacted prices but restrict automated collection, so they are not collected here.
+Large customers negotiate private prices that are not posted anywhere; this paper is therefore
+about the posted-price market, and Section~\ref{sec:robust} discusses what that implies.
+
+\ajcheck{Posted prices differ in how often they move. Hyperscaler on-demand and reserved list prices
+are revised rarely and in large steps, while spot prices respond to spare capacity. The age profile
+one reads depends on which of these series is used, which is the theme of
+Section~\ref{sec:profiles}.}
