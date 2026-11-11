@@ -177,3 +177,8 @@ backups and $0-4 for optional GPU top-ups; the droplet is already paid for.
   doi:10.5281/zenodo.24143180 (concept 10.5281/zenodo.24143179), from `make deposit`.
 - **D5 SSRN done (2026-11-11, AJ approved, ahead of C4 faculty review):** abstract ID 7692700,
   CC BY, under SSRN staff review. arXiv still open (needs an endorser).
+
+- **2026-11-11, AI-use statement:** SSRN requires a generative-AI disclosure in the PDF. The paper
+  now has one (title footnote and Appendix C, with interests, funding and licences); release
+  v1.0.2, doi:10.5281/zenodo.24146261 (same concept DOI). The SSRN submission's PDF and abstract are
+  revised to match.
