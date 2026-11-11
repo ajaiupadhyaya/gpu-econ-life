@@ -153,3 +153,18 @@ base results (N = 20,000, 16 scenarios, ~17 s):
 
 These are not yet paper results: P2's write-up, the spot panel (M4) and triangulation (M8) are
 still to come.
+
+## L40S run; P1 complete, 2026-11-11
+
+Pod `uw5ykj7y5tbb3y` (OC-AU-1, $1.09/hr) placed on the first attempt at 00:15:59 UTC. Benchmark
+00:21:32 to ~01:00; results copied off (checksums matched) and the pod terminated at 01:01:19.
+`make bench-parse`: OK for all five GPUs (120 rows); one model, one vLLM version, no confounds;
+native FP8 on Ada. Spend (Runpod billing, final): A40 $0.63, A100 $1.12, H100 $1.48, H200
+$1.81; L40S about $0.82 pending. Total about $5.86 for ~3.2 GPU-hours.
+
+Billing also lists pods Claude Code did not create: `nvb5w84zur9dfh` ($1.73) and
+`wxm8ugeu3zsbqy` ($1.30), both 2026-11-10 01:00-04:00 UTC, before this session's first pod;
+`66klutbsdm6402` ($0.06) and `2wu4kaqd5b58gn` ($0.08). Flagged to the owner.
+
+P1 like-for-like discount vs H200 (paid prices): A40 -0.30 to -0.36; A100 -0.08 to -0.24;
+L40S -0.09 to -0.17; H100 -0.02 to -0.12. Every older chip rents below its relative output.
