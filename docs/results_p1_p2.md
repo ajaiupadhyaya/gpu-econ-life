@@ -1,4 +1,4 @@
-# P1 and P2 results (M5, M6)
+# P1, P2 and triangulation results (M5, M6, M8)
 
 Status 2026-11-11. Every number below is produced by `make figures` from raw data. Tables are in
 `paper/tables/`, figures in `paper/figures/`. These are preliminary results for the owner's
@@ -44,7 +44,7 @@ Tables: `p2_observed_ratios.csv`, `p2_implied_decay.csv` (full r x pi grid), `p2
   the other chips. Rent today is about 20x operating cost, so even fast decay takes about a decade
   to reach opex.
 
-## How P1, P2 and P3 line up (input to M8)
+## How P1, P2 and P3 line up (written before M8; see the M8 section below)
 
 - P1: old chips are priced near output parity today. The market is not visibly penalising them
   beyond their throughput gap.
@@ -63,3 +63,34 @@ Tables: `p2_observed_ratios.csv`, `p2_implied_decay.csv` (full r x pi grid), `p2
 - Frontier is the H200 (Hopper), not the B200. Discounts are relative to a refresh, not a new
   architecture.
 - Board power only. PUE is applied explicitly; host CPU, memory and network power are not measured.
+
+## M8: triangulation
+
+Tables: `m8_triangulation.csv`, `m8_attribution.csv`, `m8_blended_fleet.csv`. Figure:
+`t1_triangulation.png`. Decision 15 has the design.
+
+| Generation (age) | P1 D (median; range) | P1 life to opex | P2 life to opex | P3 retirement age, base (P10-P90) |
+|---|---|---|---|---|
+| A100 80GB (6.0 y) | -0.00 (-0.21 to +0.20) | 19.9-26.1 y | 10.6-13.3 y | 4.1 (2.2-7.0) |
+| H100 SXM (4.1 y) | -0.02 (-0.13 to +0.34) | 15.1-20.5 y | 9.8-11.9 y | 4.1 (2.2-7.0) |
+| H200 SXM (2.0 y) | 0 (frontier) | 14.3-18.9 y | 6.4-7.6 y | 4.1 (2.2-7.0) |
+
+All lives are years since release; the accounting lives compared are 4, 5, 5.5 and 6 years.
+
+- **Two regimes, two answers.** Life to operating cost, the power-unconstrained concept, is long in
+  both market-based methods (P2 6-13 years, P1 14-26) and in P3 with abundant power (11.0) or no
+  scarcity (10.7). In a power-constrained market with a scarcity markup, P3 evicts chips at 3.6-4.1
+  years. The accounting band (4-6 years) sits between the two regimes, close to the constrained
+  answer.
+- **The scarcity markup does the work.** In P3, removing the markup lengthens median life from 4.1 to
+  10.7 years: the markup creates the gain from swapping an old chip for a new one in the same
+  power slot. About 47% of today's rent is markup at the calibrated level (61% at the 2026 boom).
+- **P1 and P2 disagree on speed.** Cross-sectional rents fall about 0.23/yr with age; term discounts
+  imply 0.46-0.95/yr. The gap is consistent with term discounts carrying on-demand list premiums
+  and term premiums (P3 check 2), and with old chips being priced near output parity (P1-d).
+- **Blended fleet:** if GPUs are 30-70% of server assets and other servers last 6 years, a 4.1-year
+  GPU life implies a blended server life of 4.5-5.3 years. GPU lives of 8.2-11 years (P2, or P3 with
+  abundant power) imply 6.8-8.8 years.
+
+Caveats for M8: one price snapshot; P3 is generation-generic (calibrated on the H100); P1's life
+uses the vintage-price assumption; firm-specific book lives await Phase 7.

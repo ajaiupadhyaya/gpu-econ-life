@@ -197,3 +197,11 @@ figure was rendered and inspected, and label collisions were fixed. `make figure
 everything from raw data in about 40 seconds. A single-scenario P3 sanity run briefly overwrote
 the 16-scenario P3 tables; they were regenerated with `make p3`. Summary in
 `docs/results_p1_p2.md`.
+
+## M8 triangulation, 2026-11-11
+
+Added a no-scarcity P3 scenario (median 10.7 years vs 4.1 base) and `gel.models.triangulate` with
+Fig T-1, attribution and the blended-fleet table, wired into `make figures`. Main finding: the
+market-based lives to operating cost (P1, P2) and P3 without power constraints agree on a long life
+(roughly 10 years and up). P3 in a power-constrained market with a scarcity markup gives about 4
+years, inside or just below the 4-6 year accounting band.

@@ -1,4 +1,4 @@
-.PHONY: figures p1-figures p2 p3-validate spot-panel install test test-fast lint coverage-preview collect health bench-dryrun bench-parse bench-report p3-calibrate p3-capex p3-market p3 data models paper all
+.PHONY: m8 figures p1-figures p2 p3-validate spot-panel install test test-fast lint coverage-preview collect health bench-dryrun bench-parse bench-report p3-calibrate p3-capex p3-market p3 data models paper all
 
 install:
 	uv sync
@@ -69,4 +69,7 @@ p2: p3-market
 p3-validate: p3
 	uv run python -m gel.models.p3_validation
 
-figures: bench-parse p1-figures p3-validate p2
+m8: p2 p3-validate
+	uv run python -m gel.models.triangulate
+
+figures: bench-parse p1-figures p3-validate p2 m8

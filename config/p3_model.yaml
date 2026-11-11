@@ -78,3 +78,4 @@ scenarios:                     # overrides of the base parameters (handoff 5.3)
   capex_flat: {capex: {growth_per_generation: 1.0}}  # sensitivity: flat capex per generation
   maintenance_high: {maintenance_fraction_of_capex_per_year: 0.125}  # sensitivity: GMI Cloud 10-15% midpoint
   markup_level_process: {markup: {process: level}}  # handoff's original OU on m (comparison)
+  no_scarcity: {markup: {mean: 0.0, sigma: 0.0, x0: 0.0}}  # M8 attribution: pure obsolescence, price = frontier full cost

@@ -368,3 +368,25 @@ Made while building P3, within the handoff's design. The owner can reverse any o
   release price where Epoch has one (H100, H200); power only otherwise (A100 80GB, L40S), flagged.
 - **`make figures`** regenerates every table and figure from raw data (bench parse -> M4 panel ->
   P1 tables and figures; P3 calibration, Monte Carlo and validation; P2) in about 40 seconds.
+
+## Decision 15: M8 triangulation design (2026-11-11)
+
+- **Date:** 2026-11-11, within the handoff's section 6 design.
+- **Generations:** A100 80GB, H100 SXM, H200 SXM, the SXM data-centre line with data in all three
+  methods. The L40S (a PCIe inference card with no neocloud term data) and A40 (one price) are not
+  triangulated.
+- **P1-implied life:** P1 is one snapshot, so its implied rent decay is the cross-sectional slope of
+  log neocloud rent on chip age along A100 -> H100 -> H200 (0.23/yr at median prices; 0.21-0.27
+  using every chip's max or min price). L_opex(P1) = age + ln(rent / opex) / delta_cs. This assumes
+  the age gradient across chips today also describes one chip's path over time, which is the usual
+  vintage-price assumption and is stated in the paper.
+- **Comparable concepts:** P1 and P2 measure life until rent falls to operating cost. That is the
+  power-unconstrained concept, so they compare with P3's power-abundant median (11.0 years) and its
+  no-scarcity median (10.7). P3's base (4.1 years, P10-P90 2.2-7.0) adds eviction by newer chips in
+  a power-constrained market. T-1 plots all three with the accounting band.
+- **Accounting lives:** the handoff's comparison set 4/5/5.5/6 years. Firm-specific useful lives
+  (by company and year) are Phase 7's work from SEC filings and are not asserted here.
+- **Attribution:** P3 no-scarcity vs base (10.7 -> 4.1 years); markup share of today's rent
+  m/(1+m) = 0.47 (base) and 0.61 (2026 boom).
+- **Blended fleet** (handoff's bounding exercise): 1/(s/L_gpu + (1-s)/L_other) for s in
+  {0.3, 0.5, 0.7}, L_other in {6, 7}, for five GPU-life sources. Table `m8_blended_fleet.csv`.

@@ -43,7 +43,7 @@
     },
     "markup_mean": 0.9094380974123665,
     "share_months_constrained": 0.6966775,
-    "runtime_s": 1.1170382919954136
+    "runtime_s": 1.1825064580189064
   },
   {
     "scenario": "fast_frontier",
@@ -89,7 +89,7 @@
     },
     "markup_mean": 0.9094380974123665,
     "share_months_constrained": 0.6966775,
-    "runtime_s": 1.1221785829402506
+    "runtime_s": 1.1512080000247806
   },
   {
     "scenario": "slow_frontier",
@@ -135,7 +135,7 @@
     },
     "markup_mean": 0.9091109921762911,
     "share_months_constrained": 0.6967875,
-    "runtime_s": 0.5455362920183688
+    "runtime_s": 0.5362628750735894
   },
   {
     "scenario": "always_constrained",
@@ -181,7 +181,7 @@
     },
     "markup_mean": 0.9094380974123665,
     "share_months_constrained": 1.0,
-    "runtime_s": 0.8234263330232352
+    "runtime_s": 0.8671274579828605
   },
   {
     "scenario": "power_abundant",
@@ -227,7 +227,7 @@
     },
     "markup_mean": 0.9094380974123665,
     "share_months_constrained": 0.0,
-    "runtime_s": 0.8155110420193523
+    "runtime_s": 0.8523159580072388
   },
   {
     "scenario": "scarcity_boom",
@@ -273,7 +273,7 @@
     },
     "markup_mean": 1.5705559539066316,
     "share_months_constrained": 0.6966775,
-    "runtime_s": 0.8427012499887496
+    "runtime_s": 0.9004562500631437
   },
   {
     "scenario": "scarcity_jump",
@@ -319,7 +319,7 @@
     },
     "markup_mean": 1.4381889621027575,
     "share_months_constrained": 0.6966775,
-    "runtime_s": 0.8526574999559671
+    "runtime_s": 0.8257827078923583
   },
   {
     "scenario": "virginia_power",
@@ -365,7 +365,7 @@
     },
     "markup_mean": 0.9094380974123665,
     "share_months_constrained": 0.6966775,
-    "runtime_s": 0.8192517079878598
+    "runtime_s": 0.8321104580536485
   },
   {
     "scenario": "failure_low",
@@ -411,7 +411,7 @@
     },
     "markup_mean": 0.9094380974123665,
     "share_months_constrained": 0.6966775,
-    "runtime_s": 0.8419807500904426
+    "runtime_s": 0.8385574170388281
   },
   {
     "scenario": "failure_high",
@@ -457,7 +457,7 @@
     },
     "markup_mean": 0.9094380974123665,
     "share_months_constrained": 0.6966775,
-    "runtime_s": 0.8463282500160858
+    "runtime_s": 0.860452042077668
   },
   {
     "scenario": "failure_handoff",
@@ -503,7 +503,7 @@
     },
     "markup_mean": 0.9094380974123665,
     "share_months_constrained": 0.6966775,
-    "runtime_s": 0.8370579170295969
+    "runtime_s": 0.8479011669987813
   },
   {
     "scenario": "empirical_cadence",
@@ -549,7 +549,7 @@
     },
     "markup_mean": 0.9092099807776534,
     "share_months_constrained": 0.6956061111111111,
-    "runtime_s": 0.6691330829635262
+    "runtime_s": 0.6976923340698704
   },
   {
     "scenario": "capex_low",
@@ -595,7 +595,7 @@
     },
     "markup_mean": 0.9094380974123665,
     "share_months_constrained": 0.6966775,
-    "runtime_s": 0.838588707963936
+    "runtime_s": 0.8509609579341486
   },
   {
     "scenario": "capex_flat",
@@ -641,7 +641,7 @@
     },
     "markup_mean": 0.9094380974123665,
     "share_months_constrained": 0.6966775,
-    "runtime_s": 0.8473452500766143
+    "runtime_s": 0.8464662909973413
   },
   {
     "scenario": "maintenance_high",
@@ -687,7 +687,7 @@
     },
     "markup_mean": 0.9094380974123665,
     "share_months_constrained": 0.6966775,
-    "runtime_s": 0.8282530000433326
+    "runtime_s": 0.8499438751023263
   },
   {
     "scenario": "markup_level_process",
@@ -733,6 +733,52 @@
     },
     "markup_mean": 0.9427494638803516,
     "share_months_constrained": 0.695805,
-    "runtime_s": 0.80247724999208
+    "runtime_s": 0.8276346659986302
+  },
+  {
+    "scenario": "no_scarcity",
+    "n_tracked": 62224,
+    "retire_age_mean_y": 9.981500974972144,
+    "retire_age_p10_y": 5.333333333333333,
+    "retire_age_p50_y": 10.666666666666666,
+    "retire_age_p90_y": 12.666666666666666,
+    "share_negative_margin": 0.5407399074312162,
+    "share_obsolescence": 0.0,
+    "share_failure": 0.20062998200051427,
+    "share_censored": 0.25863011056826946,
+    "value_over_capex": {
+      "0": 0.8866249832927805,
+      "1": 0.7211419707634391,
+      "2": 0.5506813895170709,
+      "3": 0.4274658190347645,
+      "4": 0.31523291409872145,
+      "5": 0.23079081074088917,
+      "6": 0.15909947331291724,
+      "7": 0.10536388209924262,
+      "8": 0.06379979906952653,
+      "9": 0.03520614446281277,
+      "10": 0.018044659232992307
+    },
+    "rent_ratio_by_year": {
+      "0": 1.0,
+      "1": 0.9999910719962277,
+      "2": 0.788595425933923,
+      "3": 0.7049263615161407,
+      "4": 0.5785654750416878,
+      "5": 0.49968684065909574,
+      "6": 0.42004576012703493,
+      "7": 0.35776523344194405,
+      "8": 0.30344675444392977,
+      "9": 0.256982104736501,
+      "10": 0.21845924943113662
+    },
+    "implied_flat_ratio": {
+      "12": 0.9999919703285131,
+      "36": 0.912653527775249,
+      "60": 0.808558378419484
+    },
+    "markup_mean": 0.0,
+    "share_months_constrained": 0.695805,
+    "runtime_s": 0.8174150000559166
   }
 ]

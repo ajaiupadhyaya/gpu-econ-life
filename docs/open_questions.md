@@ -120,3 +120,6 @@ Unknown values, unreachable sources and anything waiting on a decision.
 - **Collector alerts are still not set up.** The Lambda failure ran 8 days unnoticed. `deploy/alert.sh`
   and `gel-alert@.service` exist but need the owner's notification account; backups
   (`gel-backup.timer`) are also still off.
+- **Firm-specific useful lives (Phase 7).** M8 compares against the handoff's generic 4/5/5.5/6 years.
+  Attributing those to Microsoft, Alphabet, Amazon, Meta, Oracle, CoreWeave and Nebius needs the
+  SEC/EDGAR work (contact email required for the EDGAR User-Agent).
