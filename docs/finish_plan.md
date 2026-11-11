@@ -180,5 +180,7 @@ backups and $0-4 for optional GPU top-ups; the droplet is already paid for.
 
 - **2026-11-11, AI-use statement:** SSRN requires a generative-AI disclosure in the PDF. The paper
   now has one (title footnote and Appendix C, with interests, funding and licences); release
-  v1.0.2, doi:10.5281/zenodo.24146261 (same concept DOI). The SSRN submission's PDF and abstract are
-  revised to match.
+  v1.0.2, doi:10.5281/zenodo.24146261 (same concept DOI). SSRN gives no edit or revise button while a
+  paper is in review (status PRELIMINARY_UPLOAD), so SSRN Support was asked to replace the PDF and
+  add the AI-use sentence to the abstract (reference 261112-004175). If SSRN approves the original
+  first, revise it from My Papers with the v1.0.2 PDF.
