@@ -159,3 +159,16 @@ backups and $0-4 for optional GPU top-ups; the droplet is already paid for.
   logged-spec proposals in Decision 24 (a)-(d); restatement inputs (server share of capex,
   finance leases, Amazon's 2025 subset); a sourced hosting cost; the six audit items; decisions
   2, 4, 5 and 6 above; C4 faculty review; D3-D7 (public repo, Zenodo, SSRN/arXiv, site, journal).
+
+## Release update (2026-11-11)
+
+- **D6 site: done.** BASIS No. 009 ("How fast do GPUs lose value? Nine years of rents") and Work 04
+  "Rental-Implied Depreciation" (Esn-0014, esnupi Publications No. 32, 9-page house-style report)
+  merged to the esnupi site in ajaiupadhyaya/esnupi#9; Vercel production deployment READY. Report
+  source: `~/Documents/esnupi/reports-src/rental-implied-depreciation/` (numbers filled from this
+  repository's committed tables).
+- **D2 public PDFs:** `make paper-public` builds the paper and summary with the [AJ] marks hidden
+  and the author line set.
+- **D3 still AJ's:** the repository is pushed but still private; flipping it to public was blocked
+  by the session's permission rules. Then tag v1.0.0 and connect Zenodo (D4); SSRN/arXiv (D5)
+  need AJ's accounts and, by the plan, faculty review (C4) first.
