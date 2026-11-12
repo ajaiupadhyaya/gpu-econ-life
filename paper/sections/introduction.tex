@@ -18,15 +18,16 @@ things: resale value, net cash flow or posted rent, at one date or along a path.
 
 This paper puts those measurements on one basis, using the object that is easiest to observe
 over time: what it costs to rent an accelerator for an hour. I build a panel of \nPanelRows{}
-listing-months of posted rents for seven NVIDIA chips, from the V100 (2017) to the B200 (2024),
-covering October 2017 to November 2026. It combines Amazon Web Services (AWS) price-list history,
+listing-months of posted rents covering October 2017 to November 2026; the estimation sample is
+\nSampleRows{} listing-months for seven NVIDIA chips, from the V100 (2017) to the B200 (2024). The
+panel combines Amazon Web Services (AWS) price-list history,
 archived pricing pages, the SkyPilot catalog history and live collection, across hyperscalers and
 neoclouds and across on-demand, spot and reserved contracts (Section~\ref{sec:data}).
 
 The central econometric problem is old. Age equals calendar time minus vintage, so with chip and
 month fixed effects the linear part of the age profile is not identified \citep{hall1968technical}.
-Following the advice to report each chip's realized path first, I then run four identification
-strategies side by side: a quality-adjusted vintage effect, a frontier-relative obsolescence term
+I therefore report each chip's realized price path first, which needs no identification
+assumption, and then run four identification strategies side by side: a quality-adjusted vintage effect, a frontier-relative obsolescence term
 after \citet{geske2007computers}, a successor event study, and a shape-only specification that
 sweeps an assumed linear rate (Section~\ref{sec:method}). Inference is at the chip level, which
 leaves seven clusters.
@@ -49,7 +50,8 @@ do change give a front-loaded one (\nShapeListMovers, provider-clustered standar
 technical detail.}
 
 \emph{With valid inference, the data do not pin down the rate or the shape.} Under the
-unrestricted wild cluster bootstrap that the analysis pre-registered, the pooled shape estimate
+unrestricted wild cluster bootstrap that the analysis specified in advance, the pooled shape
+estimate
 (\nFourShape) excludes zero. A Monte Carlo on this panel's design shows that the unrestricted
 bootstrap's 95\% intervals cover the truth only \nCovWcuLo--\nCovWcuHi{} of the time, while the
 restricted version covers about \nCovWcrHi; under the restricted bootstrap the shape has

@@ -12,7 +12,7 @@ no identification assumption. The older chips decline slowly and unevenly: the V
 (\nPathHHundredOne), fell to \nPathHHundredThree{} at three years, and recovered to
 \nPathHHundredFour{} at four years in the 2026 shortage. \ajcheck{Realized paths are not smooth
 decays. They are long flat stretches, sharp falls and demand-driven rebounds, and the 2026 shortage
-reverses part of the decline for every chip still on sale.}
+reverses part of the decline for every chip from the A100 on, while the V100's path stays flat.}
 
 \begin{figure}[htbp]
 \centering
@@ -32,7 +32,7 @@ linear term, and the shape-only strategy. Strategy 1 prices each log point of TF
 \nOneARateEarly, interval [\nOneARateEarlyLo, \nOneARateEarlyHi]) and roughly none after
 (\nOneARateLate). Strategy 2's age profile rises slightly and then falls (\nTwoRateEarly{} and
 \nTwoRateLate{} a year). Strategy 4's shape estimate is \nFourShape{}
-[\nFourShapeLo, \nFourShapeHi] under the pre-registered bootstrap. Every point estimate of the
+[\nFourShapeLo, \nFourShapeHi] under the bootstrap specified in advance. Every point estimate of the
 early minus late rate is positive: prices fall later, not earlier, against H1.
 
 \begin{table}[htbp]
@@ -59,8 +59,8 @@ assumed average rates $d$ from 0 to $-0.40$ log points a year (right).}
 \subsection{What survives valid inference}
 \label{sec:review}
 
-An adversarial review of these results, written by a reader with no access to the author's notes,
-identified three problems; Table~\ref{tab:review} and the checks below address them.
+An adversarial review of these results (Appendix~\ref{app:review}), written by a reviewer with no
+access to the author's notes, identified three problems; Table~\ref{tab:review} and the checks below address them.
 
 \emph{The intervals are too narrow.} In a Monte Carlo that keeps this panel's rows, fixed effects
 and regressors and draws errors with the estimated residual structure under a true shape of zero,
@@ -123,10 +123,12 @@ Table~\ref{tab:values} and Figure~\ref{fig:values} turn the rent paths into valu
 realized path an H100 loses \nValRealLostOne{} of its value in the first year and
 \nValRealLostThree{} by year three, and its straight-line-equivalent life is \nValRealSle{} years:
 value declines more slowly than under any five- or six-year straight-line schedule. Strategy 2 gives
-a similar curve (\nValTwoLostThree{} by year three). Only an assumed average decline of
-0.40 log points a year in strategy 4 produces a front-loaded curve (\nValFourFortyLostThree{} lost by
-year three, life \nValFourFortySle{} years), and it implies a launch rent of \$\nValFourFortyRentZero{}
-an hour for the H100, far above any rent in the panel.
+a similar curve (\nValTwoLostThree{} by year three). Under strategy 4 an assumed average decline of
+0.20 log points a year gives \nValFourTwentyLostThree{} lost by year three and a life of
+\nValFourTwentySle{} years, about the pace of a six-year straight-line schedule over the first three
+years. Only an assumed decline of 0.40 falls faster than a five-year schedule
+(\nValFourFortyLostThree{} lost by year three, life \nValFourFortySle{} years), and it implies a
+launch rent of \$\nValFourFortyRentZero{} an hour for the H100, far above any rent in the panel.
 
 \begin{table}[htbp]
 \centering
@@ -135,7 +137,9 @@ an hour for the H100, far above any rent in the panel.
 \begin{adjustbox}{max width=\textwidth}
 \input{tables/p6_summary.tex}
 \end{adjustbox}
-\par\smallskip\footnotesize $V(0)$/capex: value at release over capital cost. SL-equivalent life:
+\par\smallskip\footnotesize Base case ($r = 10\%$, $u = 70\%$, PUE 1.3); brackets: range over the
+$r \times u \times$ PUE grid. Realized: the cohort paths of the V100 and A100. $d$: assumed average
+rate in log points a year. $V(0)$/capex: value at release over capital cost. SL-equivalent life:
 $2\int_0^H V(a)/V(0)\,da$. $T^*$: first age at which utilization $\times$ rent $\le$ operating cost.
 Operating cost excludes hosting, network and staff, so $V(0)$/capex is an upper bound.
 \end{table}

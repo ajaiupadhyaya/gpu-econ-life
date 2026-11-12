@@ -12,7 +12,12 @@ where $p$ is the real posted price per GPU-hour, $a_{ct}$ the chip's age in year
 month, $g$ the age profile, $\alpha_c$ a chip (vintage) effect, $\delta_t$ a month effect and $X_i$
 fixed effects for provider $\times$ region, contract type $\times$ term, GPUs per instance, price
 basis (instance or accelerator only) and form factor. $g$ is a cubic spline in age with knots at
-1.5, 3 and 5 years. The specifications were logged before any regression was run.
+1.5, 3 and 5 years. The specifications were logged before any regression was run, together with
+four hypotheses. H1, front-loaded decline: value falls fastest in a chip's first two years, closer
+to geometric than to straight-line. H2, obsolescence shocks: a successor's release causes a
+discrete drop in the predecessor's rent. H3, contract-type wedge: spot and on-demand prices fall
+faster with age than reserved prices. H4, demand regimes: shortages mask age effects only
+temporarily, so age profiles are stable across sub-periods once month effects are included.
 
 \subsection{Identification}
 
@@ -39,17 +44,17 @@ log points a year, where $\tilde c$ is the curvature detrended over ages 0--6.
 \end{enumerate}
 
 The summary measures are $g(1)-g(0)$, $g(2)-g(0)$, $g(4)-g(0)$, the average annual log change over
-years 0--2 and 2--4, and their difference, the \emph{early minus late rate}. The hypothesis of a
-front-loaded decline (H1) predicts a negative early minus late rate. Strategy 4 reports only that
+years 0--2 and 2--4, and their difference, the \emph{early minus late rate}. H1 predicts a negative
+early minus late rate. Strategy 4 reports only that
 difference, the one measure that does not depend on the assumed linear term.
 
 \subsection{Inference}
 
 Age has one value per chip and month, so inference is at the chip level, with seven clusters. The
-pre-registered method is the unrestricted wild cluster bootstrap with Webb's six-point weights and
+method specified in advance is the unrestricted wild cluster bootstrap with Webb's six-point weights and
 9,999 draws \citep{cameron2008bootstrap, webb2023reworking}. Cluster-robust standard errors by
 provider and two-way by provider and month are shown for comparison. After the adversarial review
-I add the restricted bootstrap (WCR), which imposes the null when generating draws and is
+(Appendix~\ref{app:review}) I add the restricted bootstrap (WCR), which imposes the null when generating draws and is
 recommended when clusters are few and unequal in size \citep{mackinnon2017wild,
 mackinnon2023cluster}, a test-inversion interval, and a Monte Carlo of interval coverage on this
 panel's design.
@@ -58,10 +63,10 @@ panel's design.
 
 The value of a chip at age $a$ is the present value of its remaining net rent,
 \begin{equation}
-V(a) = \sum_{m \ge 0}^{H - a} \frac{730 \, \max\{u\,p(a + m/12) - o,\ 0\} \, S(m)}{(1+r)^{(m+1)/12}},
+V(a) = \sum_{m = 0}^{12(H - a) - 1} \frac{730 \, \max\{u\,p(a + m/12) - o,\ 0\} \, S(m)}{(1+r)^{(m+1)/12}},
 \label{eq:value}
 \end{equation}
-summed over remaining months $m$, with utilization $u$, operating cost per GPU-hour $o$ (system
+summed over remaining months $m$ at 730 hours a month, with utilization $u$, operating cost per GPU-hour $o$ (system
 power $\times$ PUE $\times$ electricity price, plus maintenance at 4\% of capital cost a year),
 survival $S$ at a 2\% annual failure rate, discount rate $r$ and horizon $H$ of nine years, the
 oldest age observed. The rent path is $p(a) = p_{\text{now}} \exp\{g(a) - g(a_{\text{now}})\}$:
@@ -69,8 +74,8 @@ each chip's current neocloud median on-demand rent moved along a profile $g$ fro
 cohort paths or one of the strategies. I report $V(0)$ relative to capital cost, the share of value
 lost by each year, the economic life $T^*$ (the first age at which $u p \le o$), and a
 straight-line-equivalent life $L = 2\int_0^H V(a)/V(0)\,da$, the straight-line life with the same
-average book value. The grid is $r \in \{8, 10, 12\}\%$, $u \in \{50, 70, 90\}\%$ and PUE $\in
-\{1.2, 1.4\}$.
+average book value. The base case is $r = 10\%$, $u = 70\%$ and a PUE of 1.3; the grid is
+$r \in \{8, 10, 12\}\%$, $u \in \{50, 70, 90\}\%$ and PUE $\in \{1.2, 1.4\}$.
 
 \subsection{Earnings restatement}
 

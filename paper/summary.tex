@@ -26,8 +26,8 @@ CoreWeave, Nebius) spread the cost of their servers over five to six years. If A
 lose their value faster, today's profits are overstated; if slower, understated. Published
 estimates of how fast the chips lose value disagree wildly, from roughly flat to about 40\% a year.
 
-\paragraph{What I did.} I built an open dataset of \nPanelRows{} monthly rental prices for seven
-generations of NVIDIA data-center chips, from the 2017 V100 to the 2024 B200, across cloud
+\paragraph{What I did.} I built an open dataset of \nPanelRows{} monthly rental prices, centered on
+seven NVIDIA data-center chips from the 2017 V100 to the 2024 B200, across cloud
 providers and contract types, mostly from public price files and archived web pages. I then asked
 how a chip's rent changes as it ages, turned rents into asset values, and compared the result
 with the companies' accounting lives.
@@ -48,7 +48,7 @@ for a V100 since \nAwsVHundredFirstYear{}.
 life; list prices that do move fall early. Published estimates disagree partly because they read
 different markets.
 \item \textbf{With honest statistics, the data cannot pin down a precise rate.} With only seven
-chip generations, standard methods overstate precision: in a simulation they caught the true value
+chips, standard methods overstate precision: in a simulation they caught the true value
 only \nCovWcuLo--\nCovWcuHi{} of the time instead of 95\%. Corrected, no method finds a
 statistically clear decline.
 \item \textbf{Rents never get close to running costs.} An H100 rents for about
