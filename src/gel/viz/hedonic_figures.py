@@ -172,9 +172,28 @@ def fig_d(ev: pl.DataFrame) -> None:
     plt.close(fig)
 
 
+def _num(x: float) -> str:
+    """Two decimals with a typeset minus sign; a value that rounds to zero prints unsigned."""
+    t = f"{x:.2f}"
+    if t == "-0.00":
+        t = "0.00"
+    return t.replace("-", "$-$")
+
+
 def _cell(r: dict) -> str:
-    est = f"{r['estimate']:.2f}"
-    return f"{est} [{r['wcb_ci_low']:.2f}, {r['wcb_ci_high']:.2f}]"
+    return f"{_num(r['estimate'])} [{_num(r['wcb_ci_low'])}, {_num(r['wcb_ci_high'])}]"
+
+
+SAMPLE_LABEL = {
+    "contract:on_demand": "On demand",
+    "contract:reserved_1y": "Reserved, 1 year",
+    "contract:reserved_3y": "Reserved, 3 years",
+    "contract:spot": "Spot",
+    "drop_google_2026_07": "Without Google, July 2026",
+    "period:2023_2025": "2023--2025",
+    "period:from_2026": "2026",
+    "weighted_provider_chip_month": "Provider-chip-months weighted equally",
+}
 
 
 def latex_strategies(summary: pl.DataFrame) -> str:
@@ -220,9 +239,8 @@ def latex_h3_h4(summary: pl.DataFrame) -> str:
                 r = hit.row(0, named=True)
                 mark = "$^\\dagger$" if r["extrapolated"] and m != "early_minus_late_rate" else ""
                 row.append(_cell(r) + mark)
-            lines.append(
-                f"{smp.replace('_', ' ')} & {SPEC_LABEL[spec]} & " + " & ".join(row) + " \\\\"
-            )
+            label = SAMPLE_LABEL.get(smp, smp.replace("_", " "))
+            lines.append(f"{label} & {SPEC_LABEL[spec]} & " + " & ".join(row) + " \\\\")
     lines += [
         "\\hline",
         "\\end{tabular}",

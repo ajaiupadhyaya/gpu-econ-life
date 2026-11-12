@@ -306,12 +306,15 @@ def pval(p: float, floor: float) -> str:
 
 def tables() -> None:
     facts = pl.read_csv(T / "p4_descriptive_facts.csv").filter(
-        pl.col("chip").is_in(["v100", "a100_40gb", "a100_80gb", "h100_sxm", "h200", "b200"])
+        pl.col("chip").is_in(
+            ["v100", "a100_40gb", "a100_80gb", "h100_pcie", "h100_sxm", "h200", "b200"]
+        )
     )
     label = {
         "v100": "V100",
         "a100_40gb": "A100 40GB",
         "a100_80gb": "A100 80GB",
+        "h100_pcie": "H100 PCIe",
         "h100_sxm": "H100 SXM",
         "h200": "H200",
         "b200": "B200",

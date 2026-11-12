@@ -4,30 +4,30 @@
 \hline
 Sample & Strategy & rate, yrs 0--2 & rate, yrs 2--4 & early $-$ late (H1: $<0$) \\
 \hline
-contract:on demand & 1a quality index (TFLOP/s) & -0.07 [-0.47, 0.34] & 0.10 [-0.16, 0.37] & -0.17 [-0.70, 0.37] \\
-contract:on demand & 2 frontier-relative & -0.21 [-0.48, 0.07] & -0.09 [-0.36, 0.17] & -0.12 [-0.33, 0.08] \\
-contract:on demand & 4 shape only & -- & -- & -0.13 [-0.40, 0.13] \\
-contract:reserved 1y & 1a quality index (TFLOP/s) & 0.81 [-0.54, 2.19] & 0.18 [-0.08, 0.45] & 0.63 [-0.78, 2.03] \\
-contract:reserved 1y & 2 frontier-relative & 0.08 [-0.18, 0.34] & -0.06 [-0.23, 0.11] & 0.14 [-0.23, 0.50] \\
-contract:reserved 1y & 4 shape only & -- & -- & 0.76 [-1.15, 2.66] \\
-contract:reserved 3y & 1a quality index (TFLOP/s) & 0.19 [-0.07, 0.45] & 0.10 [-0.18, 0.37] & 0.09 [-0.05, 0.24] \\
-contract:reserved 3y & 2 frontier-relative & -0.03 [-0.07, 0.01] & -0.12 [-0.28, 0.04] & 0.09 [-0.13, 0.31] \\
-contract:reserved 3y & 4 shape only & -- & -- & -0.20 [-0.80, 0.38] \\
-contract:spot & 1a quality index (TFLOP/s) & 0.46 [0.11, 0.81] & -0.19 [-0.32, -0.04] & 0.65 [0.19, 1.10] \\
-contract:spot & 2 frontier-relative & 0.50 [0.18, 0.83] & -0.26 [-0.42, -0.09] & 0.76 [0.26, 1.26] \\
-contract:spot & 4 shape only & -- & -- & 0.87 [0.34, 1.41] \\
-drop google 2026 07 & 1a quality index (TFLOP/s) & 0.28 [-0.21, 0.76] & -0.03 [-0.24, 0.18] & 0.31 [-0.50, 1.09] \\
-drop google 2026 07 & 2 frontier-relative & 0.11 [-0.12, 0.35] & -0.15 [-0.39, 0.10] & 0.26 [0.05, 0.47] \\
-drop google 2026 07 & 4 shape only & -- & -- & 0.47 [0.36, 0.57] \\
-period:2023 2025 & 1a quality index (TFLOP/s) & 0.26 [-0.11, 0.63] & -0.27 [-0.43, -0.12] & 0.54 [0.19, 0.88] \\
-period:2023 2025 & 2 frontier-relative & 0.11 [-0.09, 0.32]$^\dagger$ & -0.37 [-1.62, 0.86]$^\dagger$ & 0.48 [0.34, 0.63] \\
-period:2023 2025 & 4 shape only & -- & -- & 0.48 [0.28, 0.68] \\
-period:from 2026 & 1a quality index (TFLOP/s) & -0.36 [-53.25, 53.09] & -0.09 [-0.29, 0.12] & -0.27 [-52.97, 52.98] \\
-period:from 2026 & 2 frontier-relative & -6.60 [-47.69, 35.77]$^\dagger$ & 0.82 [-2.86, 4.12]$^\dagger$ & -7.42 [-44.76, 30.91] \\
-period:from 2026 & 4 shape only & -- & -- & -0.61 [-11.87, 10.71] \\
-weighted provider chip month & 1a quality index (TFLOP/s) & 0.21 [-0.21, 0.62] & -0.03 [-0.18, 0.11] & 0.24 [-0.15, 0.64] \\
-weighted provider chip month & 2 frontier-relative & 0.10 [-0.22, 0.43] & -0.08 [-0.17, 0.01] & 0.19 [-0.11, 0.47] \\
-weighted provider chip month & 4 shape only & -- & -- & 0.29 [0.07, 0.50] \\
+On demand & 1a quality index (TFLOP/s) & $-$0.07 [$-$0.47, 0.34] & 0.10 [$-$0.16, 0.37] & $-$0.17 [$-$0.70, 0.37] \\
+On demand & 2 frontier-relative & $-$0.21 [$-$0.48, 0.07] & $-$0.09 [$-$0.36, 0.17] & $-$0.12 [$-$0.33, 0.08] \\
+On demand & 4 shape only & -- & -- & $-$0.13 [$-$0.40, 0.13] \\
+Reserved, 1 year & 1a quality index (TFLOP/s) & 0.81 [$-$0.54, 2.19] & 0.18 [$-$0.08, 0.45] & 0.63 [$-$0.78, 2.03] \\
+Reserved, 1 year & 2 frontier-relative & 0.08 [$-$0.18, 0.34] & $-$0.06 [$-$0.23, 0.11] & 0.14 [$-$0.23, 0.50] \\
+Reserved, 1 year & 4 shape only & -- & -- & 0.76 [$-$1.15, 2.66] \\
+Reserved, 3 years & 1a quality index (TFLOP/s) & 0.19 [$-$0.07, 0.45] & 0.10 [$-$0.18, 0.37] & 0.09 [$-$0.05, 0.24] \\
+Reserved, 3 years & 2 frontier-relative & $-$0.03 [$-$0.07, 0.01] & $-$0.12 [$-$0.28, 0.04] & 0.09 [$-$0.13, 0.31] \\
+Reserved, 3 years & 4 shape only & -- & -- & $-$0.20 [$-$0.80, 0.38] \\
+Spot & 1a quality index (TFLOP/s) & 0.46 [0.11, 0.81] & $-$0.19 [$-$0.32, $-$0.04] & 0.65 [0.19, 1.10] \\
+Spot & 2 frontier-relative & 0.50 [0.18, 0.83] & $-$0.26 [$-$0.42, $-$0.09] & 0.76 [0.26, 1.26] \\
+Spot & 4 shape only & -- & -- & 0.87 [0.34, 1.41] \\
+Without Google, July 2026 & 1a quality index (TFLOP/s) & 0.28 [$-$0.21, 0.76] & $-$0.03 [$-$0.24, 0.18] & 0.31 [$-$0.50, 1.09] \\
+Without Google, July 2026 & 2 frontier-relative & 0.11 [$-$0.12, 0.35] & $-$0.15 [$-$0.39, 0.10] & 0.26 [0.05, 0.47] \\
+Without Google, July 2026 & 4 shape only & -- & -- & 0.47 [0.36, 0.57] \\
+2023--2025 & 1a quality index (TFLOP/s) & 0.26 [$-$0.11, 0.63] & $-$0.27 [$-$0.43, $-$0.12] & 0.54 [0.19, 0.88] \\
+2023--2025 & 2 frontier-relative & 0.11 [$-$0.09, 0.32]$^\dagger$ & $-$0.37 [$-$1.62, 0.86]$^\dagger$ & 0.48 [0.34, 0.63] \\
+2023--2025 & 4 shape only & -- & -- & 0.48 [0.28, 0.68] \\
+2026 & 1a quality index (TFLOP/s) & $-$0.36 [$-$53.25, 53.09] & $-$0.09 [$-$0.29, 0.12] & $-$0.27 [$-$52.97, 52.98] \\
+2026 & 2 frontier-relative & $-$6.60 [$-$47.69, 35.77]$^\dagger$ & 0.82 [$-$2.86, 4.12]$^\dagger$ & $-$7.42 [$-$44.76, 30.91] \\
+2026 & 4 shape only & -- & -- & $-$0.61 [$-$11.87, 10.71] \\
+Provider-chip-months weighted equally & 1a quality index (TFLOP/s) & 0.21 [$-$0.21, 0.62] & $-$0.03 [$-$0.18, 0.11] & 0.24 [$-$0.15, 0.64] \\
+Provider-chip-months weighted equally & 2 frontier-relative & 0.10 [$-$0.22, 0.43] & $-$0.08 [$-$0.17, 0.01] & 0.19 [$-$0.11, 0.47] \\
+Provider-chip-months weighted equally & 4 shape only & -- & -- & 0.29 [0.07, 0.50] \\
 \hline
 \end{tabular}
 % dagger: within-chip age span under 4 years with chip effects (extrapolated).
