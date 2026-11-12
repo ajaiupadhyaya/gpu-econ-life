@@ -184,3 +184,10 @@ backups and $0-4 for optional GPU top-ups; the droplet is already paid for.
   paper is in review (status PRELIMINARY_UPLOAD), so SSRN Support was asked to replace the PDF and
   add the AI-use sentence to the abstract (reference 261112-004175). If SSRN approves the original
   first, revise it from My Papers with the v1.0.2 PDF.
+- **2026-11-12, revision v1.0.3:** review pass on the submitted paper. The sample table lists all
+  seven chips (the H100 PCIe row was filtered out), H1-H4 are stated in the methodology section, the
+  valuation equation's summation limits are in months, "pre-registered" reads "specified in
+  advance", the panel is described as centered on the seven chips, and the "Draft" label is off the
+  title page. No number changed (`paper/numbers.tex` is identical). The revised PDF was emailed to
+  SSRN Support under reference 261112-004175, superseding the v1.0.2 file, with the matching
+  abstract sentence.
