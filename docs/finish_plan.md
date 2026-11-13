@@ -190,4 +190,5 @@ backups and $0-4 for optional GPU top-ups; the droplet is already paid for.
   advance", the panel is described as centered on the seven chips, and the "Draft" label is off the
   title page. No number changed (`paper/numbers.tex` is identical). The revised PDF was emailed to
   SSRN Support under reference 261112-004175, superseding the v1.0.2 file, with the matching
-  abstract sentence.
+  abstract sentence. Release v1.0.3, doi:10.5281/zenodo.24181545 (same concept DOI). If SSRN approves the
+  original first, revise it from My Papers with the v1.0.3 PDF.

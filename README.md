@@ -12,8 +12,8 @@ seven firms' earnings under rental-implied schedules.
 <https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7692700>.
 
 **DOIs:**
-- Code, results and paper (this repository, release v1.0.2):
-  <https://doi.org/10.5281/zenodo.24146261> (all versions: <https://doi.org/10.5281/zenodo.24143073>).
+- Code, results and paper (this repository, release v1.0.3):
+  <https://doi.org/10.5281/zenodo.24181545> (all versions: <https://doi.org/10.5281/zenodo.24143073>).
 - Public panel and redistributable raw data: <https://doi.org/10.5281/zenodo.24143180>
   (all versions: <https://doi.org/10.5281/zenodo.24143179>), built by `make deposit`.
 
