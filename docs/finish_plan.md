@@ -206,6 +206,8 @@ backups and $0-4 for optional GPU top-ups; the droplet is already paid for.
   interpretations; no faculty read. Its 13-step plan to republish (owner decisions as Decision 27,
   restricted bootstrap throughout, power simulation, nominal paths, sourced inputs, AJ's rewrite,
   a fresh review, faculty read, then v1.1.0 to SSRN and arXiv) replaces the remaining D steps.
-- Still to do outside the repository (AJ): the same "under revision" note on the site essay and
-  report, the Zenodo record descriptions, and the GitHub release notes for v1.0.0-v1.0.3.
+- Outside the repository (drafts in `docs/revision_notices.md`): the GitHub release notes for
+  v1.0.0-v1.0.3 carry the notice (2026-11-16), and the site's BASIS No. 009 and Work 04 are marked
+  under revision with the SSRN links removed (ajaiupadhyaya/esnupi#14, merged and live
+  2026-11-17). Still AJ's: the two Zenodo record descriptions (needs his sign-in).
 
