@@ -192,3 +192,20 @@ backups and $0-4 for optional GPU top-ups; the droplet is already paid for.
   SSRN Support under reference 261112-004175, superseding the v1.0.2 file, with the matching
   abstract sentence. Release v1.0.3, doi:10.5281/zenodo.24181545 (same concept DOI). If SSRN approves the
   original first, revise it from My Papers with the v1.0.3 PDF.
+
+## Withdrawal for revision (2026-11-16)
+
+- AJ deleted the SSRN listing (abstract ID 7692700) because the paper needs more work before it is
+  published. The GitHub releases v1.0.0-v1.0.3 and the Zenodo records (permanent DOIs) stay public
+  as superseded drafts; the README and `CITATION.cff` now say so and no longer link SSRN. The SSRN
+  Support request 261112-004175 (replace the PDF) is moot.
+- A read-only review of v1.0.3 (2026-11-16) found, among other points: a Results sentence that
+  still asserts the shape result the review checks overturned; headline tables on the unrestricted
+  bootstrap the paper calls too narrow; valuation and restatement claims that depend on the 9-year
+  horizon, a missing hosting cost and an unsourced server share; 13 unconfirmed `\ajcheck`
+  interpretations; no faculty read. Its 13-step plan to republish (owner decisions as Decision 27,
+  restricted bootstrap throughout, power simulation, nominal paths, sourced inputs, AJ's rewrite,
+  a fresh review, faculty read, then v1.1.0 to SSRN and arXiv) replaces the remaining D steps.
+- Still to do outside the repository (AJ): the same "under revision" note on the site essay and
+  report, the Zenodo record descriptions, and the GitHub release notes for v1.0.0-v1.0.3.
+

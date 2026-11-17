@@ -10,13 +10,11 @@ doi: 10.5281/zenodo.24143073
 date-released: 2026-11-11
 repository-code: "https://github.com/ajaiupadhyaya/gpu-econ-life"
 preferred-citation:
-  type: article
+  type: unpublished
   title: "Rental-Implied Depreciation of AI Accelerators: Why the Estimates Disagree"
   authors:
     - given-names: "Ajai"
       family-names: "Upadhyaya"
   year: 2026
-  publisher:
-    name: "SSRN"
-  url: "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7692700"
-  notes: "Working paper, SSRN abstract ID 7692700."
+  url: "https://github.com/ajaiupadhyaya/gpu-econ-life"
+  notes: "Working paper, under revision. Releases v1.0.0-v1.0.3 are superseded drafts."

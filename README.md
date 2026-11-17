@@ -8,8 +8,10 @@ It builds an open panel of posted GPU rental prices (NVIDIA V100 to B200, Octobe
 values, triangulates with a benchmark, a term-structure model and a retirement model, and restates
 seven firms' earnings under rental-implied schedules.
 
-**Paper:** SSRN preprint, abstract ID 7692700:
-<https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7692700>.
+> **Under revision (2026-11-16).** The working paper has been withdrawn from SSRN while it is
+> revised after an internal review. Releases v1.0.0-v1.0.3 and their Zenodo records are superseded
+> drafts: do not cite their results. The revision will change the inference behind the headline
+> tables and the claims that rest on it, and will be released as v1.1.0.
 
 **DOIs:**
 - Code, results and paper (this repository, release v1.0.3):
@@ -20,7 +22,7 @@ seven firms' earnings under rental-implied schedules.
 The research design is in [docs/proposal.md](docs/proposal.md); the plan to finish and publish is
 [docs/finish_plan.md](docs/finish_plan.md). Project rules are in [CLAUDE.md](CLAUDE.md).
 
-## Status (2026-11-11)
+## Status (2026-11-16)
 
 | Step | State |
 | --- | --- |
@@ -37,7 +39,7 @@ The research design is in [docs/proposal.md](docs/proposal.md); the plan to fini
 | C5 Two-page summary | Done (`paper/summary.tex`) |
 | D1 Pre-public audit | Done ([docs/release_audit.md](docs/release_audit.md)); six items for AJ |
 | D2 Replication package | Done: `make all`, raw-data manifest with checksums, public dataset builder, licence drafts |
-| D3-D7 Public repo, Zenodo DOI, SSRN/arXiv, site, journal | AJ's accounts and approvals |
+| D3-D7 Public repo, Zenodo DOI, SSRN/arXiv, site, journal | Repo public, Zenodo DOIs and site live (v1.0.3); SSRN withdrawn for revision 2026-11-16; arXiv and journal not started |
 
 ## Reproduce
 
